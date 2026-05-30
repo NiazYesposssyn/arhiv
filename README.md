@@ -2,6 +2,26 @@
 
 Enterprise-level ASP.NET Core MVC platform for archive document management, request processing, audit trails, analytics, and secure role-based access.
 
+
+## Instant preview
+
+For the easiest visual preview, open this file directly in a browser:
+
+```text
+index.html
+```
+
+It is a standalone premium demo interface for the topic:
+
+> Проектирование системы управления доступом к архивной информации и обработки пользовательских запросов
+
+The demo does not need .NET, PostgreSQL, terminal commands, or ports. It includes:
+
+- Kazakh, Russian, and English language switching
+- Dark and light modes
+- Dashboard, documents, requests, access roles, analytics, map, notifications, profile, and settings
+- Working navigation, filters, modals, toast notifications, CSV export, request approval/rejection, and demo record creation
+
 ## Stack
 
 - ASP.NET Core MVC (.NET 9)

@@ -1,0 +1,1323 @@
+<!doctype html>
+<html lang="kk" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Archive Access System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --bg-2: #eef3ff;
+      --surface: rgba(255,255,255,.76);
+      --surface-2: rgba(255,255,255,.92);
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: rgba(15,23,42,.1);
+      --brand: #635bff;
+      --brand-2: #00d4ff;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --purple: #a855f7;
+      --shadow: 0 28px 80px rgba(15,23,42,.14);
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+      --sidebar: 290px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #070a13;
+      --bg-2: #0c1224;
+      --surface: rgba(15,23,42,.68);
+      --surface-2: rgba(15,23,42,.92);
+      --text: #f8fafc;
+      --muted: #9aa7bd;
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 28px 90px rgba(0,0,0,.42);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 17% 8%, rgba(99,91,255,.35), transparent 32rem),
+        radial-gradient(circle at 88% 12%, rgba(0,212,255,.22), transparent 28rem),
+        radial-gradient(circle at 48% 92%, rgba(168,85,247,.22), transparent 26rem),
+        linear-gradient(145deg, var(--bg), var(--bg-2));
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(148,163,184,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.08) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, black, transparent 86%);
+      z-index: -2;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .hidden { display: none !important; }
+    .app { display: grid; grid-template-columns: var(--sidebar) minmax(0,1fr); min-height: 100vh; }
+
+    .glass {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(26px) saturate(150%);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .sidebar-shell {
+      height: 100%;
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px;
+    }
+
+    .brand-logo {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      color: white;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 18px 42px rgba(99,91,255,.38);
+      font-size: 24px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 7px;
+    }
+
+    .nav button {
+      border: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 14px;
+      border-radius: 18px;
+      color: var(--muted);
+      background: transparent;
+      text-align: left;
+      font-weight: 750;
+      transition: transform .18s ease, background .18s ease, color .18s ease;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(99,91,255,.18), rgba(0,212,255,.12));
+      transform: translateX(4px);
+    }
+
+    .nav .icon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(99,91,255,.12);
+    }
+
+    .security-card {
+      margin-top: auto;
+      border-radius: 24px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(16,185,129,.16), rgba(99,91,255,.14));
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .security-card::after {
+      content: "";
+      position: absolute;
+      right: -35px;
+      top: -35px;
+      width: 110px;
+      height: 110px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.15);
+    }
+
+    .security-card strong { display: block; font-size: 14px; margin-bottom: 6px; }
+    .security-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+    .main {
+      padding: 20px 24px 38px 0;
+      min-width: 0;
+    }
+
+    .topbar {
+      min-height: 86px;
+      border-radius: var(--radius-xl);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      position: sticky;
+      top: 18px;
+      z-index: 20;
+    }
+
+    .crumbs {
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .topbar h2 {
+      margin: 5px 0 0;
+      font-size: clamp(22px, 2.4vw, 34px);
+      letter-spacing: -.055em;
+      font-weight: 900;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill-btn, .primary-btn, .ghost-btn, .danger-btn {
+      border: 1px solid var(--border);
+      min-height: 42px;
+      padding: 0 15px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+      font-weight: 800;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .pill-btn.icon-only {
+      width: 42px;
+      padding: 0;
+    }
+
+    .primary-btn {
+      border: 0;
+      color: white;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 16px 34px rgba(99,91,255,.28);
+    }
+
+    .danger-btn {
+      border: 0;
+      color: white;
+      background: linear-gradient(135deg, #ef4444, #f97316);
+    }
+
+    .ghost-btn {
+      border-radius: 16px;
+      min-height: 38px;
+    }
+
+    .pill-btn:hover, .primary-btn:hover, .ghost-btn:hover, .danger-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    select, input, textarea {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 10px 13px;
+      color: var(--text);
+      outline: none;
+      background: rgba(255,255,255,.62);
+    }
+
+    [data-theme="dark"] select,
+    [data-theme="dark"] input,
+    [data-theme="dark"] textarea {
+      background: rgba(2,6,23,.52);
+    }
+
+    textarea { resize: vertical; min-height: 110px; }
+    .content { padding-top: 22px; display: grid; gap: 20px; }
+    .view { display: none; animation: rise .35s ease both; }
+    .view.active { display: block; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      border-radius: 38px;
+      padding: clamp(28px, 4vw, 58px);
+      position: relative;
+      overflow: hidden;
+      min-height: 430px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 75% 22%, rgba(0,212,255,.26), transparent 21rem),
+        radial-gradient(circle at 18% 18%, rgba(99,91,255,.24), transparent 24rem);
+      pointer-events: none;
+    }
+
+    .hero > * { position: relative; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.08);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .hero h1 {
+      margin: 18px 0 16px;
+      max-width: 820px;
+      font-size: clamp(38px, 6.8vw, 86px);
+      line-height: .92;
+      letter-spacing: -.08em;
+      font-weight: 950;
+    }
+
+    .gradient-text {
+      color: transparent;
+      background: linear-gradient(135deg, var(--text) 8%, var(--brand) 48%, var(--brand-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.75;
+      max-width: 690px;
+      margin: 0 0 24px;
+    }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .hero-visual {
+      min-height: 360px;
+      border-radius: 34px;
+      padding: 18px;
+      background:
+        linear-gradient(145deg, rgba(99,91,255,.14), rgba(0,212,255,.08)),
+        rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .floating-doc {
+      position: absolute;
+      border-radius: 22px;
+      padding: 16px;
+      width: 220px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      animation: float 7s ease-in-out infinite;
+    }
+
+    .floating-doc:nth-child(1) { left: 24px; top: 38px; }
+    .floating-doc:nth-child(2) { right: 26px; top: 92px; animation-delay: -2s; }
+    .floating-doc:nth-child(3) { left: 85px; bottom: 34px; animation-delay: -4s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-14px) rotate(1deg); }
+    }
+
+    .doc-line { height: 9px; border-radius: 999px; background: rgba(148,163,184,.24); margin: 10px 0; }
+    .doc-line.short { width: 62%; }
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 850;
+      color: var(--green);
+      background: rgba(16,185,129,.12);
+    }
+
+    .grid { display: grid; gap: 18px; }
+    .kpis { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .two-col { grid-template-columns: minmax(0,1.35fr) minmax(320px,.75fr); }
+    .three-col { grid-template-columns: repeat(3, minmax(0,1fr)); }
+
+    .card {
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px) saturate(150%);
+    }
+
+    .kpi {
+      min-height: 156px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .kpi::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--accent, var(--brand));
+      opacity: .18;
+    }
+
+    .kpi-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      color: white;
+      background: var(--accent, var(--brand));
+      box-shadow: 0 14px 30px color-mix(in srgb, var(--accent, var(--brand)) 32%, transparent);
+      font-size: 22px;
+    }
+
+    .kpi-value {
+      margin-top: 18px;
+      font-size: 32px;
+      letter-spacing: -.055em;
+      font-weight: 950;
+    }
+
+    .kpi-label { color: var(--muted); font-size: 13px; font-weight: 750; }
+    .trend {
+      display: inline-flex;
+      margin-top: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(16,185,129,.12);
+      color: var(--green);
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .card h3 { margin: 0 0 6px; font-size: 20px; letter-spacing: -.04em; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.6; }
+    .canvas-wrap { height: 290px; }
+    canvas { width: 100%; height: 100%; display: block; }
+
+    .table-tools {
+      display: grid;
+      grid-template-columns: minmax(180px,1fr) 190px 160px auto;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .table-wrap { overflow: auto; border-radius: 22px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; min-width: 820px; }
+    th, td { padding: 15px 16px; border-bottom: 1px solid var(--border); text-align: left; }
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 900;
+    }
+    tr:hover td { background: rgba(99,91,255,.06); }
+    td strong { display: block; margin-bottom: 4px; }
+    td small { color: var(--muted); }
+    .tag, .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 850;
+      background: rgba(99,91,255,.13);
+      color: var(--brand);
+      white-space: nowrap;
+    }
+    .badge.green { color: var(--green); background: rgba(16,185,129,.13); }
+    .badge.amber { color: var(--amber); background: rgba(245,158,11,.15); }
+    .badge.red { color: var(--red); background: rgba(239,68,68,.13); }
+    .badge.purple { color: var(--purple); background: rgba(168,85,247,.14); }
+
+    .timeline { display: grid; gap: 13px; }
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 38px minmax(0,1fr);
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .timeline-dot {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: rgba(99,91,255,.14);
+    }
+    .timeline-item strong { display: block; margin-bottom: 4px; }
+    .timeline-item span { color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+    .access-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .role-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 230px;
+    }
+    .role-card::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: var(--accent);
+      right: -80px;
+      top: -70px;
+      opacity: .16;
+    }
+    .role-card ul {
+      margin: 18px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .map {
+      min-height: 440px;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(99,91,255,.22), rgba(0,212,255,.12)),
+        url("data:image/svg+xml,%3Csvg width='160' height='160' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2394a3b8' stroke-opacity='.25'%3E%3Cpath d='M0 80h160M80 0v160M20 20l120 120M140 20L20 140'/%3E%3Ccircle cx='80' cy='80' r='42'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    .pin {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: white;
+      border: 5px solid var(--brand);
+      box-shadow: 0 0 0 12px rgba(99,91,255,.16);
+      animation: pulse 2.4s infinite;
+    }
+    .pin span {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      white-space: nowrap;
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 9px rgba(99,91,255,.13); }
+      50% { box-shadow: 0 0 0 18px rgba(99,91,255,.04); }
+    }
+
+    .settings-list { display: grid; gap: 14px; }
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 14px;
+    }
+    .switch {
+      width: 56px;
+      height: 32px;
+      padding: 4px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(148,163,184,.35);
+      transition: background .2s;
+    }
+    .switch::before {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      transition: transform .2s;
+    }
+    .switch.on { background: linear-gradient(135deg, var(--brand), var(--brand-2)); }
+    .switch.on::before { transform: translateX(24px); }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(2,6,23,.62);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
+    .modal-backdrop.show { display: grid; }
+    .modal {
+      width: min(680px, 100%);
+      border-radius: 30px;
+      padding: 22px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      animation: pop .22s ease both;
+    }
+    @keyframes pop {
+      from { opacity: 0; transform: translateY(12px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-head { display: flex; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
+    .form-grid { display: grid; gap: 12px; }
+    .form-grid.two { grid-template-columns: 1fr 1fr; }
+
+    .toast-zone {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      z-index: 80;
+      display: grid;
+      gap: 10px;
+      width: min(380px, calc(100vw - 40px));
+    }
+    .toast {
+      border-radius: 20px;
+      padding: 14px 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      animation: slide .25s ease both;
+    }
+    @keyframes slide {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .mobile-menu { display: none; }
+    .empty {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1180px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar {
+        position: static;
+        height: auto;
+        padding: 14px 14px 0;
+      }
+      .sidebar-shell { height: auto; }
+      .nav { grid-template-columns: repeat(4, minmax(0,1fr)); }
+      .nav button { justify-content: center; }
+      .nav button span.label { display: none; }
+      .security-card { display: none; }
+      .main { padding: 14px; }
+      .topbar { position: static; }
+      .hero, .two-col { grid-template-columns: 1fr; }
+      .kpis, .three-col, .access-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .topbar { align-items: stretch; flex-direction: column; }
+      .top-actions { justify-content: flex-start; }
+      .nav { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .kpis, .three-col, .access-grid { grid-template-columns: 1fr; }
+      .table-tools { grid-template-columns: 1fr; }
+      .hero { padding: 24px; }
+      .hero-visual { min-height: 310px; }
+      .floating-doc { width: 190px; }
+      .form-grid.two { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast-zone" id="toastZone"></div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-shell glass">
+        <div class="brand">
+          <div class="brand-logo">⌁</div>
+          <div>
+            <h1>Archive Access System</h1>
+            <span data-i18n="brandSub">Digital archive intelligence</span>
+          </div>
+        </div>
+        <nav class="nav" id="nav"></nav>
+        <div class="security-card">
+          <strong data-i18n="securityTitle">Zero Trust қорғанысы</strong>
+          <p data-i18n="securityText">RBAC, 2FA, аудит журналы, сұраныстарды бақылау және қауіпсіз экспорт.</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar glass">
+        <div>
+          <div class="crumbs"><span>Archive OS</span><span>•</span><span id="crumbPage">Dashboard</span></div>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+        <div class="top-actions">
+          <select id="languageSelect" aria-label="Language">
+            <option value="kk">Қазақша</option>
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+          </select>
+          <button class="pill-btn icon-only" id="themeToggle" title="Theme">◐</button>
+          <button class="pill-btn" data-action="open-modal" data-modal="notification"><span>🔔</span><span id="notificationCount">4</span></button>
+          <button class="primary-btn" data-action="open-modal" data-modal="request" data-i18n="quickRequest">Жаңа сұраныс</button>
+        </div>
+      </header>
+
+      <section class="content">
+        <section class="view active" id="view-dashboard"></section>
+        <section class="view" id="view-documents"></section>
+        <section class="view" id="view-requests"></section>
+        <section class="view" id="view-access"></section>
+        <section class="view" id="view-analytics"></section>
+        <section class="view" id="view-map"></section>
+        <section class="view" id="view-notifications"></section>
+        <section class="view" id="view-profile"></section>
+        <section class="view" id="view-settings"></section>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle" style="margin:0 0 6px;font-size:24px;letter-spacing:-.04em"></h3>
+          <p id="modalSubtitle" style="margin:0;color:var(--muted)"></p>
+        </div>
+        <button class="pill-btn icon-only" data-action="close-modal">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      lang: localStorage.getItem("aas-lang") || "kk",
+      theme: localStorage.getItem("aas-theme") || "dark",
+      route: "dashboard",
+      filters: { documents: "", requests: "" },
+      documents: [
+        { id: "AAS-2026-0001", title: { kk: "Ұлттық архив қорларының тізілімі", ru: "Реестр национальных архивных фондов", en: "National archive fund registry" }, category: "historical", owner: "Aruzhan S.", type: "PDF", status: "active", access: "restricted", updated: "30.05.2026", tags: ["heritage", "pdf", "verified"] },
+        { id: "AAS-2026-0002", title: { kk: "1916 жылғы өңірлік есептер", ru: "Региональные отчеты 1916 года", en: "Regional reports of 1916" }, category: "historical", owner: "Archive Branch", type: "PDF", status: "review", access: "secret", updated: "28.05.2026", tags: ["history", "scan"] },
+        { id: "AAS-2026-0003", title: { kk: "Әкімшілік бұйрықтар жинағы", ru: "Сборник административных приказов", en: "Administrative orders collection" }, category: "admin", owner: "Miras K.", type: "DOCX", status: "active", access: "internal", updated: "27.05.2026", tags: ["orders", "docx"] },
+        { id: "AAS-2026-0004", title: { kk: "Қаржылық шарттар архиві", ru: "Архив финансовых договоров", en: "Financial contracts archive" }, category: "finance", owner: "Finance Office", type: "XLSX", status: "locked", access: "secret", updated: "26.05.2026", tags: ["finance", "xlsx"] },
+        { id: "AAS-2026-0005", title: { kk: "Фото және медиа каталог", ru: "Фото и медиа каталог", en: "Photo and media catalog" }, category: "media", owner: "Digital Lab", type: "JPG", status: "archived", access: "public", updated: "24.05.2026", tags: ["media", "image"] }
+      ],
+      requests: [
+        { id: "REQ-2026-0174", subject: { kk: "Тарихи есептің көшірмесін алу", ru: "Получить копию исторического отчета", en: "Request historical report copy" }, user: "Dastan User", priority: "high", status: "progress", sla: "2h 14m", document: "AAS-2026-0002" },
+        { id: "REQ-2026-0175", subject: { kk: "Қаржылық шартқа рұқсат", ru: "Доступ к финансовому договору", en: "Access to financial contract" }, user: "Aigerim N.", priority: "normal", status: "waiting", sla: "8h 02m", document: "AAS-2026-0004" },
+        { id: "REQ-2026-0176", subject: { kk: "Фотоқордан материал іздеу", ru: "Поиск материала в фотофонде", en: "Search photo archive material" }, user: "Research Team", priority: "low", status: "done", sla: "closed", document: "AAS-2026-0005" },
+        { id: "REQ-2026-0177", subject: { kk: "Әкімшілік бұйрықты тексеру", ru: "Проверка административного приказа", en: "Administrative order verification" }, user: "Legal Office", priority: "critical", status: "new", sla: "45m", document: "AAS-2026-0003" }
+      ],
+      notifications: [
+        { id: 1, title: { kk: "Жаңа сұраныс келді", ru: "Поступил новый запрос", en: "New request received" }, text: { kk: "REQ-2026-0177 тексеруді күтуде", ru: "REQ-2026-0177 ожидает проверки", en: "REQ-2026-0177 is waiting for review" }, read: false },
+        { id: 2, title: { kk: "Қауіпсіздік ескертуі", ru: "Предупреждение безопасности", en: "Security warning" }, text: { kk: "Құпия құжатқа кіру әрекеті тіркелді", ru: "Зафиксирована попытка доступа к секретному документу", en: "Access attempt to a secret document was logged" }, read: false },
+        { id: 3, title: { kk: "Экспорт дайын", ru: "Экспорт готов", en: "Export is ready" }, text: { kk: "CSV есебі жүктеуге дайын", ru: "CSV отчет готов к загрузке", en: "CSV report is ready to download" }, read: false },
+        { id: 4, title: { kk: "SLA жаңартылды", ru: "SLA обновлен", en: "SLA updated" }, text: { kk: "Жоғары басымдық 2 сағатқа өзгертілді", ru: "Высокий приоритет изменен на 2 часа", en: "High priority changed to 2 hours" }, read: false }
+      ],
+      audit: [
+        ["14:12", "Aruzhan S.", "document.upload", "AAS-2026-0001"],
+        ["14:03", "Dastan User", "request.create", "REQ-2026-0174"],
+        ["13:44", "Security Bot", "access.denied", "AAS-2026-0004"],
+        ["13:21", "Admin", "role.update", "Archivist"],
+        ["12:58", "System", "backup.complete", "Encrypted snapshot"]
+      ]
+    };
+
+    const i18n = {
+      kk: {
+        brandSub: "Цифрлық архив интеллекті", securityTitle: "Zero Trust қорғанысы", securityText: "RBAC, 2FA, аудит журналы, сұраныстарды бақылау және қауіпсіз экспорт.",
+        quickRequest: "Жаңа сұраныс", dashboard: "Басқару панелі", documents: "Құжаттар", requests: "Сұраныстар", access: "Қолжетімділік", analytics: "Аналитика", map: "Карта", notifications: "Хабарламалар", profile: "Профиль", settings: "Баптаулар",
+        heroBadge: "Архивтік ақпаратқа қолжетімділікті басқару", heroTitle: "Архивке қолжетімділіктің премиум платформасы", heroText: "Құжаттарды сақтау, рөлдік қолжетімділік, пайдаланушы сұраныстары, аудит, аналитика және қауіпсіз экспорт бір заманауи жүйеде.", start: "Жүйеге кіру", createRequest: "Сұраныс құру", liveDemo: "Live demo", totalDocs: "Құжаттар", activeUsers: "Пайдаланушылар", openRequests: "Ашық сұраныстар", securityScore: "Қауіпсіздік рейтингі",
+        monthlyFlow: "Айлық құжат ағыны", monthlyFlowSub: "Цифрландыру және өңдеу динамикасы", requestStatus: "Сұраныс мәртебелері", recentActivity: "Соңғы әрекеттер", latestDocs: "Соңғы құжаттар",
+        search: "Іздеу...", category: "Санат", status: "Мәртебе", export: "Экспорт", addDoc: "Құжат қосу", document: "Құжат", owner: "Иесі", type: "Түрі", accessLevel: "Қолжетімділік", actions: "Әрекет", open: "Ашу", approve: "Бекіту", reject: "Қайтару", details: "Толығырақ",
+        priority: "Басымдық", user: "Пайдаланушы", sla: "SLA", newRequest: "Жаңа сұраныс", accessMatrix: "Рөлдік қолжетімділік матрицасы", admin: "Администратор", archivist: "Архивариус", researcher: "Пайдаланушы",
+        mapTitle: "Аймақтық филиалдар картасы", regionStats: "Аймақтық статистика", settingsTitle: "Жүйелік баптаулар", profileTitle: "Пайдаланушы профилі", save: "Сақтау", close: "Жабу", submit: "Жіберу",
+        modalDocTitle: "Жаңа құжат", modalDocSub: "Демо режимде құжат тізімге қосылады", modalReqTitle: "Жаңа сұраныс", modalReqSub: "Сұраныс workflow тізіміне түседі", title: "Атауы", description: "Сипаттама", created: "Сәтті құрылды", saved: "Сақталды", downloaded: "CSV файл дайын", markedRead: "Оқылды деп белгіленді", all: "Барлығы"
+      },
+      ru: {
+        brandSub: "Интеллект цифрового архива", securityTitle: "Zero Trust защита", securityText: "RBAC, 2FA, журнал аудита, контроль запросов и безопасный экспорт.",
+        quickRequest: "Новый запрос", dashboard: "Панель", documents: "Документы", requests: "Запросы", access: "Доступ", analytics: "Аналитика", map: "Карта", notifications: "Уведомления", profile: "Профиль", settings: "Настройки",
+        heroBadge: "Управление доступом к архивной информации", heroTitle: "Премиальная платформа доступа к архивам", heroText: "Хранение документов, ролевой доступ, пользовательские запросы, аудит, аналитика и безопасный экспорт в одной современной системе.", start: "Войти в систему", createRequest: "Создать запрос", liveDemo: "Live demo", totalDocs: "Документы", activeUsers: "Пользователи", openRequests: "Открытые запросы", securityScore: "Рейтинг безопасности",
+        monthlyFlow: "Месячный поток документов", monthlyFlowSub: "Динамика цифровизации и обработки", requestStatus: "Статусы запросов", recentActivity: "Последние действия", latestDocs: "Последние документы",
+        search: "Поиск...", category: "Категория", status: "Статус", export: "Экспорт", addDoc: "Добавить документ", document: "Документ", owner: "Владелец", type: "Тип", accessLevel: "Уровень доступа", actions: "Действие", open: "Открыть", approve: "Одобрить", reject: "Отклонить", details: "Подробнее",
+        priority: "Приоритет", user: "Пользователь", sla: "SLA", newRequest: "Новый запрос", accessMatrix: "Матрица ролевого доступа", admin: "Администратор", archivist: "Архивариус", researcher: "Пользователь",
+        mapTitle: "Карта региональных филиалов", regionStats: "Региональная статистика", settingsTitle: "Системные настройки", profileTitle: "Профиль пользователя", save: "Сохранить", close: "Закрыть", submit: "Отправить",
+        modalDocTitle: "Новый документ", modalDocSub: "В demo-режиме документ добавится в таблицу", modalReqTitle: "Новый запрос", modalReqSub: "Запрос попадет в workflow", title: "Название", description: "Описание", created: "Успешно создано", saved: "Сохранено", downloaded: "CSV файл готов", markedRead: "Отмечено прочитанным", all: "Все"
+      },
+      en: {
+        brandSub: "Digital archive intelligence", securityTitle: "Zero Trust protection", securityText: "RBAC, 2FA, audit trail, request tracking and secure exports.",
+        quickRequest: "New request", dashboard: "Dashboard", documents: "Documents", requests: "Requests", access: "Access", analytics: "Analytics", map: "Map", notifications: "Notifications", profile: "Profile", settings: "Settings",
+        heroBadge: "Archive information access management", heroTitle: "Premium archive access platform", heroText: "Document storage, role-based access, user requests, audit, analytics and secure export in one modern system.", start: "Enter system", createRequest: "Create request", liveDemo: "Live demo", totalDocs: "Documents", activeUsers: "Users", openRequests: "Open requests", securityScore: "Security score",
+        monthlyFlow: "Monthly document flow", monthlyFlowSub: "Digitization and processing dynamics", requestStatus: "Request statuses", recentActivity: "Recent activity", latestDocs: "Latest documents",
+        search: "Search...", category: "Category", status: "Status", export: "Export", addDoc: "Add document", document: "Document", owner: "Owner", type: "Type", accessLevel: "Access level", actions: "Actions", open: "Open", approve: "Approve", reject: "Reject", details: "Details",
+        priority: "Priority", user: "User", sla: "SLA", newRequest: "New request", accessMatrix: "Role access matrix", admin: "Administrator", archivist: "Archivist", researcher: "User",
+        mapTitle: "Regional branches map", regionStats: "Regional statistics", settingsTitle: "System settings", profileTitle: "User profile", save: "Save", close: "Close", submit: "Submit",
+        modalDocTitle: "New document", modalDocSub: "In demo mode the document is added to the table", modalReqTitle: "New request", modalReqSub: "The request enters the workflow", title: "Title", description: "Description", created: "Successfully created", saved: "Saved", downloaded: "CSV file is ready", markedRead: "Marked as read", all: "All"
+      }
+    };
+
+    const labels = () => i18n[state.lang];
+    const t = key => labels()[key] || key;
+    const localized = value => typeof value === "object" ? value[state.lang] || value.en || Object.values(value)[0] : value;
+
+    const navItems = [
+      ["dashboard", "◈"], ["documents", "▣"], ["requests", "◎"], ["access", "◬"], ["analytics", "▥"], ["map", "⌖"], ["notifications", "◌"], ["profile", "◉"], ["settings", "⚙"]
+    ];
+
+    function init() {
+      document.documentElement.dataset.theme = state.theme;
+      document.documentElement.lang = state.lang;
+      document.getElementById("languageSelect").value = state.lang;
+      renderNav();
+      bindGlobalActions();
+      renderAll();
+      setRoute("dashboard", false);
+      showToast("Archive Access System", t("liveDemo"));
+    }
+
+    function renderNav() {
+      document.getElementById("nav").innerHTML = navItems.map(([route, icon]) => `
+        <button data-route="${route}" class="${state.route === route ? "active" : ""}">
+          <span class="icon">${icon}</span><span class="label">${t(route)}</span>
+        </button>`).join("");
+    }
+
+    function bindGlobalActions() {
+      document.getElementById("nav").addEventListener("click", e => {
+        const btn = e.target.closest("[data-route]");
+        if (btn) setRoute(btn.dataset.route);
+      });
+      document.getElementById("languageSelect").addEventListener("change", e => {
+        state.lang = e.target.value;
+        localStorage.setItem("aas-lang", state.lang);
+        document.documentElement.lang = state.lang;
+        renderAll();
+        setRoute(state.route, false);
+        showToast("Language", state.lang.toUpperCase());
+      });
+      document.getElementById("themeToggle").addEventListener("click", () => {
+        state.theme = state.theme === "dark" ? "light" : "dark";
+        localStorage.setItem("aas-theme", state.theme);
+        document.documentElement.dataset.theme = state.theme;
+        drawCharts();
+      });
+      document.body.addEventListener("click", e => {
+        const action = e.target.closest("[data-action]");
+        if (!action) return;
+        const name = action.dataset.action;
+        if (name === "open-modal") openModal(action.dataset.modal, action.dataset.id);
+        if (name === "close-modal") closeModal();
+        if (name === "export") exportCsv(action.dataset.type);
+        if (name === "approve") updateRequest(action.dataset.id, "done");
+        if (name === "reject") updateRequest(action.dataset.id, "rejected");
+        if (name === "read") markRead(Number(action.dataset.id));
+        if (name === "save-settings") showToast(t("settings"), t("saved"));
+        if (name === "details") showDetails(action.dataset.type, action.dataset.id);
+      });
+      document.getElementById("modalBackdrop").addEventListener("click", e => {
+        if (e.target.id === "modalBackdrop") closeModal();
+      });
+    }
+
+    function setRoute(route, scroll = true) {
+      state.route = route;
+      document.querySelectorAll(".view").forEach(view => view.classList.remove("active"));
+      document.getElementById(`view-${route}`).classList.add("active");
+      document.getElementById("pageTitle").textContent = t(route);
+      document.getElementById("crumbPage").textContent = t(route);
+      renderNav();
+      if (scroll) window.scrollTo({ top: 0, behavior: "smooth" });
+      drawCharts();
+    }
+
+    function renderAll() {
+      document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+      renderNav();
+      renderDashboard();
+      renderDocuments();
+      renderRequests();
+      renderAccess();
+      renderAnalytics();
+      renderMap();
+      renderNotifications();
+      renderProfile();
+      renderSettings();
+      updateNotificationCount();
+      drawCharts();
+    }
+
+    function renderDashboard() {
+      document.getElementById("view-dashboard").innerHTML = `
+        <div class="grid">
+          <section class="hero glass">
+            <div>
+              <span class="eyebrow">● ${t("heroBadge")}</span>
+              <h1><span class="gradient-text">${t("heroTitle")}</span></h1>
+              <p>${t("heroText")}</p>
+              <div class="hero-actions">
+                <button class="primary-btn" data-route-button="documents">${t("start")} →</button>
+                <button class="pill-btn" data-action="open-modal" data-modal="request">${t("createRequest")}</button>
+              </div>
+            </div>
+            <div class="hero-visual">
+              ${["AAS-2026-0001","REQ-2026-0174","RBAC / 2FA"].map((x,i) => `
+                <div class="floating-doc">
+                  <span class="status-chip">● ${i === 1 ? "Workflow" : i === 2 ? "Secure" : "Verified"}</span>
+                  <div class="doc-line"></div><div class="doc-line short"></div>
+                  <strong>${x}</strong>
+                </div>`).join("")}
+            </div>
+          </section>
+          <section class="grid kpis">
+            ${kpiCard("▣", "330K+", t("totalDocs"), "+18%", "#635bff")}
+            ${kpiCard("◉", "12 480", t("activeUsers"), "+7%", "#00d4ff")}
+            ${kpiCard("◎", state.requests.filter(r => !["done","rejected"].includes(r.status)).length, t("openRequests"), "-4%", "#f59e0b")}
+            ${kpiCard("◬", "99.9%", t("securityScore"), "+3.2%", "#10b981")}
+          </section>
+          <section class="grid two-col">
+            <article class="card">
+              <div class="card-head"><div><h3>${t("monthlyFlow")}</h3><p>${t("monthlyFlowSub")}</p></div><button class="ghost-btn" data-action="export" data-type="documents">${t("export")}</button></div>
+              <div class="canvas-wrap"><canvas id="flowChart"></canvas></div>
+            </article>
+            <article class="card">
+              <div class="card-head"><div><h3>${t("requestStatus")}</h3><p>New / progress / done</p></div></div>
+              <div class="canvas-wrap"><canvas id="statusChart"></canvas></div>
+            </article>
+          </section>
+          <section class="grid two-col">
+            <article class="card">${documentsTable(state.documents.slice(0,4), true)}</article>
+            <article class="card"><div class="card-head"><div><h3>${t("recentActivity")}</h3><p>Audit trail</p></div></div>${auditList()}</article>
+          </section>
+        </div>`;
+      document.querySelector("[data-route-button='documents']")?.addEventListener("click", () => setRoute("documents"));
+    }
+
+    function kpiCard(icon, value, label, trend, color) {
+      return `<article class="card kpi" style="--accent:${color}"><div class="kpi-icon">${icon}</div><div class="kpi-value">${value}</div><div class="kpi-label">${label}</div><span class="trend">${trend}</span></article>`;
+    }
+
+    function renderDocuments() {
+      const categories = [...new Set(state.documents.map(d => d.category))];
+      document.getElementById("view-documents").innerHTML = `
+        <article class="card">
+          <div class="card-head">
+            <div><h3>${t("documents")}</h3><p>${t("heroBadge")}</p></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="ghost-btn" data-action="export" data-type="documents">${t("export")}</button><button class="primary-btn" data-action="open-modal" data-modal="document">${t("addDoc")}</button></div>
+          </div>
+          <div class="table-tools">
+            <input id="docSearch" placeholder="${t("search")}" value="${state.filters.documents}">
+            <select id="docCategory"><option value="">${t("all")}</option>${categories.map(c => `<option value="${c}">${c}</option>`).join("")}</select>
+            <select id="docStatus"><option value="">${t("all")}</option><option value="active">active</option><option value="review">review</option><option value="locked">locked</option><option value="archived">archived</option></select>
+            <button class="ghost-btn" id="resetDocFilters">${t("close")}</button>
+          </div>
+          <div id="documentsTableHost"></div>
+        </article>`;
+      const rerender = () => {
+        const q = document.getElementById("docSearch").value.toLowerCase();
+        const cat = document.getElementById("docCategory").value;
+        const st = document.getElementById("docStatus").value;
+        state.filters.documents = q;
+        const rows = state.documents.filter(d =>
+          (!q || localized(d.title).toLowerCase().includes(q) || d.id.toLowerCase().includes(q) || d.tags.join(" ").includes(q)) &&
+          (!cat || d.category === cat) && (!st || d.status === st)
+        );
+        document.getElementById("documentsTableHost").innerHTML = documentsTable(rows);
+      };
+      document.getElementById("docSearch").addEventListener("input", rerender);
+      document.getElementById("docCategory").addEventListener("change", rerender);
+      document.getElementById("docStatus").addEventListener("change", rerender);
+      document.getElementById("resetDocFilters").addEventListener("click", () => { state.filters.documents = ""; renderDocuments(); });
+      rerender();
+    }
+
+    function documentsTable(rows, compact = false) {
+      if (!rows.length) return `<div class="empty">No data</div>`;
+      return `
+        ${compact ? `<div class="card-head"><div><h3>${t("latestDocs")}</h3><p>${t("documents")}</p></div></div>` : ""}
+        <div class="table-wrap"><table><thead><tr><th>${t("document")}</th><th>${t("category")}</th><th>${t("owner")}</th><th>${t("type")}</th><th>${t("status")}</th><th>${t("accessLevel")}</th><th>${t("actions")}</th></tr></thead><tbody>
+        ${rows.map(d => `<tr>
+          <td><strong>${localized(d.title)}</strong><small>${d.id} · ${d.updated}</small></td>
+          <td><span class="tag">${d.category}</span></td><td>${d.owner}</td><td>${d.type}</td>
+          <td>${statusBadge(d.status)}</td><td>${statusBadge(d.access)}</td>
+          <td><button class="ghost-btn" data-action="details" data-type="document" data-id="${d.id}">${t("open")}</button></td>
+        </tr>`).join("")}</tbody></table></div>`;
+    }
+
+    function renderRequests() {
+      document.getElementById("view-requests").innerHTML = `
+        <article class="card">
+          <div class="card-head">
+            <div><h3>${t("requests")}</h3><p>Workflow, SLA, comments, approvals</p></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="ghost-btn" data-action="export" data-type="requests">${t("export")}</button><button class="primary-btn" data-action="open-modal" data-modal="request">${t("newRequest")}</button></div>
+          </div>
+          <div class="table-tools" style="grid-template-columns:1fr 190px 160px auto">
+            <input id="reqSearch" placeholder="${t("search")}" value="${state.filters.requests}">
+            <select id="reqStatus"><option value="">${t("all")}</option><option value="new">new</option><option value="progress">progress</option><option value="waiting">waiting</option><option value="done">done</option></select>
+            <select id="reqPriority"><option value="">${t("all")}</option><option value="critical">critical</option><option value="high">high</option><option value="normal">normal</option><option value="low">low</option></select>
+            <button class="ghost-btn" id="resetReqFilters">${t("close")}</button>
+          </div>
+          <div id="requestsTableHost"></div>
+        </article>`;
+      const rerender = () => {
+        const q = document.getElementById("reqSearch").value.toLowerCase();
+        const st = document.getElementById("reqStatus").value;
+        const pr = document.getElementById("reqPriority").value;
+        state.filters.requests = q;
+        const rows = state.requests.filter(r =>
+          (!q || localized(r.subject).toLowerCase().includes(q) || r.id.toLowerCase().includes(q)) &&
+          (!st || r.status === st) && (!pr || r.priority === pr)
+        );
+        document.getElementById("requestsTableHost").innerHTML = requestsTable(rows);
+      };
+      document.getElementById("reqSearch").addEventListener("input", rerender);
+      document.getElementById("reqStatus").addEventListener("change", rerender);
+      document.getElementById("reqPriority").addEventListener("change", rerender);
+      document.getElementById("resetReqFilters").addEventListener("click", () => { state.filters.requests = ""; renderRequests(); });
+      rerender();
+    }
+
+    function requestsTable(rows) {
+      if (!rows.length) return `<div class="empty">No data</div>`;
+      return `<div class="table-wrap"><table><thead><tr><th>${t("newRequest")}</th><th>${t("user")}</th><th>${t("document")}</th><th>${t("priority")}</th><th>${t("status")}</th><th>${t("sla")}</th><th>${t("actions")}</th></tr></thead><tbody>
+        ${rows.map(r => `<tr>
+          <td><strong>${localized(r.subject)}</strong><small>${r.id}</small></td><td>${r.user}</td><td>${r.document}</td><td>${statusBadge(r.priority)}</td><td>${statusBadge(r.status)}</td><td>${r.sla}</td>
+          <td style="display:flex;gap:8px;flex-wrap:wrap"><button class="ghost-btn" data-action="details" data-type="request" data-id="${r.id}">${t("details")}</button><button class="ghost-btn" data-action="approve" data-id="${r.id}">${t("approve")}</button><button class="danger-btn" data-action="reject" data-id="${r.id}">${t("reject")}</button></td>
+        </tr>`).join("")}</tbody></table></div>`;
+    }
+
+    function renderAccess() {
+      const roles = [
+        ["admin", "#635bff", ["Full control", "Users and roles", "System settings", "Audit and backup"]],
+        ["archivist", "#00d4ff", ["Upload documents", "Process requests", "Archive records", "Export reports"]],
+        ["researcher", "#10b981", ["Create requests", "Track status", "Download approved files", "Receive notifications"]]
+      ];
+      document.getElementById("view-access").innerHTML = `
+        <div class="grid">
+          <article class="card"><div class="card-head"><div><h3>${t("accessMatrix")}</h3><p>RBAC + 2FA + JWT + audit</p></div><button class="primary-btn" data-action="open-modal" data-modal="role">${t("save")}</button></div></article>
+          <section class="grid access-grid">
+            ${roles.map(([key,color,items]) => `<article class="card role-card" style="--accent:${color}"><div class="kpi-icon" style="--accent:${color}">◬</div><h3 style="margin-top:18px">${t(key)}</h3><ul>${items.map(x => `<li>${x}</li>`).join("")}</ul></article>`).join("")}
+          </section>
+        </div>`;
+    }
+
+    function renderAnalytics() {
+      document.getElementById("view-analytics").innerHTML = `
+        <div class="grid">
+          <section class="grid kpis">
+            ${kpiCard("▥", "96.7%", "SLA", "+4%", "#10b981")}
+            ${kpiCard("◌", "1.2M", "Audit events", "+12%", "#635bff")}
+            ${kpiCard("⌁", "78%", "Digitized", "+8%", "#00d4ff")}
+            ${kpiCard("◬", "<200ms", "Latency", "-15%", "#f59e0b")}
+          </section>
+          <section class="grid two-col">
+            <article class="card"><div class="card-head"><div><h3>${t("category")}</h3><p>Archive distribution</p></div></div><div class="canvas-wrap"><canvas id="categoryChart"></canvas></div></article>
+            <article class="card"><div class="card-head"><div><h3>Activity heatmap</h3><p>Requests by hour</p></div></div><div class="canvas-wrap"><canvas id="heatChart"></canvas></div></article>
+          </section>
+        </div>`;
+    }
+
+    function renderMap() {
+      const branches = [
+        ["Astana", "51%", "28%", "42K"], ["Almaty", "36%", "58%", "61K"], ["Shymkent", "64%", "72%", "24K"], ["Karaganda", "49%", "44%", "19K"], ["Aktobe", "26%", "69%", "12K"]
+      ];
+      document.getElementById("view-map").innerHTML = `
+        <section class="grid two-col">
+          <article class="card map"><h3>${t("mapTitle")}</h3><p>${t("regionStats")}</p>${branches.map(b => `<div class="pin" style="left:${b[1]};top:${b[2]}"><span>${b[0]} · ${b[3]}</span></div>`).join("")}</article>
+          <article class="card"><div class="card-head"><div><h3>${t("regionStats")}</h3><p>Branch workload</p></div></div><div class="canvas-wrap"><canvas id="regionChart"></canvas></div></article>
+        </section>`;
+    }
+
+    function renderNotifications() {
+      document.getElementById("view-notifications").innerHTML = `
+        <article class="card"><div class="card-head"><div><h3>${t("notifications")}</h3><p>Realtime notification center</p></div></div>
+        <div class="timeline">${state.notifications.map(n => `<div class="timeline-item"><div class="timeline-dot">🔔</div><div><strong>${localized(n.title)}</strong><span>${localized(n.text)}</span><div style="margin-top:8px"><button class="ghost-btn" data-action="read" data-id="${n.id}">${t("markedRead")}</button></div></div></div>`).join("") || `<div class="empty">No notifications</div>`}</div></article>`;
+    }
+
+    function renderProfile() {
+      document.getElementById("view-profile").innerHTML = `
+        <section class="grid two-col">
+          <article class="card">
+            <div class="card-head"><div><h3>${t("profileTitle")}</h3><p>Archive administrator</p></div><button class="primary-btn" data-action="save-settings">${t("save")}</button></div>
+            <div class="form-grid">
+              <input value="Aruzhan Administrator"><input value="admin@archive.local"><input value="Digital Archive Office">
+              <div class="setting-row"><div><strong>Two-factor authentication</strong><p>Authenticator app enabled</p></div><button class="switch on"></button></div>
+              <div class="setting-row"><div><strong>JWT integration</strong><p>Secure API token active</p></div><button class="switch on"></button></div>
+            </div>
+          </article>
+          <article class="card"><div class="card-head"><div><h3>${t("recentActivity")}</h3><p>Personal audit trail</p></div></div>${auditList()}</article>
+        </section>`;
+    }
+
+    function renderSettings() {
+      document.getElementById("view-settings").innerHTML = `
+        <section class="grid two-col">
+          <article class="card"><div class="card-head"><div><h3>${t("settingsTitle")}</h3><p>Security, export, backup, notifications</p></div><button class="primary-btn" data-action="save-settings">${t("save")}</button></div>
+            <div class="settings-list">
+              ${["Email notifications","Automatic backups","Watermark downloads","Strict role approval","Cache analytics"].map((x,i) => `<div class="setting-row"><div><strong>${x}</strong><p>${i % 2 ? "Enterprise policy enabled" : "Recommended production setting"}</p></div><button class="switch on" onclick="this.classList.toggle('on')"></button></div>`).join("")}
+            </div>
+          </article>
+          <article class="card"><div class="card-head"><div><h3>API Integration</h3><p>JWT secured endpoints</p></div></div><div class="form-grid"><input value="/api/v1/documents"><input value="/api/v1/requests"><input value="/api/v1/audit"><button class="ghost-btn" data-action="export" data-type="audit">Download audit CSV</button></div></article>
+        </section>`;
+    }
+
+    function auditList() {
+      return `<div class="timeline">${state.audit.map(a => `<div class="timeline-item"><div class="timeline-dot">⌁</div><div><strong>${a[2]}</strong><span>${a[0]} · ${a[1]} · ${a[3]}</span></div></div>`).join("")}</div>`;
+    }
+
+    function statusBadge(value) {
+      const color = ["done","active","public","low"].includes(value) ? "green" : ["review","waiting","high","internal"].includes(value) ? "amber" : ["locked","secret","critical","rejected"].includes(value) ? "red" : "purple";
+      return `<span class="badge ${color}">● ${value}</span>`;
+    }
+
+    function openModal(type, id) {
+      const title = document.getElementById("modalTitle");
+      const subtitle = document.getElementById("modalSubtitle");
+      const body = document.getElementById("modalBody");
+      if (type === "document") {
+        title.textContent = t("modalDocTitle"); subtitle.textContent = t("modalDocSub");
+        body.innerHTML = `<form class="form-grid" id="docForm"><input name="title" placeholder="${t("title")}" required><div class="form-grid two"><select name="category"><option>historical</option><option>admin</option><option>finance</option><option>media</option></select><select name="type"><option>PDF</option><option>DOCX</option><option>XLSX</option><option>PNG</option></select></div><textarea name="description" placeholder="${t("description")}"></textarea><button class="primary-btn">${t("submit")}</button></form>`;
+        body.querySelector("form").addEventListener("submit", e => {
+          e.preventDefault();
+          const data = new FormData(e.target);
+          state.documents.unshift({ id: `AAS-2026-${String(state.documents.length + 1).padStart(4,"0")}`, title: { kk: data.get("title"), ru: data.get("title"), en: data.get("title") }, category: data.get("category"), owner: "Current User", type: data.get("type"), status: "review", access: "internal", updated: new Date().toLocaleDateString("ru-RU"), tags: ["new"] });
+          closeModal(); renderAll(); setRoute("documents", false); showToast(t("documents"), t("created"));
+        });
+      } else if (type === "request") {
+        title.textContent = t("modalReqTitle"); subtitle.textContent = t("modalReqSub");
+        body.innerHTML = `<form class="form-grid" id="reqForm"><input name="subject" placeholder="${t("title")}" required><div class="form-grid two"><select name="priority"><option value="normal">normal</option><option value="high">high</option><option value="critical">critical</option><option value="low">low</option></select><select name="document">${state.documents.map(d => `<option>${d.id}</option>`).join("")}</select></div><textarea name="description" placeholder="${t("description")}"></textarea><button class="primary-btn">${t("submit")}</button></form>`;
+        body.querySelector("form").addEventListener("submit", e => {
+          e.preventDefault();
+          const data = new FormData(e.target);
+          state.requests.unshift({ id: `REQ-2026-${String(178 + state.requests.length)}`, subject: { kk: data.get("subject"), ru: data.get("subject"), en: data.get("subject") }, user: "Current User", priority: data.get("priority"), status: "new", sla: "4h 00m", document: data.get("document") });
+          closeModal(); renderAll(); setRoute("requests", false); showToast(t("requests"), t("created"));
+        });
+      } else if (type === "notification") {
+        title.textContent = t("notifications"); subtitle.textContent = "Realtime center";
+        body.innerHTML = `<div class="timeline">${state.notifications.map(n => `<div class="timeline-item"><div class="timeline-dot">🔔</div><div><strong>${localized(n.title)}</strong><span>${localized(n.text)}</span></div></div>`).join("")}</div>`;
+      } else if (type === "role") {
+        title.textContent = t("accessMatrix"); subtitle.textContent = "RBAC demo";
+        body.innerHTML = `<div class="settings-list">${["Admin full access","Archivist document management","User request portal","2FA required"].map(x => `<div class="setting-row"><strong>${x}</strong><button class="switch on" onclick="this.classList.toggle('on')"></button></div>`).join("")}</div><button style="margin-top:14px" class="primary-btn" data-action="close-modal">${t("save")}</button>`;
+      }
+      document.getElementById("modalBackdrop").classList.add("show");
+    }
+
+    function closeModal() {
+      document.getElementById("modalBackdrop").classList.remove("show");
+    }
+
+    function showDetails(type, id) {
+      const item = type === "document" ? state.documents.find(x => x.id === id) : state.requests.find(x => x.id === id);
+      document.getElementById("modalTitle").textContent = id;
+      document.getElementById("modalSubtitle").textContent = type === "document" ? localized(item.title) : localized(item.subject);
+      document.getElementById("modalBody").innerHTML = `<div class="grid three-col">${Object.entries(item).slice(0,6).map(([k,v]) => `<div class="card" style="box-shadow:none"><small style="color:var(--muted)">${k}</small><strong>${Array.isArray(v) ? v.join(", ") : localized(v)}</strong></div>`).join("")}</div>`;
+      document.getElementById("modalBackdrop").classList.add("show");
+    }
+
+    function updateRequest(id, status) {
+      const request = state.requests.find(r => r.id === id);
+      if (request) request.status = status;
+      renderAll(); setRoute("requests", false); showToast(t("requests"), `${id}: ${status}`);
+    }
+
+    function markRead(id) {
+      state.notifications = state.notifications.filter(n => n.id !== id);
+      renderAll(); setRoute("notifications", false); showToast(t("notifications"), t("markedRead"));
+    }
+
+    function updateNotificationCount() {
+      document.getElementById("notificationCount").textContent = state.notifications.length;
+    }
+
+    function exportCsv(type) {
+      const rows = type === "requests"
+        ? [["id","subject","user","priority","status"], ...state.requests.map(r => [r.id, localized(r.subject), r.user, r.priority, r.status])]
+        : type === "audit"
+          ? [["time","user","action","entity"], ...state.audit]
+          : [["id","title","category","owner","status"], ...state.documents.map(d => [d.id, localized(d.title), d.category, d.owner, d.status])];
+      const csv = rows.map(row => row.map(cell => `"${String(cell).replaceAll('"','""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `archive-${type}-${Date.now()}.csv`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+      showToast(t("export"), t("downloaded"));
+    }
+
+    function showToast(title, text) {
+      const zone = document.getElementById("toastZone");
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.innerHTML = `<div class="timeline-dot">✓</div><div><strong>${title}</strong><div style="color:var(--muted);font-size:13px;margin-top:3px">${text}</div></div>`;
+      zone.appendChild(toast);
+      setTimeout(() => toast.remove(), 3600);
+    }
+
+    function drawCharts() {
+      requestAnimationFrame(() => {
+        drawLine("flowChart", [18,25,30,42,38,58,71,86,95,118,132,146], "#635bff");
+        drawDonut("statusChart", [2,4,3,1], ["#635bff","#00d4ff","#10b981","#f59e0b"]);
+        drawDonut("categoryChart", [32,24,18,26], ["#635bff","#00d4ff","#10b981","#f59e0b"]);
+        drawBars("heatChart", [22,18,26,44,62,88,76,55,49,70,94,61], "#00d4ff");
+        drawBars("regionChart", [42,61,24,19,12], "#635bff");
+      });
+    }
+
+    function setupCanvas(id) {
+      const canvas = document.getElementById(id);
+      if (!canvas) return null;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      return { canvas, ctx, w: rect.width, h: rect.height };
+    }
+
+    function drawLine(id, values, color) {
+      const s = setupCanvas(id); if (!s) return;
+      const { ctx, w, h } = s; ctx.clearRect(0,0,w,h);
+      const max = Math.max(...values) * 1.15, pad = 26;
+      ctx.strokeStyle = "rgba(148,163,184,.18)"; ctx.lineWidth = 1;
+      for (let i=0;i<5;i++){ const y = pad + i*(h-pad*2)/4; ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(w-pad,y); ctx.stroke(); }
+      const pts = values.map((v,i) => [pad + i*(w-pad*2)/(values.length-1), h-pad - (v/max)*(h-pad*2)]);
+      const grad = ctx.createLinearGradient(0,pad,0,h-pad); grad.addColorStop(0,color+"55"); grad.addColorStop(1,color+"00");
+      ctx.beginPath(); pts.forEach((p,i)=> i ? ctx.lineTo(p[0],p[1]) : ctx.moveTo(p[0],p[1])); ctx.lineTo(w-pad,h-pad); ctx.lineTo(pad,h-pad); ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+      ctx.beginPath(); pts.forEach((p,i)=> i ? ctx.lineTo(p[0],p[1]) : ctx.moveTo(p[0],p[1])); ctx.strokeStyle = color; ctx.lineWidth = 4; ctx.lineCap = "round"; ctx.stroke();
+      pts.forEach(p => { ctx.beginPath(); ctx.arc(p[0],p[1],4,0,Math.PI*2); ctx.fillStyle = color; ctx.fill(); });
+    }
+
+    function drawBars(id, values, color) {
+      const s = setupCanvas(id); if (!s) return;
+      const { ctx, w, h } = s; ctx.clearRect(0,0,w,h);
+      const max = Math.max(...values) * 1.15, pad = 26, gap = 10, bw = (w-pad*2-gap*(values.length-1))/values.length;
+      values.forEach((v,i) => {
+        const x = pad + i*(bw+gap), bh = (v/max)*(h-pad*2), y = h-pad-bh;
+        const grad = ctx.createLinearGradient(0,y,0,h-pad); grad.addColorStop(0,color); grad.addColorStop(1,color+"55");
+        roundRect(ctx,x,y,bw,bh,10); ctx.fillStyle = grad; ctx.fill();
+      });
+    }
+
+    function drawDonut(id, values, colors) {
+      const s = setupCanvas(id); if (!s) return;
+      const { ctx, w, h } = s; ctx.clearRect(0,0,w,h);
+      const total = values.reduce((a,b)=>a+b,0); let start = -Math.PI/2; const r = Math.min(w,h)*.34, cx=w/2, cy=h/2;
+      values.forEach((v,i) => { const end = start + (v/total)*Math.PI*2; ctx.beginPath(); ctx.arc(cx,cy,r,start,end); ctx.lineWidth = 26; ctx.strokeStyle = colors[i]; ctx.lineCap = "round"; ctx.stroke(); start=end; });
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--text"); ctx.font = "900 26px Inter"; ctx.textAlign = "center"; ctx.fillText(total, cx, cy+8);
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+    }
+
+    window.addEventListener("resize", drawCharts);
+    init();
+  </script>
+</body>
+</html>
