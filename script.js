@@ -1,126 +1,153 @@
-const roleFilter = document.querySelector("#role-filter");
-const typeFilter = document.querySelector("#type-filter");
-const resultList = document.querySelector("#result-list");
-const resultSummary = document.querySelector("#result-summary");
+const languageButtons = document.querySelectorAll(".language-switcher__item");
+const themeToggle = document.querySelector(".theme-toggle");
+const requestDialog = document.querySelector("#request-dialog");
+const openRequestButtons = document.querySelectorAll("[data-open-request]");
+const closeRequestButton = document.querySelector("[data-close-request]");
 const requestForm = document.querySelector("#request-form");
 const formMessage = document.querySelector("#form-message");
-const navToggle = document.querySelector(".nav__toggle");
-const navList = document.querySelector("#main-menu");
+const translatedNodes = document.querySelectorAll("[data-i18n]");
 
-const roleRank = {
-    guest: 1,
-    researcher: 2,
-    archivist: 3,
-    admin: 4,
+const translations = {
+    kk: {
+        title: "Archive Access System",
+        subtitle: "Мұрағаттық құжаттарды басқарудың ақылды платформасы",
+        description: "Қауіпсіз мұрағаттандыру, электрондық құжаттарды сақтау, сұрауларды өңдеу және нәтижелерді жылдам жеткізу жүйесі.",
+        primaryAction: "Жүйеге кіру",
+        secondaryAction: "Таныстыру",
+        securityTitle: "Қауіпсіздік",
+        securityText: "JWT, 2FA, рөлдік қолжетімділік",
+        docsTitle: "Құжаттар",
+        docsText: "PDF, DOCX, XLSX сақтау",
+        analyticsTitle: "Аналитика",
+        analyticsText: "Real-time дашбордтар",
+        autoTitle: "Автоматтандыру",
+        autoText: "Сұрауларды өңдеу",
+        langTitle: "Көптілдік",
+        langText: "KZ / RU / EN",
+        auditTitle: "Аудит",
+        auditText: "Іс-әрекеттер журналы",
+        requestKicker: "Сұрауды өңдеу",
+        requestTitle: "Архивтік ақпаратқа өтінім",
+        requestText: "Жүйе пайдаланушы рөлін, құжат түрін және қолжетімділік деңгейін тексеріп, нәтижені қауіпсіз түрде дайындайды.",
+        topicLabel: "Сұрау тақырыбы",
+        roleLabel: "Пайдаланушы рөлі",
+        submitAction: "Өңдеу",
+        themeDark: "Түн",
+        themeLight: "Күн",
+        formMessage: "Сұрау қабылданды. Қолжетімділік тексеріліп, нәтиже дайындалады.",
+    },
+    ru: {
+        title: "Archive Access System",
+        subtitle: "Интеллектуальная платформа управления архивными документами",
+        description: "Система для безопасного хранения электронных документов, обработки запросов и быстрой выдачи результатов.",
+        primaryAction: "Войти в систему",
+        secondaryAction: "Презентация",
+        securityTitle: "Безопасность",
+        securityText: "JWT, 2FA, ролевой доступ",
+        docsTitle: "Документы",
+        docsText: "Хранение PDF, DOCX, XLSX",
+        analyticsTitle: "Аналитика",
+        analyticsText: "Real-time дашборды",
+        autoTitle: "Автоматизация",
+        autoText: "Обработка запросов",
+        langTitle: "Мультиязычность",
+        langText: "KZ / RU / EN",
+        auditTitle: "Аудит",
+        auditText: "Журнал действий",
+        requestKicker: "Обработка запроса",
+        requestTitle: "Заявка на архивную информацию",
+        requestText: "Система проверяет роль пользователя, тип документа и уровень доступа, затем безопасно готовит результат.",
+        topicLabel: "Тема запроса",
+        roleLabel: "Роль пользователя",
+        submitAction: "Обработать",
+        themeDark: "Түн",
+        themeLight: "Күн",
+        formMessage: "Запрос принят. Доступ будет проверен, результат подготовлен.",
+    },
+    en: {
+        title: "Archive Access System",
+        subtitle: "Smart archive document management platform",
+        description: "A secure platform for storing electronic documents, processing requests, and delivering archive results quickly.",
+        primaryAction: "Sign in",
+        secondaryAction: "Overview",
+        securityTitle: "Security",
+        securityText: "JWT, 2FA, role-based access",
+        docsTitle: "Documents",
+        docsText: "PDF, DOCX, XLSX storage",
+        analyticsTitle: "Analytics",
+        analyticsText: "Real-time dashboards",
+        autoTitle: "Automation",
+        autoText: "Request processing",
+        langTitle: "Multilingual",
+        langText: "KZ / RU / EN",
+        auditTitle: "Audit",
+        auditText: "Action logs",
+        requestKicker: "Request processing",
+        requestTitle: "Archive information request",
+        requestText: "The system checks user role, document type, and access level, then prepares a secure result.",
+        topicLabel: "Request topic",
+        roleLabel: "User role",
+        submitAction: "Process",
+        themeDark: "Night",
+        themeLight: "Day",
+        formMessage: "Request accepted. Access will be checked and the result prepared.",
+    },
 };
 
-const roleNames = {
-    guest: "Гость",
-    researcher: "Исследователь",
-    archivist: "Архивист",
-    admin: "Администратор",
-};
+let activeLanguage = "kk";
 
-const typeNames = {
-    inventory: "Опись",
-    case: "Дело",
-    copy: "Цифровая копия",
-    restricted: "Ограниченный материал",
-};
+function applyLanguage(language) {
+    activeLanguage = language;
+    document.documentElement.lang = language;
 
-const archiveItems = [
-    {
-        title: "Фонд 18. Опись документов городского управления",
-        description: "Справочная опись дел с датами, индексами и кратким содержанием.",
-        type: "inventory",
-        access: 1,
-        date: "1924-1938",
-        relevance: 96,
-    },
-    {
-        title: "Дело 245. Переписка о строительстве железнодорожного узла",
-        description: "Текстовые документы, протоколы заседаний и сопроводительные письма.",
-        type: "case",
-        access: 2,
-        date: "1951-1954",
-        relevance: 89,
-    },
-    {
-        title: "Цифровая копия метрической книги",
-        description: "Сканированные страницы с возможностью выдачи временной ссылки.",
-        type: "copy",
-        access: 2,
-        date: "1898",
-        relevance: 82,
-    },
-    {
-        title: "Материалы служебного расследования",
-        description: "Ограниченный архивный материал с персональными данными и служебными отметками.",
-        type: "restricted",
-        access: 3,
-        date: "1976",
-        relevance: 77,
-    },
-    {
-        title: "Закрытый протокол экспертной комиссии",
-        description: "Документ доступен только администраторам и уполномоченным архивистам.",
-        type: "restricted",
-        access: 4,
-        date: "1991",
-        relevance: 71,
-    },
-];
-
-function renderResults() {
-    const selectedRole = roleFilter.value;
-    const selectedType = typeFilter.value;
-    const currentRank = roleRank[selectedRole];
-    const filteredItems = archiveItems.filter((item) => {
-        const matchesType = selectedType === "all" || item.type === selectedType;
-        return matchesType;
+    translatedNodes.forEach((node) => {
+        const key = node.dataset.i18n;
+        node.textContent = translations[language][key];
     });
 
-    resultList.innerHTML = "";
-
-    filteredItems.forEach((item) => {
-        const isAllowed = currentRank >= item.access;
-        const card = document.createElement("article");
-        card.className = "result-item";
-        card.innerHTML = `
-            <div>
-                <h3>${item.title}</h3>
-                <p>${item.description}</p>
-                <div class="tag-row">
-                    <span class="tag">${typeNames[item.type]}</span>
-                    <span class="tag">${item.date}</span>
-                    <span class="tag ${isAllowed ? "tag--allowed" : "tag--restricted"}">
-                        ${isAllowed ? "Доступ разрешен" : "Требуется согласование"}
-                    </span>
-                </div>
-            </div>
-            <span class="relevance">${item.relevance}%</span>
-        `;
-        resultList.append(card);
+    languageButtons.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.lang === language);
     });
 
-    const allowedCount = filteredItems.filter((item) => currentRank >= item.access).length;
-    resultSummary.textContent = `${roleNames[selectedRole]} видит ${allowedCount} из ${filteredItems.length} найденных материалов. Остальные записи остаются скрытыми или требуют согласования.`;
+    updateThemeText();
 }
 
-roleFilter.addEventListener("change", renderResults);
-typeFilter.addEventListener("change", renderResults);
+function updateThemeText() {
+    const isLight = document.body.classList.contains("light-theme");
+    themeToggle.textContent = isLight
+        ? translations[activeLanguage].themeLight
+        : translations[activeLanguage].themeDark;
+    themeToggle.setAttribute("aria-pressed", String(isLight));
+}
+
+languageButtons.forEach((button) => {
+    button.addEventListener("click", () => applyLanguage(button.dataset.lang));
+});
+
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("light-theme");
+    updateThemeText();
+});
+
+openRequestButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        if (typeof requestDialog.showModal === "function") {
+            requestDialog.showModal();
+            return;
+        }
+
+        requestDialog.setAttribute("open", "");
+    });
+});
+
+closeRequestButton.addEventListener("click", () => {
+    requestDialog.close();
+});
 
 requestForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const formData = new FormData(requestForm);
-    const topic = formData.get("topic");
-    formMessage.textContent = `Заявка по теме "${topic}" сформирована. Статус: ожидает проверки архивистом.`;
+    formMessage.textContent = translations[activeLanguage].formMessage;
     requestForm.reset();
 });
 
-navToggle.addEventListener("click", () => {
-    const isOpen = navList.classList.toggle("is-open");
-    navToggle.setAttribute("aria-expanded", String(isOpen));
-});
-
-renderResults();
+applyLanguage(activeLanguage);

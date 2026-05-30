@@ -1,238 +1,176 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="kk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Сайт о проектировании системы управления доступом к архивной информации и обработке результатов запросов.">
-    <title>Архивный доступ | Система управления запросами</title>
+    <meta name="description" content="Archive Access System - архивтік ақпаратқа қауіпсіз қол жеткізу және сұраулар нәтижелерін өңдеу платформасы.">
+    <title>Archive Access System</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="site-header" id="top">
-        <nav class="nav" aria-label="Основная навигация">
-            <a class="logo" href="#top" aria-label="Архивный доступ">
-                <span class="logo__mark">AD</span>
-                <span>ArchiveDesk</span>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="#top" aria-label="Archive Access System">
+                <span class="brand__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                        <path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm1.5 4h7M8.5 12h7M8.5 16h4.5" />
+                    </svg>
+                </span>
+                <span>Archive Access System</span>
             </a>
-            <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="main-menu">
-                Меню
-            </button>
-            <ul class="nav__list" id="main-menu">
-                <li><a href="#about">О системе</a></li>
-                <li><a href="#access">Доступ</a></li>
-                <li><a href="#workflow">Запросы</a></li>
-                <li><a href="#results">Результаты</a></li>
-                <li><a href="#request">Заявка</a></li>
-            </ul>
-        </nav>
 
-        <section class="hero">
-            <div class="hero__content">
-                <p class="eyebrow">Проектирование безопасной архивной платформы</p>
-                <h1>Сайт для управления доступом к архивной информации и обработки результатов запросов</h1>
-                <p class="hero__lead">
-                    Единый сайт-концепция для контроля прав пользователей, регистрации архивных запросов,
-                    проверки разрешений и выдачи результатов с учетом уровня конфиденциальности.
+            <nav class="topbar__actions" aria-label="Жылдам әрекеттер">
+                <div class="language-switcher" aria-label="Тілді таңдау">
+                    <button class="language-switcher__item is-active" type="button" data-lang="kk">KZ</button>
+                    <button class="language-switcher__item" type="button" data-lang="ru">RU</button>
+                    <button class="language-switcher__item" type="button" data-lang="en">EN</button>
+                </div>
+                <button class="theme-toggle" type="button" aria-pressed="false">Түн</button>
+                <button class="login-button" type="button" data-open-request data-i18n="primaryAction">Жүйеге кіру</button>
+            </nav>
+        </header>
+
+        <main class="hero" id="top">
+            <section class="hero__content" aria-labelledby="page-title">
+                <p class="status-badge">
+                    <span class="status-badge__dot"></span>
+                    Enterprise-grade archive access
                 </p>
+                <h1 id="page-title" data-i18n="title">Archive Access System</h1>
+                <p class="hero__subtitle" data-i18n="subtitle">
+                    Мұрағаттық құжаттардың басқарудың ақылды платформасы
+                </p>
+                <p class="hero__description" data-i18n="description">
+                    Қауіпсіз мұрағаттандыру, электрондық құжаттарды сақтау,
+                    сұрауларды өңдеу және нәтижелерді жылдам жеткізу жүйесі.
+                </p>
+
                 <div class="hero__actions">
-                    <a class="button button--primary" href="#request">Оставить запрос</a>
-                    <a class="button button--ghost" href="#results">Посмотреть демо</a>
+                    <button class="primary-action" type="button" data-open-request data-i18n="primaryAction">Жүйеге кіру</button>
+                    <a class="secondary-action" href="#features" data-i18n="secondaryAction">Таныстыру</a>
                 </div>
-            </div>
-            <aside class="hero-card" aria-label="Ключевые показатели системы">
-                <div class="status-pill">Безопасный контур</div>
-                <dl class="metrics">
-                    <div>
-                        <dt>4</dt>
-                        <dd>уровня доступа</dd>
-                    </div>
-                    <div>
-                        <dt>24/7</dt>
-                        <dd>журналирование</dd>
-                    </div>
-                    <div>
-                        <dt>100%</dt>
-                        <dd>проверка заявок</dd>
-                    </div>
-                </dl>
-            </aside>
-        </section>
-    </header>
+            </section>
 
-    <main>
-        <section class="section section--intro" id="about">
-            <div class="section__heading">
-                <p class="eyebrow">Задача проекта</p>
-                <h2>Архивы должны быть доступными, но контролируемыми</h2>
-            </div>
-            <div class="intro-grid">
-                <article class="info-card">
-                    <h3>Защита данных</h3>
-                    <p>
-                        Система разделяет открытые, служебные, конфиденциальные и ограниченные материалы,
-                        чтобы пользователи видели только разрешенные документы.
-                    </p>
+            <section class="stats-grid" aria-label="Платформа көрсеткіштері">
+                <article class="stat-card">
+                    <strong>330K+</strong>
+                    <span>Documents</span>
                 </article>
-                <article class="info-card">
-                    <h3>Прозрачный процесс</h3>
-                    <p>
-                        Каждый запрос получает статус, ответственного исполнителя и историю решений:
-                        от подачи заявки до выдачи результата.
-                    </p>
+                <article class="stat-card">
+                    <strong>6</strong>
+                    <span>Branches</span>
                 </article>
-                <article class="info-card">
-                    <h3>Быстрая обработка</h3>
-                    <p>
-                        Результаты сортируются по релевантности, уровню доступа, типу документа и дате,
-                        а неподходящие записи скрываются автоматически.
-                    </p>
+                <article class="stat-card">
+                    <strong>99.9%</strong>
+                    <span>Uptime</span>
                 </article>
-            </div>
-        </section>
+                <article class="stat-card">
+                    <strong>&lt;200ms</strong>
+                    <span>Latency</span>
+                </article>
+            </section>
 
-        <section class="section" id="access">
-            <div class="section__heading">
-                <p class="eyebrow">Модель управления доступом</p>
-                <h2>Роли пользователей и уровни архивных материалов</h2>
-            </div>
-            <div class="access-layout">
-                <div class="role-list">
-                    <article class="role-card">
-                        <span class="role-card__badge">Гость</span>
-                        <h3>Просмотр открытых описей</h3>
-                        <p>Может искать общедоступные фонды, но не получает цифровые копии без заявки.</p>
-                    </article>
-                    <article class="role-card">
-                        <span class="role-card__badge">Исследователь</span>
-                        <h3>Работа с подтвержденной темой</h3>
-                        <p>Получает доступ к разрешенным делам после проверки цели исследования.</p>
-                    </article>
-                    <article class="role-card">
-                        <span class="role-card__badge">Архивист</span>
-                        <h3>Проверка и маршрутизация</h3>
-                        <p>Согласует заявки, назначает исполнителей и контролирует корректность выдачи.</p>
-                    </article>
-                    <article class="role-card">
-                        <span class="role-card__badge">Администратор</span>
-                        <h3>Политики безопасности</h3>
-                        <p>Настраивает роли, сроки хранения логов, правила доступа и аудит действий.</p>
-                    </article>
-                </div>
-                <div class="security-panel">
-                    <h3>Контрольные механизмы</h3>
-                    <ul class="check-list">
-                        <li>Аутентификация пользователя и проверка роли.</li>
-                        <li>Согласование заявки по уровню конфиденциальности.</li>
-                        <li>Водяные знаки и срок действия ссылок на копии.</li>
-                        <li>Журнал операций: поиск, просмотр, скачивание, отказ.</li>
-                        <li>Уведомления при подозрительных или повторных запросах.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+            <section class="features-grid" id="features" aria-label="Жүйе мүмкіндіктері">
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M12 3 5 6v5c0 4.3 2.8 8.2 7 9.8 4.2-1.6 7-5.5 7-9.8V6l-7-3Z" />
+                            <path d="m9.5 12 1.7 1.7 3.6-4" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="securityTitle">Қауіпсіздік</h2>
+                    <p data-i18n="securityText">JWT, 2FA, рөлдік қолжетімділік</p>
+                </article>
 
-        <section class="section section--dark" id="workflow">
-            <div class="section__heading">
-                <p class="eyebrow">Жизненный цикл запроса</p>
-                <h2>От заявки до выдачи результата</h2>
-            </div>
-            <ol class="timeline">
-                <li>
-                    <span>01</span>
-                    <h3>Подача запроса</h3>
-                    <p>Пользователь указывает тему, период, тип документа и основание для доступа.</p>
-                </li>
-                <li>
-                    <span>02</span>
-                    <h3>Проверка прав</h3>
-                    <p>Система сравнивает роль пользователя с политиками доступа и метаданными фонда.</p>
-                </li>
-                <li>
-                    <span>03</span>
-                    <h3>Поиск в архиве</h3>
-                    <p>Запрос проходит по каталогам, цифровым копиям, индексам персоналий и датам.</p>
-                </li>
-                <li>
-                    <span>04</span>
-                    <h3>Формирование выдачи</h3>
-                    <p>Результаты ранжируются, скрытые поля маскируются, а доступные материалы передаются пользователю.</p>
-                </li>
-            </ol>
-        </section>
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M7 3h7l4 4v14H7V3Z" />
+                            <path d="M14 3v5h5M9.5 13h5M9.5 17h5" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="docsTitle">Құжаттар</h2>
+                    <p data-i18n="docsText">PDF, DOCX, XLSX сақтау</p>
+                </article>
 
-        <section class="section" id="results">
-            <div class="section__heading">
-                <p class="eyebrow">Демонстрация обработки результатов</p>
-                <h2>Фильтрация архивных материалов по роли пользователя</h2>
-            </div>
-            <div class="results-toolbar" aria-label="Панель фильтрации результатов">
-                <label>
-                    Роль пользователя
-                    <select id="role-filter">
-                        <option value="guest">Гость</option>
-                        <option value="researcher" selected>Исследователь</option>
-                        <option value="archivist">Архивист</option>
-                        <option value="admin">Администратор</option>
-                    </select>
-                </label>
-                <label>
-                    Тип документа
-                    <select id="type-filter">
-                        <option value="all">Все типы</option>
-                        <option value="inventory">Опись</option>
-                        <option value="case">Дело</option>
-                        <option value="copy">Цифровая копия</option>
-                        <option value="restricted">Ограниченный материал</option>
-                    </select>
-                </label>
-            </div>
-            <div class="result-summary" id="result-summary" aria-live="polite"></div>
-            <div class="result-list" id="result-list"></div>
-        </section>
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M5 19V5M5 19h14" />
+                            <path d="M9 16v-5M13 16V8M17 16v-7" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="analyticsTitle">Аналитика</h2>
+                    <p data-i18n="analyticsText">Real-time дашбордтар</p>
+                </article>
 
-        <section class="section section--request" id="request">
-            <div class="request-card">
-                <div>
-                    <p class="eyebrow">Форма заявки</p>
-                    <h2>Создайте запрос на архивную информацию</h2>
-                    <p>
-                        Заполненная форма показывает, какие данные нужны системе для проверки доступа:
-                        заявитель, цель, период поиска и желаемый формат результата.
-                    </p>
-                </div>
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M8 8h8v8H8V8Z" />
+                            <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="autoTitle">Автоматтандыру</h2>
+                    <p data-i18n="autoText">Сұрауларды өңдеу</p>
+                </article>
+
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" />
+                            <path d="M3.6 9h16.8M3.6 15h16.8M12 3c2.2 2.5 3.3 5.5 3.3 9S14.2 18.5 12 21M12 3C9.8 5.5 8.7 8.5 8.7 12S9.8 18.5 12 21" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="langTitle">Көптілдік</h2>
+                    <p data-i18n="langText">KZ / RU / EN</p>
+                </article>
+
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16l-6-3-6 3Z" />
+                            <path d="M9 8h6M9 12h6" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="auditTitle">Аудит</h2>
+                    <p data-i18n="auditText">Іс-әрекеттер журналы</p>
+                </article>
+            </section>
+
+            <dialog class="request-dialog" id="request-dialog" aria-labelledby="request-title">
+                <button class="dialog-close" type="button" aria-label="Close" data-close-request>&times;</button>
+                <p class="panel-kicker" data-i18n="requestKicker">Сұрауды өңдеу</p>
+                <h2 id="request-title" data-i18n="requestTitle">Архивтік ақпаратқа өтінім</h2>
+                <p data-i18n="requestText">
+                    Жүйе пайдаланушы рөлін, құжат түрін және қолжетімділік деңгейін тексеріп,
+                    нәтижені қауіпсіз түрде дайындайды.
+                </p>
                 <form class="request-form" id="request-form">
                     <label>
-                        ФИО заявителя
-                        <input type="text" name="name" placeholder="Иванов Иван Иванович" required>
+                        <span data-i18n="topicLabel">Сұрау тақырыбы</span>
+                        <input type="text" name="topic" placeholder="Құжат атауы немесе архив қоры" required>
                     </label>
                     <label>
-                        Тема запроса
-                        <input type="text" name="topic" placeholder="История предприятия за 1980-1990 гг." required>
-                    </label>
-                    <label>
-                        Уровень доступа
-                        <select name="access" required>
-                            <option value="">Выберите уровень</option>
-                            <option>Открытые материалы</option>
-                            <option>Служебные материалы</option>
-                            <option>Конфиденциальные материалы</option>
+                        <span data-i18n="roleLabel">Пайдаланушы рөлі</span>
+                        <select name="role" required>
+                            <option value="guest">Guest</option>
+                            <option value="researcher">Researcher</option>
+                            <option value="archivist">Archivist</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </label>
-                    <label>
-                        Комментарий
-                        <textarea name="comment" rows="4" placeholder="Укажите цель исследования и желаемый формат выдачи"></textarea>
-                    </label>
-                    <button class="button button--primary" type="submit">Сформировать заявку</button>
+                    <button class="primary-action" type="submit" data-i18n="submitAction">Өңдеу</button>
                     <p class="form-message" id="form-message" role="status"></p>
                 </form>
-            </div>
-        </section>
-    </main>
+            </dialog>
+        </main>
 
-    <footer class="footer">
-        <p>ArchiveDesk — концепт сайта для безопасной работы с архивной информацией.</p>
-        <a href="#top">Наверх</a>
-    </footer>
+        <footer class="footer">
+            <p>&copy; 2026 Archive Access System</p>
+            <span>Republic of Kazakhstan</span>
+        </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>
