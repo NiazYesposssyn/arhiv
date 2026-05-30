@@ -1,0 +1,37 @@
+@model IReadOnlyList<Notification>
+@{
+    ViewData["Title"] = "Хабарламалар";
+    ViewData["PageTitle"] = "Notification center";
+}
+
+<div class="premium-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="h4 fw-bold mb-1">Оқылмаған хабарламалар</h2>
+            <p class="muted mb-0">Заявка мәртебесі, жүйелік қауіпсіздік және admin оқиғалары.</p>
+        </div>
+        <span class="badge-soft">@Model.Count хабарлама</span>
+    </div>
+    <div class="d-grid gap-3">
+        @foreach (var item in Model)
+        {
+            <div class="p-3 rounded-4 border d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="fw-bold"><i class="bi bi-bell me-2"></i>@item.Title</div>
+                    <div class="muted">@item.Message</div>
+                    <div class="small muted">@item.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
+                </div>
+                <form asp-action="Read" asp-route-id="@item.Id" method="post">
+                    <button class="btn btn-sm btn-ghost" type="submit">Оқылды</button>
+                </form>
+            </div>
+        }
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-check2-circle display-4 text-success"></i>
+                <h3 class="h5 fw-bold mt-3">Барлығы оқылған</h3>
+            </div>
+        }
+    </div>
+</div>

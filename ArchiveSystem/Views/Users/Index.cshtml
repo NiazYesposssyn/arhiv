@@ -1,0 +1,49 @@
+@model UsersManagementViewModel
+@{
+    ViewData["Title"] = "Пайдаланушылар";
+    ViewData["PageTitle"] = "Пайдаланушылар және рөлдер";
+}
+
+<div class="data-table-wrap">
+    <div class="p-4">
+        <h2 class="h4 fw-bold mb-1">Қолжетімділікті басқару</h2>
+        <p class="muted mb-0">Администратор, архивариус және пайдаланушы рөлдерін бақылау.</p>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead><tr><th>Пайдаланушы</th><th>Бөлім</th><th>Рөл</th><th>2FA</th><th>Статус</th><th></th></tr></thead>
+            <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>
+                        <div class="fw-bold">@user.FullName</div>
+                        <div class="muted small">@user.Email</div>
+                    </td>
+                    <td>@user.Department</td>
+                    <td>
+                        <form asp-action="SetRole" method="post" class="d-flex gap-2">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <select name="role" class="form-select form-select-sm">
+                                @foreach (var role in RoleNames.All)
+                                {
+                                    <option value="@role" selected="@(Model.Roles.TryGetValue(user.Id, out var roles) && roles.Contains(role))">@role</option>
+                                }
+                            </select>
+                            <button class="btn btn-sm btn-ghost" type="submit">Сақтау</button>
+                        </form>
+                    </td>
+                    <td>@(user.TwoFactorEnabled ? "Қосылған" : "Өшірулі")</td>
+                    <td><span class="badge-soft">@(user.IsActive ? "Белсенді" : "Бұғатталған")</span></td>
+                    <td class="text-end">
+                        <form asp-action="ToggleActive" method="post">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <button class="btn btn-sm btn-ghost" type="submit">Ауыстыру</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

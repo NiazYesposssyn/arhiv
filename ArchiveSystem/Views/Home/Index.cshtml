@@ -1,0 +1,105 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["PageTitle"] = "Интеллектуалды басқару панелі";
+    string Accent(string value) => value switch
+    {
+        "cyan" => "#06b6d4",
+        "emerald" => "#10b981",
+        "amber" => "#f59e0b",
+        _ => "#6366f1"
+    };
+}
+
+<div class="page-grid">
+    <section class="kpi-grid">
+        @foreach (var kpi in Model.Kpis)
+        {
+            <article class="premium-card kpi-card" style="--card-accent:@Accent(kpi.Accent)">
+                <div class="d-flex align-items-start justify-content-between">
+                    <span class="kpi-icon"><i class="@kpi.Icon"></i></span>
+                    <span class="trend"><i class="bi bi-arrow-up-right"></i>@kpi.Trend</span>
+                </div>
+                <div class="kpi-value">@kpi.Value</div>
+                <div class="muted fw-semibold">@kpi.Label</div>
+            </article>
+        }
+    </section>
+
+    <section class="section-grid">
+        <article class="premium-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="h4 fw-bold mb-1">Құжаттар динамикасы</h2>
+                    <p class="muted mb-0">Соңғы айлардағы цифрландыру және импорт көрсеткіші</p>
+                </div>
+                <a class="btn btn-sm btn-ghost" asp-controller="Documents" asp-action="Index">Барлығын көру</a>
+            </div>
+            <div style="height:320px"><canvas id="documentsLine"></canvas></div>
+        </article>
+
+        <article class="premium-card">
+            <h2 class="h4 fw-bold mb-1">Заявка мәртебелері</h2>
+            <p class="muted">Өңдеу құбыры бойынша бөлініс</p>
+            <div style="height:300px"><canvas id="requestsDoughnut"></canvas></div>
+        </article>
+    </section>
+
+    <section class="section-grid">
+        <article class="data-table-wrap">
+            <div class="p-4 d-flex align-items-center justify-content-between">
+                <div>
+                    <h2 class="h4 fw-bold mb-1">Соңғы құжаттар</h2>
+                    <p class="muted mb-0">Жаңа жүктелген және жаңартылған архив материалдары</p>
+                </div>
+                <a class="btn btn-premium" asp-controller="Documents" asp-action="Create"><i class="bi bi-cloud-upload me-2"></i>Жүктеу</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr><th>Нөмір</th><th>Атауы</th><th>Санат</th><th>Мәртебе</th></tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var document in Model.RecentDocuments)
+                    {
+                        <tr>
+                            <td class="fw-bold">@document.Number</td>
+                            <td>@document.Title</td>
+                            <td><span class="badge-soft">@document.Category?.Name</span></td>
+                            <td>@document.Status</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="premium-card">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="h4 fw-bold mb-0">Жүйе белсенділігі</h2>
+                <i class="bi bi-activity text-primary fs-4"></i>
+            </div>
+            <div class="timeline">
+                @foreach (var log in Model.AuditLogs)
+                {
+                    <div class="timeline-item">
+                        <div class="fw-bold">@log.Action</div>
+                        <div class="muted small">@log.User?.FullName · @log.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
+                        <div class="small">@log.Details</div>
+                    </div>
+                }
+            </div>
+        </article>
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        const docLabels = @Html.Raw(JsonSerializer.Serialize(Model.DocumentsByMonth.Select(x => x.Label)));
+        const docValues = @Html.Raw(JsonSerializer.Serialize(Model.DocumentsByMonth.Select(x => x.Value)));
+        const reqLabels = @Html.Raw(JsonSerializer.Serialize(Model.RequestsByStatus.Select(x => x.Label)));
+        const reqValues = @Html.Raw(JsonSerializer.Serialize(Model.RequestsByStatus.Select(x => x.Value)));
+        archiveCharts.renderLine("documentsLine", docLabels, docValues);
+        archiveCharts.renderDoughnut("requestsDoughnut", reqLabels, reqValues);
+    </script>
+}

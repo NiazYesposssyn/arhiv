@@ -1,0 +1,47 @@
+@model RequestCreateViewModel
+@{
+    ViewData["Title"] = "Жаңа заявка";
+    ViewData["PageTitle"] = "Архивтік құжатқа сұраныс";
+}
+
+<div class="section-grid">
+    <form asp-action="Create" method="post" class="premium-card d-grid gap-3">
+        <h2 class="h4 fw-bold">Заявка деректері</h2>
+        <div>
+            <label asp-for="Subject" class="form-label fw-semibold">Тақырып</label>
+            <input asp-for="Subject" class="form-control form-control-lg" />
+            <span asp-validation-for="Subject" class="text-danger small"></span>
+        </div>
+        <div>
+            <label asp-for="Description" class="form-label fw-semibold">Сипаттама</label>
+            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Description" class="text-danger small"></span>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="Priority" class="form-label fw-semibold">Басымдық</label>
+                <select asp-for="Priority" class="form-select form-select-lg" asp-items="Html.GetEnumSelectList<RequestPriority>()"></select>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ArchiveDocumentId" class="form-label fw-semibold">Құжат</label>
+                <select asp-for="ArchiveDocumentId" class="form-select form-select-lg">
+                    <option value="">Құжатты кейін таңдау</option>
+                    @foreach (var document in Model.Documents)
+                    {
+                        <option value="@document.Id">@document.Number · @document.Title</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <button class="btn btn-premium btn-lg" type="submit">Заявканы жіберу</button>
+    </form>
+
+    <aside class="premium-card">
+        <h2 class="h4 fw-bold">Өңдеу SLA</h2>
+        <div class="timeline mt-4">
+            <div class="timeline-item"><div class="fw-bold">Жаңа</div><div class="muted small">Сұраныс жүйеге тіркеледі.</div></div>
+            <div class="timeline-item"><div class="fw-bold">Өңделуде</div><div class="muted small">Архивариус құжат қолжетімділігін тексереді.</div></div>
+            <div class="timeline-item"><div class="fw-bold">Аяқталды</div><div class="muted small">Пайдаланушыға жауап және файл беріледі.</div></div>
+        </div>
+    </aside>
+</div>

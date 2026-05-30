@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ArchiveIQ — Archive Access Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070912;
+      --bg2: #0d1221;
+      --card: rgba(18, 25, 45, .72);
+      --card2: rgba(18, 25, 45, .94);
+      --text: #f8fbff;
+      --muted: #9aa9c1;
+      --line: rgba(255, 255, 255, .11);
+      --brand: #7c5cff;
+      --cyan: #17d5ff;
+      --mint: #3ee2a8;
+      --amber: #ffcc66;
+      --rose: #ff5c86;
+      --shadow: 0 32px 90px rgba(0, 0, 0, .42);
+      --radius: 28px;
+    }
+
+    [data-theme="light"] {
+      --bg: #f6f8ff;
+      --bg2: #eaf0ff;
+      --card: rgba(255, 255, 255, .76);
+      --card2: rgba(255, 255, 255, .96);
+      --text: #101828;
+      --muted: #647089;
+      --line: rgba(16, 24, 40, .11);
+      --shadow: 0 32px 80px rgba(41, 63, 103, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(124, 92, 255, .34), transparent 33rem),
+        radial-gradient(circle at 82% 10%, rgba(23, 213, 255, .22), transparent 30rem),
+        radial-gradient(circle at 46% 88%, rgba(62, 226, 168, .13), transparent 26rem),
+        linear-gradient(140deg, var(--bg), var(--bg2));
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, .07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, .07) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, #000 0 55%, transparent 92%);
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .hidden { display: none !important; }
+    .wrap { width: min(1180px, calc(100vw - 36px)); margin: 0 auto; }
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px) saturate(150%);
+    }
+
+    .btn {
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(255, 255, 255, .08);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-weight: 850;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn.primary {
+      border: 0;
+      color: white;
+      background: linear-gradient(135deg, var(--brand), var(--cyan));
+      box-shadow: 0 18px 42px rgba(124, 92, 255, .30);
+    }
+    .btn.soft { background: rgba(124, 92, 255, .13); }
+    .btn.icon { width: 44px; padding: 0; }
+    .btn.danger { border: 0; background: linear-gradient(135deg, var(--rose), #ff9b5c); color: white; }
+
+    .input, .select, textarea {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--text);
+      background: rgba(255, 255, 255, .08);
+      outline: none;
+      padding: 0 14px;
+    }
+    textarea { min-height: 120px; padding: 14px; resize: vertical; }
+    [data-theme="light"] .input,
+    [data-theme="light"] .select,
+    [data-theme="light"] textarea { background: rgba(255, 255, 255, .72); }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 max(18px, calc((100vw - 1180px) / 2));
+      background: rgba(7, 9, 18, .68);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(24px);
+    }
+    [data-theme="light"] .topbar { background: rgba(246, 248, 255, .76); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--brand), var(--cyan));
+      box-shadow: 0 16px 36px rgba(124, 92, 255, .34);
+      font-weight: 950;
+    }
+    .brand strong { display: block; font-size: 15px; letter-spacing: -.04em; }
+    .brand span { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .links { display: flex; gap: 24px; align-items: center; }
+    .links a { color: var(--muted); text-decoration: none; font-weight: 800; font-size: 14px; }
+    .links a:hover { color: var(--text); }
+    .top-actions { display: flex; align-items: center; gap: 10px; }
+
+    .hero {
+      min-height: calc(100vh - 76px);
+      display: grid;
+      align-items: center;
+      padding: 54px 0 70px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(400px, .88fr);
+      gap: 42px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, .06);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin: 20px 0 18px;
+      font-size: clamp(46px, 7vw, 94px);
+      line-height: .91;
+      letter-spacing: -.085em;
+      font-weight: 950;
+    }
+    .grad {
+      color: transparent;
+      background: linear-gradient(135deg, var(--text), var(--brand) 46%, var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .hero p {
+      margin: 0 0 28px;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.78;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 32px;
+      max-width: 660px;
+    }
+    .mini-stat {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--line);
+    }
+    .mini-stat strong { display: block; font-size: 28px; letter-spacing: -.05em; }
+    .mini-stat span { color: var(--muted); font-size: 12px; font-weight: 800; }
+
+    .visual {
+      min-height: 560px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 42px;
+      isolation: isolate;
+    }
+    .visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 50% 78%, rgba(23, 213, 255, .30), transparent 14rem),
+        linear-gradient(135deg, rgba(124, 92, 255, .28), rgba(62, 226, 168, .12));
+    }
+    .visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle at center, #000, transparent 76%);
+    }
+    .vault {
+      position: absolute;
+      left: 50%;
+      bottom: 54px;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 330px;
+    }
+    .vault-roof {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 430px;
+      height: 96px;
+      transform: translateX(-50%);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      background: linear-gradient(180deg, #e6f1ff, #546884 64%, #182237);
+      border-bottom: 5px solid var(--amber);
+    }
+    .vault-body {
+      position: absolute;
+      left: 50%;
+      top: 92px;
+      width: 468px;
+      height: 168px;
+      transform: translateX(-50%);
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(140, 164, 194, .58), rgba(22, 31, 49, .96));
+      box-shadow: inset 0 0 42px rgba(255,255,255,.10);
+    }
+    .vault-cols {
+      position: absolute;
+      left: 50%;
+      top: 106px;
+      width: 380px;
+      height: 154px;
+      transform: translateX(-50%);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 18px;
+    }
+    .vault-cols div { border-radius: 8px 8px 2px 2px; background: linear-gradient(90deg, #66504a, #e4d4c4, #5d4642); }
+    .ring {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      width: 530px;
+      height: 76px;
+      transform: translateX(-50%);
+      border: 3px solid rgba(23, 213, 255, .72);
+      border-radius: 50%;
+      box-shadow: 0 0 38px rgba(23, 213, 255, .68), inset 0 0 32px rgba(23, 213, 255, .20);
+    }
+    .float-card {
+      position: absolute;
+      width: 190px;
+      min-height: 126px;
+      border-radius: 24px;
+      padding: 16px;
+      background: rgba(13, 21, 42, .72);
+      border: 1px solid rgba(23, 213, 255, .32);
+      box-shadow: 0 0 32px rgba(23, 213, 255, .16);
+      backdrop-filter: blur(18px);
+      animation: floaty 7s ease-in-out infinite;
+    }
+    [data-theme="light"] .float-card { background: rgba(255,255,255,.76); }
+    .float-card h3 { margin: 0 0 10px; font-size: 12px; color: var(--cyan); text-transform: uppercase; letter-spacing: .08em; }
+    .line { height: 8px; border-radius: 99px; background: rgba(148, 163, 184, .28); margin: 9px 0; }
+    .float-card.one { left: 24px; top: 72px; }
+    .float-card.two { right: 22px; top: 130px; animation-delay: -2s; }
+    .float-card.three { left: 94px; bottom: 46px; animation-delay: -4s; }
+    @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+
+    .section { padding: 28px 0 74px; }
+    .section-head { display: flex; justify-content: space-between; gap: 18px; align-items: end; margin-bottom: 18px; }
+    .section-head h2 { margin: 0; font-size: 36px; letter-spacing: -.06em; }
+    .section-head p { margin: 0; color: var(--muted); line-height: 1.7; max-width: 620px; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .feature { border-radius: var(--radius); padding: 24px; }
+    .feature .ico { width: 54px; height: 54px; border-radius: 18px; display: grid; place-items: center; color: white; font-size: 23px; background: linear-gradient(135deg, var(--brand), var(--cyan)); margin-bottom: 18px; }
+    .feature h3 { margin: 0 0 10px; font-size: 20px; letter-spacing: -.04em; }
+    .feature p { margin: 0; color: var(--muted); line-height: 1.7; }
+
+    .auth {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+    .auth-card {
+      width: min(1040px, 100%);
+      display: grid;
+      grid-template-columns: .9fr 1fr;
+      border-radius: 38px;
+      overflow: hidden;
+    }
+    .auth-side {
+      min-height: 620px;
+      padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(124, 92, 255, .72), transparent 22rem),
+        radial-gradient(circle at 84% 34%, rgba(23, 213, 255, .26), transparent 18rem),
+        #091020;
+    }
+    .auth-side h1 { margin: 26px 0 12px; font-size: 46px; line-height: .98; letter-spacing: -.07em; }
+    .auth-side p { color: #c7d4e8; line-height: 1.75; }
+    .auth-form { padding: 42px; background: var(--card2); }
+    .auth-form h2 { margin: 0 0 8px; font-size: 34px; letter-spacing: -.055em; }
+    .auth-form p { margin: 0 0 24px; color: var(--muted); line-height: 1.65; }
+    .form { display: grid; gap: 15px; }
+    .field label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 13px; font-weight: 850; }
+    .auth-link { margin-top: 18px; color: var(--muted); }
+    .auth-link button { border: 0; background: transparent; color: var(--cyan); font-weight: 900; }
+
+    .app { min-height: 100vh; display: grid; grid-template-columns: 292px minmax(0,1fr); }
+    .side { position: sticky; top: 0; height: 100vh; padding: 18px; }
+    .side-inner { height: 100%; border-radius: 30px; padding: 18px; display: flex; flex-direction: column; gap: 18px; }
+    .side-nav { display: grid; gap: 8px; }
+    .side-nav button {
+      border: 0;
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      text-align: left;
+      transition: transform .18s ease, background .18s ease, color .18s ease;
+    }
+    .side-nav button:hover,
+    .side-nav button.active { color: var(--text); background: linear-gradient(135deg, rgba(124,92,255,.20), rgba(23,213,255,.12)); transform: translateX(4px); }
+    .side-note { margin-top: auto; border-radius: 22px; padding: 16px; background: linear-gradient(135deg, rgba(62,226,168,.14), rgba(124,92,255,.14)); border: 1px solid var(--line); }
+    .side-note strong { display: block; margin-bottom: 6px; }
+    .side-note span { color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .main { padding: 18px 22px 34px 0; min-width: 0; }
+    .appbar { min-height: 82px; border-radius: 30px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 18px; position: sticky; top: 16px; z-index: 15; }
+    .crumb { color: var(--muted); font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .appbar h2 { margin: 3px 0 0; font-size: 30px; letter-spacing: -.06em; }
+    .user { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: white; background: linear-gradient(135deg, var(--brand), var(--amber)); font-weight: 950; }
+    .content { padding-top: 20px; }
+    .view { display: none; animation: rise .28s ease both; }
+    .view.active { display: block; }
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .grid { display: grid; gap: 18px; }
+    .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .two { grid-template-columns: minmax(0, 1.25fr) minmax(340px, .75fr); }
+    .panel { border-radius: var(--radius); padding: 24px; }
+    .kpi strong { display: block; margin: 12px 0 4px; font-size: 32px; letter-spacing: -.055em; }
+    .kpi span { color: var(--muted); font-weight: 800; }
+    .kpi .ico { width: 48px; height: 48px; border-radius: 17px; display: grid; place-items: center; color: var(--cyan); background: rgba(23,213,255,.12); font-size: 23px; }
+    .toolbar { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
+    .table { overflow: auto; border: 1px solid var(--line); border-radius: 22px; }
+    th, td { padding: 15px 16px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+    .badge { display: inline-flex; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 900; color: var(--cyan); background: rgba(23,213,255,.13); }
+    .badge.green { color: var(--mint); background: rgba(62,226,168,.13); }
+    .badge.amber { color: var(--amber); background: rgba(255,204,102,.13); }
+    canvas { width: 100%; height: 280px; display: block; }
+    .map {
+      min-height: 430px;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(124,92,255,.18), rgba(23,213,255,.10)),
+        linear-gradient(rgba(148,163,184,.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.10) 1px, transparent 1px);
+      background-size: auto, 34px 34px, 34px 34px;
+    }
+    .map svg { position: absolute; left: 8%; right: 8%; bottom: 52px; width: 84%; height: 230px; filter: drop-shadow(0 0 26px rgba(23,213,255,.28)); }
+    .map path { fill: rgba(23,213,255,.10); stroke: rgba(23,213,255,.72); stroke-width: 2; }
+    .pin { position: absolute; left: var(--x); top: var(--y); width: 18px; height: 18px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 10px rgba(255,204,102,.16), 0 0 28px rgba(255,204,102,.70); }
+    .pin span { position: absolute; left: 22px; top: -10px; white-space: nowrap; border-radius: 999px; padding: 7px 10px; color: var(--text); background: var(--card2); border: 1px solid var(--line); font-size: 12px; font-weight: 900; }
+    .chat { min-height: 420px; border-radius: 24px; padding: 16px; display: grid; grid-template-rows: 1fr auto; gap: 14px; background: rgba(255,255,255,.05); border: 1px solid var(--line); }
+    .messages { display: grid; align-content: start; gap: 10px; max-height: 330px; overflow: auto; }
+    .msg { max-width: 82%; border-radius: 18px; padding: 12px 14px; background: rgba(124,92,255,.15); line-height: 1.55; }
+    .msg.user { justify-self: end; background: rgba(23,213,255,.14); }
+    .chat-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+    .toast-zone { position: fixed; right: 18px; top: 18px; z-index: 80; display: grid; gap: 10px; width: min(380px, calc(100vw - 36px)); }
+    .toast { border-radius: 18px; padding: 14px 16px; background: var(--card2); border: 1px solid var(--line); box-shadow: var(--shadow); }
+
+    @media (max-width: 1040px) {
+      .links { display: none; }
+      .hero-grid, .auth-card, .two { grid-template-columns: 1fr; }
+      .visual { min-height: 470px; }
+      .cards, .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .app { grid-template-columns: 1fr; }
+      .side { position: static; height: auto; padding-bottom: 0; }
+      .side-inner { height: auto; }
+      .side-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .side-nav button { justify-content: center; }
+      .side-nav .label { display: none; }
+      .side-note { display: none; }
+      .main { padding: 18px; }
+      .appbar { position: static; flex-direction: column; align-items: stretch; }
+    }
+    @media (max-width: 640px) {
+      .topbar { height: auto; padding: 12px 16px; flex-wrap: wrap; }
+      .top-actions { width: 100%; justify-content: space-between; }
+      .hero h1 { font-size: 44px; }
+      .hero-stats, .cards, .kpis { grid-template-columns: 1fr; }
+      .auth { padding: 12px; }
+      .auth-side, .auth-form, .panel { padding: 22px; }
+      .side-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .vault { transform: translateX(-50%) scale(.78); }
+      .float-card { transform: scale(.86); }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast-zone" id="toastZone"></div>
+
+  <section id="landing">
+    <header class="topbar">
+      <a class="brand" href="#home"><span class="logo">AI</span><span><strong>ArchiveIQ</strong><span data-i18n="brandSub">Archive access platform</span></span></a>
+      <nav class="links">
+        <a href="#about" data-i18n="about">About</a>
+        <a href="#features" data-i18n="features">Features</a>
+        <a href="#preview" data-i18n="preview">Preview</a>
+      </nav>
+      <div class="top-actions">
+        <select class="select" id="lang"><option value="ru">RU</option><option value="kk">KK</option><option value="en">EN</option></select>
+        <button class="btn icon" id="theme">◐</button>
+        <button class="btn soft" data-screen="login" data-i18n="login">Login</button>
+        <button class="btn primary" data-screen="register" data-i18n="register">Register</button>
+      </div>
+    </header>
+
+    <main class="hero wrap" id="home">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">● <span data-i18n="eyebrow">Intelligent archive access</span></span>
+          <h1 data-i18n-html="heroTitle">A calmer way to manage <span class="grad">archive requests</span></h1>
+          <p data-i18n="heroText">A premium demo interface for archive document access, citizen requests, city maps, analytics, AI assistance, and future Telegram bot integration.</p>
+          <div class="hero-actions">
+            <button class="btn primary" data-screen="login" data-i18n="enter">Enter demo</button>
+            <button class="btn" data-screen="register" data-i18n="create">Create account</button>
+          </div>
+          <div class="hero-stats">
+            <div class="mini-stat"><strong>330K+</strong><span data-i18n="docs">documents</span></div>
+            <div class="mini-stat"><strong>99.8%</strong><span data-i18n="secure">secure access</span></div>
+            <div class="mini-stat"><strong>24/7</strong><span data-i18n="assistant">AI assistant</span></div>
+          </div>
+        </div>
+        <div class="visual glass" id="preview">
+          <div class="vault"><div class="vault-roof"></div><div class="vault-body"></div><div class="vault-cols"><div></div><div></div><div></div><div></div><div></div><div></div></div><div class="ring"></div></div>
+          <div class="float-card one"><h3>Archive vault</h3><div class="line"></div><div class="line"></div><div class="line" style="width:60%"></div></div>
+          <div class="float-card two"><h3>Access control</h3><div class="line"></div><strong>RBAC + Audit</strong></div>
+          <div class="float-card three"><h3>Request flow</h3><div class="line"></div><strong>Approved</strong></div>
+        </div>
+      </div>
+    </main>
+
+    <section class="section wrap" id="about">
+      <div class="section-head"><div><h2 data-i18n="sectionTitle">Designed like a real product</h2></div><p data-i18n="sectionText">Clean, modern, premium, and practical. The demo works without backend setup and opens with a simple local server.</p></div>
+      <div class="cards" id="features">
+        <article class="feature glass"><div class="ico">🔐</div><h3 data-i18n="f1">Access control</h3><p data-i18n="f1t">Roles, permissions, secure sections, and audit-ready workflows.</p></article>
+        <article class="feature glass"><div class="ico">📁</div><h3 data-i18n="f2">Archive documents</h3><p data-i18n="f2t">Tables, statuses, request links, and clean document organization.</p></article>
+        <article class="feature glass"><div class="ico">🤖</div><h3 data-i18n="f3">AI + Telegram ready</h3><p data-i18n="f3t">Dedicated pages for assistant logic and future Telegram chatbot settings.</p></article>
+      </div>
+    </section>
+  </section>
+
+  <section class="auth hidden" id="login">
+    <div class="auth-card glass">
+      <div class="auth-side"><div class="brand"><span class="logo">AI</span><span><strong>ArchiveIQ</strong><span data-i18n="secureLogin">Secure login</span></span></div><div><h1 data-i18n="loginHero">Welcome back</h1><p data-i18n="loginText">Use any email and password in demo mode.</p></div><button class="btn" data-screen="landing" data-i18n="back">Back</button></div>
+      <div class="auth-form"><h2 data-i18n="login">Login</h2><p data-i18n="loginSub">Enter the workspace and explore the system.</p><form class="form" id="loginForm"><div class="field"><label>Email</label><input class="input" type="email" required placeholder="admin@archive.kz"></div><div class="field"><label data-i18n="password">Password</label><input class="input" type="password" required placeholder="••••••••"></div><button class="btn primary" type="submit" data-i18n="enter">Enter demo</button></form><div class="auth-link"><span data-i18n="noAccount">No account?</span> <button data-screen="register" data-i18n="register">Register</button></div></div>
+    </div>
+  </section>
+
+  <section class="auth hidden" id="register">
+    <div class="auth-card glass">
+      <div class="auth-side"><div class="brand"><span class="logo">AI</span><span><strong>ArchiveIQ</strong><span data-i18n="registration">Registration</span></span></div><div><h1 data-i18n="regHero">Create an account</h1><p data-i18n="regText">Register and the demo dashboard opens immediately.</p></div><button class="btn" data-screen="landing" data-i18n="back">Back</button></div>
+      <div class="auth-form"><h2 data-i18n="register">Register</h2><p data-i18n="regSub">Create a demo user profile.</p><form class="form" id="registerForm"><div class="field"><label data-i18n="name">Full name</label><input class="input" required placeholder="Archive User"></div><div class="field"><label>Email</label><input class="input" type="email" required placeholder="user@archive.kz"></div><div class="field"><label data-i18n="role">Role</label><select class="select"><option>Пайдаланушы</option><option>Архивариус</option><option>Администратор</option></select></div><div class="field"><label data-i18n="password">Password</label><input class="input" type="password" required placeholder="••••••••"></div><button class="btn primary" type="submit" data-i18n="create">Create account</button></form><div class="auth-link"><span data-i18n="hasAccount">Already have an account?</span> <button data-screen="login" data-i18n="login">Login</button></div></div>
+    </div>
+  </section>
+
+  <section class="app hidden" id="app">
+    <aside class="side"><div class="side-inner glass"><a class="brand" href="#"><span class="logo">AI</span><span><strong>ArchiveIQ</strong><span data-i18n="workspace">Workspace</span></span></a><nav class="side-nav" id="sideNav"></nav><div class="side-note"><strong data-i18n="noteTitle">Telegram bot</strong><span data-i18n="noteText">A dedicated integration page is ready for token and webhook setup.</span></div></div></aside>
+    <main class="main">
+      <header class="appbar glass"><div><div class="crumb">ArchiveIQ</div><h2 id="pageTitle">Dashboard</h2></div><div class="top-actions"><button class="btn icon" id="appTheme">◐</button><div class="user"><span class="avatar">A</span><span><strong id="userName">Archive User</strong><br><small style="color:var(--muted)">demo@archive.kz</small></span></div><button class="btn danger" id="logout" data-i18n="logout">Logout</button></div></header>
+      <div class="content"><section class="view active" id="v-dashboard"></section><section class="view" id="v-documents"></section><section class="view" id="v-requests"></section><section class="view" id="v-map"></section><section class="view" id="v-ai"></section><section class="view" id="v-telegram"></section><section class="view" id="v-settings"></section></div>
+    </main>
+  </section>
+
+  <script>
+    const dict = {
+      ru: { brandSub:"Платформа архивного доступа", about:"О проекте", features:"Возможности", preview:"Вид", login:"Вход", register:"Регистрация", eyebrow:"Интеллектуальный доступ к архивам", heroTitle:"Спокойный способ управлять <span class=\"grad\">архивными запросами</span>", heroText:"Премиальный demo-интерфейс для доступа к архивным документам, пользовательских запросов, карты города, аналитики, AI-помощника и будущего Telegram-бота.", enter:"Войти в demo", create:"Создать аккаунт", docs:"документов", secure:"безопасный доступ", assistant:"AI помощник", sectionTitle:"Сделано как настоящий продукт", sectionText:"Чисто, современно, дорого и практично. Demo работает без сложной настройки.", f1:"Контроль доступа", f1t:"Роли, разрешения, защищенные разделы и audit-ready процессы.", f2:"Архивные документы", f2t:"Таблицы, статусы, связи с запросами и аккуратная структура.", f3:"AI + Telegram", f3t:"Отдельные страницы для AI-логики и будущей настройки Telegram chatbot.", secureLogin:"Безопасный вход", loginHero:"Добро пожаловать", loginText:"В demo-режиме можно ввести любой email и пароль.", back:"Назад", loginSub:"Войдите в рабочую область и посмотрите систему.", password:"Пароль", noAccount:"Нет аккаунта?", registration:"Регистрация", regHero:"Создайте аккаунт", regText:"После регистрации сразу откроется dashboard.", regSub:"Создайте demo-профиль.", name:"ФИО", role:"Роль", hasAccount:"Уже есть аккаунт?", workspace:"Рабочая область", noteTitle:"Telegram bot", noteText:"Страница интеграции готова для token и webhook.", logout:"Выйти", dashboard:"Dashboard", documents:"Документы", requests:"Запросы", map:"Карта города", ai:"AI помощник", telegram:"Telegram bot", settings:"Настройки", totalDocs:"Документы", activeReq:"Активные запросы", users:"Пользователи", security:"Безопасность", recentDocs:"Последние документы", recentReq:"Динамика запросов", addDoc:"Добавить документ", addReq:"Добавить запрос", mapTitle:"Карта города", mapText:"Здесь можно вставить ссылку на Google/Yandex/2GIS карту. Сейчас показана demo-точка Өскемен / Усть-Каменогорск.", saveMap:"Сохранить карту", aiTitle:"Archive AI Assistant", aiText:"Demo-помощник для поиска документов и объяснения процесса подачи заявки.", ask:"Напишите вопрос...", send:"Отправить", tgTitle:"Telegram chatbot", tgText:"Здесь позже подключается bot token, webhook URL и команды администратора.", save:"Сохранить" },
+      kk: { brandSub:"Архив қолжетімділік платформасы", about:"Жоба", features:"Мүмкіндіктер", preview:"Көрініс", login:"Кіру", register:"Тіркелу", eyebrow:"Архивке интеллектуалды қолжетімділік", heroTitle:"Архив сұраныстарын басқарудың <span class=\"grad\">жайлы тәсілі</span>", heroText:"Архив құжаттарына қолжетімділік, пайдаланушы сұраныстары, қала картасы, аналитика, AI көмекші және болашақ Telegram bot үшін премиум demo-интерфейс.", enter:"Demo кіру", create:"Аккаунт құру", docs:"құжат", secure:"қауіпсіз қолжетімділік", assistant:"AI көмекші", sectionTitle:"Нағыз өнім сияқты жасалған", sectionText:"Таза, заманауи, қымбат әрі практикалық. Demo күрделі баптаусыз жұмыс істейді.", f1:"Қолжетімділік бақылауы", f1t:"Рөлдер, рұқсаттар, қорғалған бөлімдер және аудит процестері.", f2:"Архив құжаттары", f2t:"Кестелер, мәртебелер, сұраныстармен байланыс және таза құрылым.", f3:"AI + Telegram", f3t:"AI логикасы және Telegram chatbot баптауы үшін бөлек беттер.", secureLogin:"Қауіпсіз кіру", loginHero:"Қош келдіңіз", loginText:"Demo режимде кез келген email және құпиясөз енгізуге болады.", back:"Артқа", loginSub:"Жұмыс кеңістігіне кіріп жүйені көріңіз.", password:"Құпиясөз", noAccount:"Аккаунт жоқ па?", registration:"Тіркелу", regHero:"Аккаунт құрыңыз", regText:"Тіркелгеннен кейін dashboard бірден ашылады.", regSub:"Demo профиль құрыңыз.", name:"Аты-жөні", role:"Рөл", hasAccount:"Аккаунтыңыз бар ма?", workspace:"Жұмыс кеңістігі", noteTitle:"Telegram bot", noteText:"Token және webhook үшін интеграция беті дайын.", logout:"Шығу", dashboard:"Dashboard", documents:"Құжаттар", requests:"Сұраныстар", map:"Қала картасы", ai:"AI көмекші", telegram:"Telegram bot", settings:"Баптаулар", totalDocs:"Құжаттар", activeReq:"Белсенді сұраныстар", users:"Пайдаланушылар", security:"Қауіпсіздік", recentDocs:"Соңғы құжаттар", recentReq:"Сұраныстар динамикасы", addDoc:"Құжат қосу", addReq:"Сұраныс қосу", mapTitle:"Қала картасы", mapText:"Мұнда Google/Yandex/2GIS карта сілтемесін қоюға болады. Қазір Өскемен / Усть-Каменогорск demo нүктесі көрсетілген.", saveMap:"Картаны сақтау", aiTitle:"Archive AI Assistant", aiText:"Құжат іздеу және өтініш беру процесін түсіндіруге арналған demo көмекші.", ask:"Сұрақ жазыңыз...", send:"Жіберу", tgTitle:"Telegram chatbot", tgText:"Кейін bot token, webhook URL және admin командалары осында қосылады.", save:"Сақтау" },
+      en: { brandSub:"Archive access platform", about:"About", features:"Features", preview:"Preview", login:"Login", register:"Register", eyebrow:"Intelligent archive access", heroTitle:"A calmer way to manage <span class=\"grad\">archive requests</span>", heroText:"A premium demo interface for archive document access, citizen requests, city maps, analytics, AI assistance, and future Telegram bot integration.", enter:"Enter demo", create:"Create account", docs:"documents", secure:"secure access", assistant:"AI assistant", sectionTitle:"Designed like a real product", sectionText:"Clean, modern, premium, and practical. The demo works without complex setup.", f1:"Access control", f1t:"Roles, permissions, protected sections, and audit-ready workflows.", f2:"Archive documents", f2t:"Tables, statuses, request links, and clean document organization.", f3:"AI + Telegram", f3t:"Dedicated pages for assistant logic and future Telegram chatbot settings.", secureLogin:"Secure login", loginHero:"Welcome back", loginText:"Use any email and password in demo mode.", back:"Back", loginSub:"Enter the workspace and explore the system.", password:"Password", noAccount:"No account?", registration:"Registration", regHero:"Create an account", regText:"Register and the demo dashboard opens immediately.", regSub:"Create a demo user profile.", name:"Full name", role:"Role", hasAccount:"Already have an account?", workspace:"Workspace", noteTitle:"Telegram bot", noteText:"A dedicated integration page is ready for token and webhook setup.", logout:"Logout", dashboard:"Dashboard", documents:"Documents", requests:"Requests", map:"City map", ai:"AI assistant", telegram:"Telegram bot", settings:"Settings", totalDocs:"Documents", activeReq:"Active requests", users:"Users", security:"Security", recentDocs:"Recent documents", recentReq:"Request trend", addDoc:"Add document", addReq:"Add request", mapTitle:"City map", mapText:"Paste a Google/Yandex/2GIS city map link here. A demo marker for Oskemen / Ust-Kamenogorsk is shown now.", saveMap:"Save map", aiTitle:"Archive AI Assistant", aiText:"Demo assistant for finding documents and explaining request workflows.", ask:"Write a question...", send:"Send", tgTitle:"Telegram chatbot", tgText:"Later you can configure bot token, webhook URL, and admin commands here.", save:"Save" }
+    };
+    const state = { lang: localStorage.getItem("aiq-lang") || "ru", theme: localStorage.getItem("aiq-theme") || "dark", view:"dashboard", user:"Archive User", docs:[["AAS-001","Historical registry","PDF","Active"],["AAS-002","Administrative orders","DOCX","Review"],["AAS-003","Photo collection","JPG","Archived"]], reqs:[["REQ-101","Document copy","High","In progress"],["REQ-102","Access approval","Normal","Waiting"],["REQ-103","Map request","Low","Completed"]] };
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    const tr = k => dict[state.lang][k] || k;
+    const nav = [["dashboard","◈"],["documents","▣"],["requests","◎"],["map","⌖"],["ai","🤖"],["telegram","✈"],["settings","⚙"]];
+    function applyText(){ document.documentElement.lang=state.lang; $("#lang").value=state.lang; $$("[data-i18n]").forEach(e=>e.textContent=tr(e.dataset.i18n)); $$("[data-i18n-html]").forEach(e=>e.innerHTML=tr(e.dataset.i18nHtml)); renderApp(); }
+    function applyTheme(){ document.documentElement.dataset.theme=state.theme; }
+    function show(screen){ ["landing","login","register","app"].forEach(id=>$("#"+id).classList.toggle("hidden", id!==screen)); scrollTo(0,0); if(screen==="app") setView("dashboard"); }
+    function enter(name){ state.user=name||"Archive User"; $("#userName").textContent=state.user; show("app"); toast("Welcome"); }
+    function renderApp(){ $("#sideNav").innerHTML=nav.map(([k,i])=>`<button class="${state.view===k?"active":""}" data-view="${k}"><span>${i}</span><span class="label">${tr(k)}</span></button>`).join(""); renderViews(); }
+    function setView(v){ state.view=v; $$(".view").forEach(e=>e.classList.remove("active")); $("#v-"+v).classList.add("active"); $("#pageTitle").textContent=tr(v); renderApp(); draw(); }
+    function kpi(i,n,l){ return `<article class="panel glass kpi"><div class="ico">${i}</div><strong>${n}</strong><span>${l}</span></article>`; }
+    function table(h,r){ return `<div class="table"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${r.map(row=>`<tr>${row.map((c,i)=>`<td>${i===row.length-1?`<span class="badge ${/Active|Completed/.test(c)?"green":/Review|Waiting/.test(c)?"amber":""}">${c}</span>`:c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`; }
+    function renderViews(){ $("#v-dashboard").innerHTML=`<div class="grid"><div class="grid kpis">${kpi("▣","24,589",tr("totalDocs"))}${kpi("◎","156",tr("activeReq"))}${kpi("◉","432",tr("users"))}${kpi("🔐","99.8%",tr("security"))}</div><div class="grid two"><article class="panel glass"><h3>${tr("recentDocs")}</h3>${table(["ID","Title","Type","Status"],state.docs)}</article><article class="panel glass"><h3>${tr("recentReq")}</h3><canvas id="chart"></canvas></article></div></div>`;
+      $("#v-documents").innerHTML=`<article class="panel glass"><div class="toolbar"><h3>${tr("documents")}</h3><button class="btn primary" id="addDoc">${tr("addDoc")}</button></div>${table(["ID","Title","Type","Status"],state.docs)}</article>`;
+      $("#v-requests").innerHTML=`<article class="panel glass"><div class="toolbar"><h3>${tr("requests")}</h3><button class="btn primary" id="addReq">${tr("addReq")}</button></div>${table(["ID","Subject","Priority","Status"],state.reqs)}</article>`;
+      $("#v-map").innerHTML=`<div class="grid two"><article class="panel glass"><h3>${tr("mapTitle")}</h3><p style="color:var(--muted);line-height:1.7">${tr("mapText")}</p><input class="input" placeholder="https://2gis.kz/..."><button class="btn primary" id="saveMap" style="margin-top:14px">${tr("saveMap")}</button></article><article class="map"><svg viewBox="0 0 920 420"><path d="M76 203 L122 143 L216 111 L326 82 L431 111 L516 83 L655 111 L771 155 L842 220 L801 293 L690 337 L568 315 L462 354 L329 322 L217 344 L107 293 Z"/></svg><div class="pin" style="--x:76%;--y:43%"><span>Өскемен / Усть-Каменогорск</span></div></article></div>`;
+      $("#v-ai").innerHTML=`<div class="grid two"><article class="panel glass"><h3>${tr("aiTitle")}</h3><p style="color:var(--muted);line-height:1.7">${tr("aiText")}</p></article><article class="chat"><div class="messages" id="messages"><div class="msg">Здравствуйте! Я помогу найти архивный документ или оформить запрос.</div></div><div class="chat-row"><input class="input" id="aiInput" placeholder="${tr("ask")}"><button class="btn primary" id="sendAi">${tr("send")}</button></div></article></div>`;
+      $("#v-telegram").innerHTML=`<article class="panel glass"><h3>${tr("tgTitle")}</h3><p style="color:var(--muted);line-height:1.7">${tr("tgText")}</p><div class="grid" style="margin-top:18px"><input class="input" placeholder="Bot token"><input class="input" placeholder="Webhook URL"><button class="btn primary" id="saveTg">${tr("save")}</button></div></article>`;
+      $("#v-settings").innerHTML=`<article class="panel glass"><h3>${tr("settings")}</h3><div class="grid" style="margin-top:18px"><button class="btn">Two-factor authentication</button><button class="btn">Audit logs</button><button class="btn">Email notifications</button></div></article>`; bindDynamic(); }
+    function bindDynamic(){ $("#addDoc")?.addEventListener("click",()=>{state.docs.unshift(["AAS-"+(100+state.docs.length),"New archive document","PDF","Review"]); renderApp(); toast("Document added");}); $("#addReq")?.addEventListener("click",()=>{state.reqs.unshift(["REQ-"+(200+state.reqs.length),"New request","Normal","In progress"]); renderApp(); toast("Request added");}); $("#saveMap")?.addEventListener("click",()=>toast("Map saved")); $("#saveTg")?.addEventListener("click",()=>toast("Telegram saved")); $("#sendAi")?.addEventListener("click",sendAi); $("#aiInput")?.addEventListener("keydown",e=>{if(e.key==="Enter")sendAi();}); }
+    function sendAi(){ const input=$("#aiInput"); if(!input?.value.trim())return; $("#messages").insertAdjacentHTML("beforeend",`<div class="msg user">${input.value}</div><div class="msg">Demo AI: проверьте раздел документов, заявок или карту города. Позже сюда можно подключить настоящий AI.</div>`); input.value=""; }
+    function draw(){ const c=$("#chart"); if(!c)return; const r=c.getBoundingClientRect(),d=devicePixelRatio||1;c.width=r.width*d;c.height=r.height*d;const x=c.getContext("2d");x.scale(d,d);const vals=[20,48,36,72,58,95,84,128,112,146],max=160,p=28;x.clearRect(0,0,r.width,r.height);x.beginPath();vals.forEach((v,i)=>{const px=p+i*(r.width-p*2)/(vals.length-1),py=r.height-p-(v/max)*(r.height-p*2);i?x.lineTo(px,py):x.moveTo(px,py)});x.strokeStyle="#17d5ff";x.lineWidth=4;x.shadowColor="#17d5ff";x.shadowBlur=14;x.stroke();x.shadowBlur=0; }
+    function toast(text){ const e=document.createElement("div"); e.className="toast"; e.textContent=text; $("#toastZone").appendChild(e); setTimeout(()=>e.remove(),2600); }
+    function init(){ applyTheme(); applyText(); document.body.addEventListener("click",e=>{const s=e.target.closest("[data-screen]"); if(s)show(s.dataset.screen); const v=e.target.closest("[data-view]"); if(v)setView(v.dataset.view);}); $("#lang").addEventListener("change",e=>{state.lang=e.target.value;localStorage.setItem("aiq-lang",state.lang);applyText();}); $("#theme").addEventListener("click",toggle); $("#appTheme").addEventListener("click",toggle); $("#loginForm").addEventListener("submit",e=>{e.preventDefault();enter(e.target.querySelector("input").value.split("@")[0]);}); $("#registerForm").addEventListener("submit",e=>{e.preventDefault();enter(e.target.querySelector("input").value);}); $("#logout").addEventListener("click",()=>show("landing")); renderApp(); }
+    function toggle(){ state.theme=state.theme==="dark"?"light":"dark"; localStorage.setItem("aiq-theme",state.theme); applyTheme(); draw(); }
+    init();
+  </script>
+</body>
+</html>

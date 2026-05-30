@@ -1,0 +1,51 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Профиль";
+    ViewData["PageTitle"] = "Пайдаланушы профилі";
+}
+
+<div class="section-grid">
+    <form asp-action="Update" method="post" class="premium-card d-grid gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <span class="avatar" style="width:64px;height:64px;font-size:1.5rem">@Model.FullName.Substring(0, 1)</span>
+            <div>
+                <h2 class="h4 fw-bold mb-1">@Model.FullName</h2>
+                <p class="muted mb-0">@Model.Email</p>
+            </div>
+        </div>
+        <div>
+            <label asp-for="FullName" class="form-label">Аты-жөні</label>
+            <input asp-for="FullName" class="form-control form-control-lg" />
+        </div>
+        <div>
+            <label asp-for="Department" class="form-label">Бөлім</label>
+            <input asp-for="Department" class="form-control form-control-lg" />
+        </div>
+        <div>
+            <label asp-for="PreferredLanguage" class="form-label">Тіл</label>
+            <select asp-for="PreferredLanguage" class="form-select form-select-lg">
+                <option value="kk-KZ">Қазақша</option>
+                <option value="ru-RU">Русский</option>
+                <option value="en-US">English</option>
+            </select>
+        </div>
+        <div class="p-3 rounded-4 bg-success bg-opacity-10">
+            <strong>2FA:</strong> @(Model.TwoFactorEnabled ? "Қосылған" : "Өшірулі")
+        </div>
+        <button class="btn btn-premium" type="submit">Профильді сақтау</button>
+    </form>
+
+    <aside class="premium-card">
+        <h2 class="h4 fw-bold">Соңғы белсенділік</h2>
+        <div class="timeline mt-4">
+            @foreach (var log in Model.RecentActivity)
+            {
+                <div class="timeline-item">
+                    <div class="fw-bold">@log.Action</div>
+                    <div class="small">@log.Details</div>
+                    <div class="muted small">@log.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
+                </div>
+            }
+        </div>
+    </aside>
+</div>
