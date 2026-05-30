@@ -1,0 +1,32 @@
+@model IReadOnlyList<AuditLog>
+@{
+    ViewData["Title"] = "Аудит";
+    ViewData["PageTitle"] = "Аудит журналы";
+}
+
+<div class="page-grid">
+    <form method="get" class="premium-card search-panel" style="grid-template-columns:1fr auto">
+        <input name="search" value="@ViewData["Search"]" class="form-control" placeholder="Әрекет немесе сипаттама бойынша іздеу..." />
+        <button class="btn btn-premium" type="submit">Іздеу</button>
+    </form>
+    <div class="data-table-wrap">
+        <div class="table-responsive">
+            <table class="table">
+                <thead><tr><th>Уақыт</th><th>Пайдаланушы</th><th>Әрекет</th><th>Объект</th><th>IP</th><th>Толық ақпарат</th></tr></thead>
+                <tbody>
+                @foreach (var log in Model)
+                {
+                    <tr>
+                        <td>@log.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@log.User?.FullName</td>
+                        <td><span class="badge-soft">@log.Action</span></td>
+                        <td>@log.EntityName</td>
+                        <td>@log.IpAddress</td>
+                        <td>@log.Details</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

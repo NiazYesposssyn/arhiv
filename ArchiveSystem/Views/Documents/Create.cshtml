@@ -1,0 +1,56 @@
+@model DocumentUploadViewModel
+@{
+    ViewData["Title"] = "Құжат жүктеу";
+    ViewData["PageTitle"] = "Жаңа архив құжаты";
+}
+
+<div class="section-grid">
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="premium-card d-grid gap-3">
+        <div>
+            <h2 class="h4 fw-bold">Метадеректер</h2>
+            <p class="muted">Құжат нөмірі жүйе арқылы автоматты түрде жасалады.</p>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+        <div>
+            <label asp-for="Title" class="form-label fw-semibold">Құжат атауы</label>
+            <input asp-for="Title" class="form-control form-control-lg" placeholder="Мысалы: Ұлттық кеңес хаттамасы" />
+            <span asp-validation-for="Title" class="text-danger small"></span>
+        </div>
+        <div>
+            <label asp-for="Description" class="form-label fw-semibold">Сипаттама</label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-7">
+                <label asp-for="CategoryId" class="form-label fw-semibold">Санат</label>
+                <select asp-for="CategoryId" class="form-select form-select-lg">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-5">
+                <label asp-for="Tags" class="form-label fw-semibold">Тегтер</label>
+                <input asp-for="Tags" class="form-control form-control-lg" placeholder="тарих, pdf, құпия" />
+            </div>
+        </div>
+        <div class="dropzone" data-dropzone>
+            <i class="bi bi-cloud-arrow-up display-5 text-primary"></i>
+            <h3 class="h5 fw-bold mt-3">Файлды осында тастаңыз</h3>
+            <p class="muted">PDF, DOCX, XLSX, JPG, PNG қолдау көрсетіледі</p>
+            <input asp-for="File" class="form-control" type="file" />
+            <div class="small fw-bold mt-2" data-file-name></div>
+        </div>
+        <button class="btn btn-premium btn-lg" type="submit"><i class="bi bi-check2-circle me-2"></i>Сақтау және жүктеу</button>
+    </form>
+
+    <aside class="premium-card">
+        <h2 class="h4 fw-bold">Қауіпсіздік ережелері</h2>
+        <div class="timeline mt-4">
+            <div class="timeline-item"><div class="fw-bold">Рөлдік бақылау</div><div class="muted small">Тек архивариус пен әкімші жүктей алады.</div></div>
+            <div class="timeline-item"><div class="fw-bold">Нұсқа тарихы</div><div class="muted small">Әр өзгеріс аудит журналында сақталады.</div></div>
+            <div class="timeline-item"><div class="fw-bold">Preview және download</div><div class="muted small">Файлдар қауіпсіз `wwwroot/uploads` аймағына жазылады.</div></div>
+        </div>
+    </aside>
+</div>

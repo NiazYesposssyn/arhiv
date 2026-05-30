@@ -1,0 +1,48 @@
+@model RequestIndexViewModel
+@{
+    ViewData["Title"] = "Заявкалар";
+    ViewData["PageTitle"] = "Архивтік сұраныстар";
+}
+
+<div class="page-grid">
+    <form method="get" class="premium-card search-panel" style="grid-template-columns:1.4fr .8fr auto auto">
+        <input name="search" value="@Model.Search" class="form-control" placeholder="Заявка нөмірі немесе тақырыбы..." />
+        <select name="status" class="form-select" asp-items="Html.GetEnumSelectList<RequestStatus>()">
+            <option value="">Барлық мәртебелер</option>
+        </select>
+        <button class="btn btn-premium" type="submit"><i class="bi bi-search me-2"></i>Іздеу</button>
+        <a class="btn btn-ghost" asp-action="Export"><i class="bi bi-filetype-csv"></i></a>
+    </form>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2 class="h4 fw-bold mb-1">Заявкалар тізімі</h2>
+            <p class="muted mb-0">Құжат алу, тексеру және рұқсат сұраныстары.</p>
+        </div>
+        <a class="btn btn-premium" asp-action="Create"><i class="bi bi-plus-circle me-2"></i>Жаңа заявка</a>
+    </div>
+
+    <div class="data-table-wrap">
+        <div class="table-responsive">
+            <table class="table">
+                <thead><tr><th>Заявка</th><th>Пайдаланушы</th><th>Құжат</th><th>Басымдық</th><th>Мәртебе</th><th></th></tr></thead>
+                <tbody>
+                @foreach (var request in Model.Requests)
+                {
+                    <tr>
+                        <td>
+                            <div class="fw-bold">@request.Subject</div>
+                            <div class="muted small">@request.Number · @request.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy")</div>
+                        </td>
+                        <td>@request.RequestedBy?.FullName</td>
+                        <td>@request.ArchiveDocument?.Number</td>
+                        <td><span class="badge-soft">@request.Priority</span></td>
+                        <td>@request.Status</td>
+                        <td class="text-end"><a class="btn btn-sm btn-ghost" asp-action="Details" asp-route-id="@request.Id">Ашу</a></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

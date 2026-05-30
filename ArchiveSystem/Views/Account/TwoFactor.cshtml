@@ -1,0 +1,24 @@
+@model TwoFactorViewModel
+@{
+    ViewData["Title"] = "2FA растау";
+}
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-hero">
+            <h1 class="display-6 fw-bold">Екі факторлы растау</h1>
+            <p class="opacity-75">Authenticator қосымшасындағы уақытша кодты енгізіңіз.</p>
+        </div>
+        <div class="auth-form">
+            <form asp-action="TwoFactor" method="post" class="d-grid gap-3">
+                <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+                <input type="hidden" name="rememberMe" value="@ViewData["RememberMe"]" />
+                <label asp-for="Code" class="form-label">Қауіпсіздік коды</label>
+                <input asp-for="Code" class="form-control form-control-lg" inputmode="numeric" />
+                <span asp-validation-for="Code" class="text-danger small"></span>
+                <label class="form-check-label"><input asp-for="RememberMachine" class="form-check-input me-2" />Бұл құрылғыға сену</label>
+                <button class="btn btn-premium btn-lg" type="submit">Растау</button>
+            </form>
+        </div>
+    </div>
+</div>
