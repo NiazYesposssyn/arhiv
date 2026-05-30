@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="АрхивON - современный демо-портал архивных услуг, цифрового каталога, заявок и записи в архивный центр.">
+    <title>АрхивON - цифровой центр архивных услуг</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="noise"></div>
+    <header class="site-header" id="top">
+        <nav class="navbar" aria-label="Главная навигация">
+            <a class="brand" href="#top" aria-label="АрхивON на главную">
+                <span class="brand-mark">A</span>
+                <span>
+                    <strong>АрхивON</strong>
+                    <small>центр архивных услуг</small>
+                </span>
+            </a>
+
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span class="sr-only">Открыть меню</span>
+            </button>
+
+            <div class="nav-links" id="mainMenu">
+                <a href="#services">Услуги</a>
+                <a href="#catalog">Каталог</a>
+                <a href="#request">Заявка</a>
+                <a href="#appointment">Запись</a>
+                <a href="#faq">Помощь</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" type="button" aria-label="Переключить тему">
+                    <span class="theme-icon">◐</span>
+                </button>
+                <a class="btn btn-outline" href="#request">Подать заявку</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero section-pad">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <div class="eyebrow">
+                        <span class="pulse"></span>
+                        Единое окно для архивных документов
+                    </div>
+                    <h1>Архивные справки, дела и цифровые копии без очередей</h1>
+                    <p class="hero-lead">
+                        Современный портал для поиска фондов, подачи заявок, записи в читальный зал,
+                        отслеживания статуса и получения электронных архивных услуг.
+                    </p>
+
+                    <div class="smart-search" role="search">
+                        <label class="sr-only" for="globalSearch">Поиск по архиву</label>
+                        <span class="search-icon">⌕</span>
+                        <input id="globalSearch" type="search" placeholder="Найти справку, фонд, дело, фамилию или год...">
+                        <button class="btn btn-primary" type="button" data-scroll="#catalog">Искать</button>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-primary btn-lg" href="#request">Начать оформление</a>
+                        <a class="btn btn-glass btn-lg" href="#catalog">Открыть каталог</a>
+                    </div>
+
+                    <div class="hero-stats" aria-label="Показатели портала">
+                        <div>
+                            <strong>2.8 млн</strong>
+                            <span>оцифрованных дел</span>
+                        </div>
+                        <div>
+                            <strong>18</strong>
+                            <span>видов услуг</span>
+                        </div>
+                        <div>
+                            <strong>24/7</strong>
+                            <span>онлайн-статус</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-panel" aria-label="Панель статуса заявки">
+                    <div class="panel-top">
+                        <span class="status-dot"></span>
+                        <span>Заявка активна</span>
+                        <strong>#AR-2048</strong>
+                    </div>
+                    <div class="archive-card">
+                        <div class="file-stack">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div>
+                            <p>Архивная справка</p>
+                            <h3>Трудовой стаж и зарплата</h3>
+                            <small>Городской архив - сектор социально-правовых запросов</small>
+                        </div>
+                    </div>
+                    <div class="progress-list">
+                        <div class="progress-item done">
+                            <span></span>
+                            <div>
+                                <strong>Заявка принята</strong>
+                                <small>Проверены контактные данные</small>
+                            </div>
+                        </div>
+                        <div class="progress-item done">
+                            <span></span>
+                            <div>
+                                <strong>Поиск в фондах</strong>
+                                <small>Найдены 3 подходящих дела</small>
+                            </div>
+                        </div>
+                        <div class="progress-item active">
+                            <span></span>
+                            <div>
+                                <strong>Подготовка копии</strong>
+                                <small>Ожидает цифровой подписи</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mini-dashboard">
+                        <div>
+                            <span>Готовность</span>
+                            <strong>72%</strong>
+                        </div>
+                        <div>
+                            <span>Срок</span>
+                            <strong>3 дня</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="trust-strip">
+            <div class="container trust-grid">
+                <span>Электронная очередь</span>
+                <span>Цифровая подпись</span>
+                <span>Уведомления SMS/email</span>
+                <span>Безопасный кабинет</span>
+            </div>
+        </section>
+
+        <section class="section-pad" id="services">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow muted">Услуги</span>
+                        <h2>Все архивные сервисы в одном месте</h2>
+                    </div>
+                    <p>Подавайте запросы, выбирайте формат выдачи, бронируйте визит и отслеживайте каждое действие в прозрачной цифровой очереди.</p>
+                </div>
+
+                <div class="services-grid">
+                    <article class="service-card featured">
+                        <span class="service-icon">01</span>
+                        <h3>Архивная справка</h3>
+                        <p>Справки о стаже, зарплате, обучении, проживании, наградах и имущественных документах.</p>
+                        <a href="#request">Оформить</a>
+                    </article>
+                    <article class="service-card">
+                        <span class="service-icon">02</span>
+                        <h3>Поиск дела</h3>
+                        <p>Интеллектуальный поиск по фондам, описям, годам, регионам и персональным данным.</p>
+                        <a href="#catalog">Найти в каталоге</a>
+                    </article>
+                    <article class="service-card">
+                        <span class="service-icon">03</span>
+                        <h3>Цифровая копия</h3>
+                        <p>Заказ сканов документов с водяным знаком, заверением и безопасной ссылкой.</p>
+                        <a href="#request">Заказать копию</a>
+                    </article>
+                    <article class="service-card">
+                        <span class="service-icon">04</span>
+                        <h3>Генеалогический запрос</h3>
+                        <p>Поиск метрических записей, семейных линий, переселений и исторических сведений.</p>
+                        <a href="#request">Начать поиск</a>
+                    </article>
+                    <article class="service-card">
+                        <span class="service-icon">05</span>
+                        <h3>Читальный зал</h3>
+                        <p>Бронирование места, предзаказ дел и быстрый пропуск через электронную очередь.</p>
+                        <a href="#appointment">Записаться</a>
+                    </article>
+                    <article class="service-card">
+                        <span class="service-icon">06</span>
+                        <h3>Реставрация и хранение</h3>
+                        <p>Оценка состояния документов, консультации по хранению и передаче в архив.</p>
+                        <a href="#assistant">Получить совет</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-pad catalog-section" id="catalog">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow muted">Каталог</span>
+                        <h2>Поиск по цифровому архиву</h2>
+                    </div>
+                    <p>Фильтруйте архивные единицы, сохраняйте материалы в избранное и переходите к оформлению услуги прямо из карточки.</p>
+                </div>
+
+                <div class="catalog-layout">
+                    <aside class="filter-panel" aria-label="Фильтры каталога">
+                        <h3>Фильтры</h3>
+                        <label>
+                            Поиск
+                            <input id="catalogSearch" type="search" placeholder="Фамилия, фонд, город...">
+                        </label>
+                        <label>
+                            Тип документа
+                            <select id="typeFilter">
+                                <option value="all">Все типы</option>
+                                <option value="social">Социально-правовые</option>
+                                <option value="history">Исторические</option>
+                                <option value="property">Имущество</option>
+                                <option value="genealogy">Генеалогия</option>
+                            </select>
+                        </label>
+                        <label>
+                            Регион
+                            <select id="regionFilter">
+                                <option value="all">Все регионы</option>
+                                <option value="Астана">Астана</option>
+                                <option value="Алматы">Алматы</option>
+                                <option value="Шымкент">Шымкент</option>
+                                <option value="Караганда">Караганда</option>
+                            </select>
+                        </label>
+                        <label>
+                            Период
+                            <select id="yearFilter">
+                                <option value="all">Любой период</option>
+                                <option value="pre1950">до 1950</option>
+                                <option value="1950-1990">1950-1990</option>
+                                <option value="after1990">после 1990</option>
+                            </select>
+                        </label>
+                        <button class="btn btn-secondary" type="button" id="resetFilters">Сбросить фильтры</button>
+                    </aside>
+
+                    <div class="catalog-content">
+                        <div class="catalog-toolbar">
+                            <div class="chip-row" role="list" aria-label="Быстрые категории">
+                                <button class="chip active" type="button" data-chip="all">Все</button>
+                                <button class="chip" type="button" data-chip="social">Справки</button>
+                                <button class="chip" type="button" data-chip="history">История</button>
+                                <button class="chip" type="button" data-chip="property">Имущество</button>
+                                <button class="chip" type="button" data-chip="genealogy">Генеалогия</button>
+                            </div>
+                            <span id="resultCount">0 материалов</span>
+                        </div>
+                        <div class="archive-results" id="archiveResults"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-pad request-section" id="request">
+            <div class="container request-layout">
+                <div>
+                    <span class="eyebrow muted">Онлайн-заявка</span>
+                    <h2>Оформите запрос как в центре обслуживания</h2>
+                    <p class="section-intro">Выберите услугу, укажите данные для поиска и способ получения результата. Портал сразу покажет срок, чек-лист и номер обращения.</p>
+
+                    <form class="request-form" id="requestForm">
+                        <div class="form-grid">
+                            <label>
+                                ФИО заявителя
+                                <input name="fullName" type="text" placeholder="Иванов Иван Иванович" required>
+                            </label>
+                            <label>
+                                ИИН / номер документа
+                                <input name="iin" type="text" placeholder="000000000000" maxlength="12" required>
+                            </label>
+                            <label>
+                                Вид услуги
+                                <select name="requestType" required>
+                                    <option value="Архивная справка">Архивная справка</option>
+                                    <option value="Цифровая копия">Цифровая копия</option>
+                                    <option value="Генеалогический поиск">Генеалогический поиск</option>
+                                    <option value="Подтверждение имущества">Подтверждение имущества</option>
+                                </select>
+                            </label>
+                            <label>
+                                Регион поиска
+                                <select name="region" required>
+                                    <option>Астана</option>
+                                    <option>Алматы</option>
+                                    <option>Шымкент</option>
+                                    <option>Караганда</option>
+                                </select>
+                            </label>
+                            <label class="wide">
+                                Что нужно найти
+                                <textarea name="archiveTheme" rows="4" placeholder="Например: подтвердить стаж работы на заводе с 1986 по 1994 год..." required></textarea>
+                            </label>
+                            <label>
+                                Способ получения
+                                <select name="delivery" required>
+                                    <option>Электронно в личный кабинет</option>
+                                    <option>В архивном центре</option>
+                                    <option>Курьерская доставка</option>
+                                </select>
+                            </label>
+                            <label>
+                                Телефон
+                                <input name="phone" type="tel" placeholder="+7 700 000 00 00" required>
+                            </label>
+                            <label>
+                                Email
+                                <input name="email" type="email" placeholder="mail@example.com" required>
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-primary btn-lg" type="submit">Отправить заявку</button>
+                            <button class="btn btn-glass btn-lg" type="button" id="fillDemo">Заполнить пример</button>
+                        </div>
+                    </form>
+                </div>
+
+                <aside class="summary-card" aria-live="polite">
+                    <h3>Предварительный расчет</h3>
+                    <div id="requestSummary">
+                        <div>
+                            <span>Услуга</span>
+                            <strong>Архивная справка</strong>
+                        </div>
+                        <div>
+                            <span>Ориентировочный срок</span>
+                            <strong>5 рабочих дней</strong>
+                        </div>
+                        <div>
+                            <span>Статус</span>
+                            <strong>Готово к отправке</strong>
+                        </div>
+                    </div>
+                    <div class="summary-checklist">
+                        <h4>Понадобится</h4>
+                        <ul>
+                            <li>Документ, удостоверяющий личность</li>
+                            <li>Точные годы или период поиска</li>
+                            <li>Контакт для уведомлений</li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="section-pad assistant-section" id="assistant">
+            <div class="container assistant-grid">
+                <div class="assistant-card">
+                    <span class="eyebrow muted">Умный помощник</span>
+                    <h2>Подберите нужную услугу за минуту</h2>
+                    <p>Отметьте цель обращения, а портал подскажет подходящий архивный сервис и список документов.</p>
+                    <div class="intent-list" id="intentList">
+                        <button type="button" class="intent active" data-intent="stazh">Подтвердить стаж</button>
+                        <button type="button" class="intent" data-intent="copy">Получить копию дела</button>
+                        <button type="button" class="intent" data-intent="family">Найти родословную</button>
+                        <button type="button" class="intent" data-intent="property">Найти имущество</button>
+                    </div>
+                </div>
+                <div class="recommendation-card" id="recommendationCard"></div>
+            </div>
+        </section>
+
+        <section class="section-pad" id="appointment">
+            <div class="container appointment-layout">
+                <div>
+                    <span class="eyebrow muted">Электронная очередь</span>
+                    <h2>Запись в архивный центр и читальный зал</h2>
+                    <p class="section-intro">Выберите филиал, дату и свободное окно. Подтверждение появится на экране и будет готово для отправки заявителю.</p>
+                </div>
+                <form class="appointment-card" id="appointmentForm">
+                    <label>
+                        Филиал
+                        <select name="branch">
+                            <option>Центральный архивный центр</option>
+                            <option>Городской архив Алматы</option>
+                            <option>Архивный сектор Шымкента</option>
+                            <option>Областной архив Караганды</option>
+                        </select>
+                    </label>
+                    <label>
+                        Дата визита
+                        <input name="date" type="date" required>
+                    </label>
+                    <div>
+                        <span class="field-title">Время</span>
+                        <div class="time-slots" id="timeSlots">
+                            <button type="button" class="slot active">09:30</button>
+                            <button type="button" class="slot">10:45</button>
+                            <button type="button" class="slot">12:00</button>
+                            <button type="button" class="slot">14:15</button>
+                            <button type="button" class="slot">16:30</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-lg" type="submit">Забронировать визит</button>
+                    <p class="appointment-result" id="appointmentResult">Выберите дату и время для записи.</p>
+                </form>
+            </div>
+        </section>
+
+        <section class="section-pad">
+            <div class="container">
+                <div class="timeline-card">
+                    <div>
+                        <span class="eyebrow muted">Процесс</span>
+                        <h2>Как работает портал</h2>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-step">
+                            <span>1</span>
+                            <h3>Поиск</h3>
+                            <p>Найдите фонд или выберите услугу через помощника.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <span>2</span>
+                            <h3>Заявка</h3>
+                            <p>Заполните форму и получите номер обращения.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <span>3</span>
+                            <h3>Обработка</h3>
+                            <p>Специалист проверит фонды, подготовит справку или копию.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <span>4</span>
+                            <h3>Выдача</h3>
+                            <p>Получите результат электронно, в центре или доставкой.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-pad faq-section" id="faq">
+            <div class="container faq-layout">
+                <div>
+                    <span class="eyebrow muted">Помощь</span>
+                    <h2>Популярные вопросы</h2>
+                    <p class="section-intro">Ответы на частые вопросы о сроках, статусе заявки, документах и выдаче архивных материалов.</p>
+                </div>
+                <div class="faq-list" id="faqList">
+                    <article class="faq-item open">
+                        <button type="button">Можно ли получить архивную справку онлайн?</button>
+                        <p>Да. В демо-портале заявка оформляется онлайн, а результат можно выбрать в электронном формате, в центре или доставкой.</p>
+                    </article>
+                    <article class="faq-item">
+                        <button type="button">Что делать, если точный год неизвестен?</button>
+                        <p>Укажите примерный период, место работы, учебы или проживания. Чем больше деталей, тем быстрее поиск.</p>
+                    </article>
+                    <article class="faq-item">
+                        <button type="button">Можно ли сохранить найденные дела?</button>
+                        <p>Да. В каталоге есть кнопка избранного, счетчик сохраняет выбранные материалы во время текущей сессии.</p>
+                    </article>
+                    <article class="faq-item">
+                        <button type="button">Это официальный государственный сайт?</button>
+                        <p>Нет. Это демонстрационный проект современного сайта архивных услуг, который можно доработать под реальные регламенты.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <a class="brand footer-brand" href="#top">
+                    <span class="brand-mark">A</span>
+                    <span>
+                        <strong>АрхивON</strong>
+                        <small>цифровой архивный сервис</small>
+                    </span>
+                </a>
+                <p>Демо-сайт для архивного центра: каталог, заявки, электронная очередь, помощник и современный интерфейс.</p>
+            </div>
+            <div>
+                <h4>Разделы</h4>
+                <a href="#services">Услуги</a>
+                <a href="#catalog">Каталог</a>
+                <a href="#request">Заявка</a>
+                <a href="#appointment">Запись</a>
+            </div>
+            <div>
+                <h4>Контакты</h4>
+                <span>1414 - единая справочная</span>
+                <span>support@archivon.demo</span>
+                <span>Пн-Пт, 09:00-18:00</span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-widget" aria-live="polite">
+        <button class="favorite-widget" type="button" data-scroll="#catalog">
+            Избранное: <strong id="favoriteCount">0</strong>
+        </button>
+        <button class="to-top" type="button" data-scroll="#top" aria-label="Наверх">↑</button>
+    </div>
+
+    <dialog class="success-modal" id="successModal">
+        <button class="modal-close" type="button" aria-label="Закрыть">×</button>
+        <span class="modal-badge">Готово</span>
+        <h3 id="modalTitle">Заявка отправлена</h3>
+        <p id="modalText">Ваше обращение принято в работу.</p>
+        <button class="btn btn-primary" type="button" id="modalOk">Понятно</button>
+    </dialog>
+
+    <script src="app.js"></script>
+</body>
+</html>
