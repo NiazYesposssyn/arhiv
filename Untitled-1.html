@@ -1,11 +1,1345 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fkfkfkff</title>
+    <title>Archive Access System | Дипломный проект</title>
+    <style>
+        :root {
+            --bg: #070b17;
+            --bg-soft: #0d1427;
+            --card: rgba(17, 25, 45, 0.82);
+            --card-strong: rgba(23, 33, 60, 0.96);
+            --text: #eef4ff;
+            --muted: #8e9bb9;
+            --line: rgba(148, 163, 184, 0.16);
+            --blue: #3b67ff;
+            --violet: #8b5cf6;
+            --cyan: #22d3ee;
+            --green: #20d39b;
+            --orange: #f59e0b;
+            --danger: #fb7185;
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+            --radius: 24px;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(59, 103, 255, 0.24), transparent 32rem),
+                radial-gradient(circle at top right, rgba(34, 211, 238, 0.17), transparent 26rem),
+                radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.21), transparent 28rem),
+                var(--bg);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 52px 52px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 85%);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(18px);
+            background: rgba(7, 11, 23, 0.72);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 72px;
+            gap: 24px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .brand-mark,
+        .icon-box {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            box-shadow: 0 12px 30px rgba(59, 103, 255, 0.26);
+        }
+
+        .brand span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .nav-links a {
+            padding: 10px 12px;
+            border-radius: 999px;
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .language-switch {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .language-switch button {
+            border: 0;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: transparent;
+            transition: 0.2s ease;
+        }
+
+        .language-switch button.active {
+            color: #fff;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 0 18px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: var(--text);
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.06);
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.28);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            border: 0;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            box-shadow: 0 16px 36px rgba(59, 103, 255, 0.28);
+        }
+
+        .hero {
+            position: relative;
+            padding: 92px 0 76px;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.02fr) minmax(340px, 0.78fr);
+            align-items: center;
+            gap: 50px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            margin-bottom: 22px;
+            padding: 8px 12px;
+            border: 1px solid rgba(32, 211, 155, 0.26);
+            border-radius: 999px;
+            color: #a7f3d0;
+            background: rgba(32, 211, 155, 0.08);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 0 8px rgba(32, 211, 155, 0.12);
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        h1 {
+            max-width: 780px;
+            margin-bottom: 22px;
+            font-size: clamp(42px, 6vw, 82px);
+            line-height: 0.95;
+            letter-spacing: -0.075em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6ea1ff 5%, #a78bfa 55%, #22d3ee 105%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-copy {
+            max-width: 690px;
+            margin-bottom: 32px;
+            color: var(--muted);
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 38px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(120px, 1fr));
+            gap: 14px;
+        }
+
+        .stat-card,
+        .feature-card,
+        .panel,
+        .step,
+        .request-card,
+        .login-card {
+            border: 1px solid var(--line);
+            background: var(--card);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(20px);
+        }
+
+        .stat-card {
+            padding: 18px;
+            border-radius: 18px;
+        }
+
+        .stat-card strong {
+            display: block;
+            color: #7da2ff;
+            font-size: 28px;
+            letter-spacing: -0.05em;
+        }
+
+        .stat-card span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .hero-panel {
+            position: relative;
+        }
+
+        .dashboard-preview {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(17, 25, 45, 0.98), rgba(13, 20, 39, 0.92));
+            box-shadow: 0 34px 90px rgba(0, 0, 0, 0.46);
+        }
+
+        .window-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--danger);
+        }
+
+        .dot:nth-child(2) {
+            background: var(--orange);
+        }
+
+        .dot:nth-child(3) {
+            background: var(--green);
+        }
+
+        .preview-content {
+            padding: 22px;
+        }
+
+        .preview-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .preview-head p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            width: fit-content;
+            padding: 7px 10px;
+            border-radius: 999px;
+            color: #bbf7d0;
+            background: rgba(32, 211, 155, 0.12);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .queue-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .queue-item {
+            display: grid;
+            grid-template-columns: 38px 1fr auto;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .queue-icon {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            color: #dbeafe;
+            background: rgba(59, 103, 255, 0.18);
+        }
+
+        .queue-item strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .queue-item span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .tag {
+            border-radius: 999px;
+            padding: 7px 10px;
+            color: #c7d2fe;
+            background: rgba(139, 92, 246, 0.13);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        section {
+            padding: 72px 0;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        .section-head h2 {
+            margin-bottom: 12px;
+            font-size: clamp(30px, 4vw, 48px);
+            line-height: 1;
+            letter-spacing: -0.055em;
+        }
+
+        .section-head p {
+            max-width: 620px;
+            margin-bottom: 0;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .feature-card {
+            padding: 22px;
+            border-radius: 22px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.45);
+        }
+
+        .feature-card .icon-box {
+            width: 46px;
+            height: 46px;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+            font-size: 19px;
+        }
+
+        .feature-card p {
+            margin-bottom: 0;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        .workflow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            counter-reset: steps;
+        }
+
+        .step {
+            position: relative;
+            min-height: 210px;
+            padding: 24px;
+            border-radius: 22px;
+            overflow: hidden;
+            counter-increment: steps;
+        }
+
+        .step::before {
+            content: "0" counter(steps);
+            display: block;
+            margin-bottom: 30px;
+            color: rgba(125, 162, 255, 0.5);
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: -0.08em;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            margin-bottom: 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .access-layout {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+
+        .role-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .role {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .role strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .role span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .level {
+            color: #bfdbfe;
+            font-size: 12px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .request-grid {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 18px;
+        }
+
+        .request-card,
+        .login-card {
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d9e3ff;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            border-radius: 13px;
+            color: var(--text);
+            outline: none;
+            background: rgba(3, 7, 18, 0.56);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input,
+        select {
+            height: 46px;
+            padding: 0 13px;
+        }
+
+        textarea {
+            min-height: 116px;
+            padding: 13px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: rgba(99, 102, 241, 0.74);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+        }
+
+        .form-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .form-note {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .requests-feed {
+            display: grid;
+            gap: 12px;
+        }
+
+        .feed-item {
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .feed-item header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 8px;
+        }
+
+        .feed-item strong {
+            font-size: 15px;
+        }
+
+        .feed-item p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .approved {
+            color: #86efac;
+            background: rgba(34, 197, 94, 0.12);
+        }
+
+        .review {
+            color: #fde68a;
+            background: rgba(245, 158, 11, 0.13);
+        }
+
+        .limited {
+            color: #bfdbfe;
+            background: rgba(59, 130, 246, 0.13);
+        }
+
+        .auth-box {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .login-tabs {
+            display: flex;
+            width: fit-content;
+            gap: 6px;
+            margin-bottom: 18px;
+            padding: 5px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .login-tabs button {
+            border: 0;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 9px 14px;
+            border-radius: 999px;
+            background: transparent;
+        }
+
+        .login-tabs button.active {
+            color: #fff;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .security-list {
+            display: grid;
+            gap: 14px;
+            margin: 20px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .security-list li {
+            display: flex;
+            gap: 12px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .security-list li::before {
+            content: "✓";
+            display: grid;
+            flex: 0 0 24px;
+            place-items: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            color: #d1fae5;
+            background: rgba(32, 211, 155, 0.16);
+            font-weight: 900;
+        }
+
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 50;
+            max-width: 360px;
+            padding: 16px 18px;
+            border: 1px solid rgba(32, 211, 155, 0.28);
+            border-radius: 18px;
+            color: #d1fae5;
+            background: rgba(6, 20, 25, 0.92);
+            box-shadow: var(--shadow);
+            transform: translateY(22px);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.25s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.18);
+        }
+
+        @media (max-width: 980px) {
+            .hero-grid,
+            .access-layout,
+            .request-grid,
+            .auth-box {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .workflow,
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                width: min(100% - 28px, 1180px);
+            }
+
+            .hero {
+                padding-top: 58px;
+            }
+
+            .nav {
+                min-height: 66px;
+            }
+
+            .brand span,
+            .language-switch {
+                display: none;
+            }
+
+            .features,
+            .workflow,
+            .stats,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-head,
+            .form-footer {
+                display: block;
+            }
+
+            .form-footer .btn {
+                width: 100%;
+                margin-top: 14px;
+            }
+
+            .queue-item {
+                grid-template-columns: 38px 1fr;
+            }
+
+            .queue-item .tag {
+                grid-column: 1 / -1;
+                width: fit-content;
+            }
+        }
+    </style>
 </head>
 <body>
-    
+    <header class="topbar">
+        <div class="container nav">
+            <a class="brand" href="#home" aria-label="Archive Access System">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 8.5h14M8 12h8M9 16h6M6.5 21h11a2 2 0 0 0 2-2V6.8a2 2 0 0 0-.72-1.54l-2.8-2.26A2 2 0 0 0 14.72 2H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2Z" stroke="white" stroke-width="1.7" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <strong>Archive Access System<span>дипломный веб-проект</span></strong>
+            </a>
+
+            <nav class="nav-links" aria-label="Главная навигация">
+                <a href="#features">Возможности</a>
+                <a href="#workflow">Процесс</a>
+                <a href="#request">Заявка</a>
+                <a href="#security">Безопасность</a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="language-switch" aria-label="Переключение языка">
+                    <button class="active" type="button">RU</button>
+                    <button type="button">KZ</button>
+                    <button type="button">EN</button>
+                </div>
+                <a class="btn btn-primary" href="#auth">Войти</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="home">
+        <section class="hero">
+            <div class="container hero-grid">
+                <div>
+                    <div class="eyebrow"><span class="pulse"></span>Система для архивных учреждений</div>
+                    <h1>Управление доступом к <span class="gradient-text">архивной информации</span></h1>
+                    <p class="hero-copy">
+                        Веб-платформа для регистрации пользователей, приема заявок, проверки прав доступа,
+                        выдачи архивных материалов и контроля всех действий сотрудников и заявителей.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#request">Подать запрос</a>
+                        <a class="btn" href="#workflow">Посмотреть процесс</a>
+                    </div>
+                    <div class="stats" aria-label="Ключевые показатели системы">
+                        <div class="stat-card">
+                            <strong>330K+</strong>
+                            <span>архивных документов</span>
+                        </div>
+                        <div class="stat-card">
+                            <strong>4</strong>
+                            <span>уровня доступа</span>
+                        </div>
+                        <div class="stat-card">
+                            <strong>24/7</strong>
+                            <span>прием заявок</span>
+                        </div>
+                        <div class="stat-card">
+                            <strong>99.9%</strong>
+                            <span>журналирование</span>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="hero-panel" aria-label="Предпросмотр панели заявок">
+                    <div class="dashboard-preview">
+                        <div class="window-bar">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <div class="preview-content">
+                            <div class="preview-head">
+                                <div>
+                                    <h3>Панель обработки запросов</h3>
+                                    <p>Очередь заявок, уровни допуска и статусы выдачи</p>
+                                </div>
+                                <span class="status-badge"><span class="pulse"></span>Online</span>
+                            </div>
+                            <div class="queue-list">
+                                <div class="queue-item">
+                                    <span class="queue-icon">01</span>
+                                    <div>
+                                        <strong>Справка о трудовом стаже</strong>
+                                        <span>Заявитель: А. Сапарова · проверка личности</span>
+                                    </div>
+                                    <span class="tag">На рассмотрении</span>
+                                </div>
+                                <div class="queue-item">
+                                    <span class="queue-icon">02</span>
+                                    <div>
+                                        <strong>Фонд №124: исторические документы</strong>
+                                        <span>Доступ: исследовательский · оператор архива</span>
+                                    </div>
+                                    <span class="tag approved">Одобрено</span>
+                                </div>
+                                <div class="queue-item">
+                                    <span class="queue-icon">03</span>
+                                    <div>
+                                        <strong>Личное дело сотрудника</strong>
+                                        <span>Требуется подтверждение полномочий</span>
+                                    </div>
+                                    <span class="tag review">Проверка</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="features">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <h2>Основные возможности</h2>
+                        <p>
+                            Сайт показывает ключевые функции дипломной системы: от подачи запроса до аудита доступа
+                            к документам, которые имеют разные уровни конфиденциальности.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <article class="feature-card">
+                        <span class="icon-box" aria-hidden="true">🔎</span>
+                        <h3>Каталог архивов</h3>
+                        <p>Поиск фондов, описей и дел по номеру, периоду, типу документа и ключевым словам.</p>
+                    </article>
+                    <article class="feature-card">
+                        <span class="icon-box" aria-hidden="true">🛡</span>
+                        <h3>Ролевой доступ</h3>
+                        <p>Разделение прав для заявителей, операторов, экспертов, администраторов и аудиторов.</p>
+                    </article>
+                    <article class="feature-card">
+                        <span class="icon-box" aria-hidden="true">📨</span>
+                        <h3>Обработка запросов</h3>
+                        <p>Электронная заявка, автоматическая регистрация, назначение исполнителя и контроль сроков.</p>
+                    </article>
+                    <article class="feature-card">
+                        <span class="icon-box" aria-hidden="true">📄</span>
+                        <h3>Выдача документов</h3>
+                        <p>Предоставление копий, справок или отказов с указанием причины и ссылкой на нормативные правила.</p>
+                    </article>
+                    <article class="feature-card">
+                        <span class="icon-box" aria-hidden="true">📊</span>
+                        <h3>Аналитика</h3>
+                        <p>Отчеты по количеству заявок, популярным фондам, времени обработки и загрузке сотрудников.</p>
+                    </article>
+                    <article class="feature-card">
+                        <span class="icon-box" aria-hidden="true">🧾</span>
+                        <h3>Журнал аудита</h3>
+                        <p>Фиксация входов, просмотров, скачиваний, решений по заявкам и изменений прав доступа.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <h2>Процесс обработки пользовательского запроса</h2>
+                        <p>
+                            Логика системы построена вокруг прозрачного маршрута заявки: пользователь понимает статус,
+                            сотрудник видит задачу, администратор контролирует безопасность.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="workflow">
+                    <article class="step">
+                        <h3>Регистрация</h3>
+                        <p>Пользователь создает профиль, подтверждает email и указывает цель обращения.</p>
+                    </article>
+                    <article class="step">
+                        <h3>Подача заявки</h3>
+                        <p>Заявитель выбирает тип документа, описывает запрос и прикладывает основание доступа.</p>
+                    </article>
+                    <article class="step">
+                        <h3>Проверка доступа</h3>
+                        <p>Система определяет уровень конфиденциальности, а оператор принимает решение по выдаче.</p>
+                    </article>
+                    <article class="step">
+                        <h3>Результат</h3>
+                        <p>Пользователь получает электронную справку, копию документа или мотивированный отказ.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="security">
+            <div class="container access-layout">
+                <article class="panel">
+                    <div class="section-head">
+                        <div>
+                            <h2>Модель доступа</h2>
+                            <p>
+                                В дипломном проекте можно описать RBAC-модель: каждому пользователю назначается роль,
+                                а каждому архивному объекту - уровень доступа.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="role-list">
+                        <div class="role">
+                            <div>
+                                <strong>Гость</strong>
+                                <span>Просмотр открытого каталога и создание заявки</span>
+                            </div>
+                            <span class="level">Level 1</span>
+                        </div>
+                        <div class="role">
+                            <div>
+                                <strong>Зарегистрированный пользователь</strong>
+                                <span>Личный кабинет, история обращений, получение ответов</span>
+                            </div>
+                            <span class="level">Level 2</span>
+                        </div>
+                        <div class="role">
+                            <div>
+                                <strong>Оператор архива</strong>
+                                <span>Проверка заявок, подготовка справок, изменение статусов</span>
+                            </div>
+                            <span class="level">Level 3</span>
+                        </div>
+                        <div class="role">
+                            <div>
+                                <strong>Администратор</strong>
+                                <span>Управление ролями, аудитом и настройками безопасности</span>
+                            </div>
+                            <span class="level">Level 4</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="section-head">
+                        <div>
+                            <h2>Защита данных</h2>
+                            <p>Раздел для демонстрации мер информационной безопасности, которые можно раскрыть в дипломе.</p>
+                        </div>
+                    </div>
+                    <ul class="security-list">
+                        <li>Аутентификация пользователей и проверка прав перед каждым действием с архивным объектом.</li>
+                        <li>Разграничение открытых, служебных и конфиденциальных документов по уровням допуска.</li>
+                        <li>Журналирование всех операций: вход, поиск, просмотр, скачивание, одобрение и отказ.</li>
+                        <li>Контроль сроков обработки заявок и уведомления пользователя об изменении статуса.</li>
+                        <li>Хранение основания доступа для заявок на персональные или ограниченные материалы.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section id="request">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <h2>Электронная заявка</h2>
+                        <p>
+                            Демонстрационная форма показывает, какие данные пользователь отправляет в архивную службу.
+                            После отправки новая заявка появляется в списке справа.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="request-grid">
+                    <form class="request-card" id="requestForm">
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="fullName">ФИО заявителя</label>
+                                <input id="fullName" name="fullName" type="text" placeholder="Например: Айжан Нурланова" required>
+                            </div>
+                            <div class="field">
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email" placeholder="name@example.com" required>
+                            </div>
+                            <div class="field">
+                                <label for="documentType">Тип документа</label>
+                                <select id="documentType" name="documentType" required>
+                                    <option value="">Выберите тип</option>
+                                    <option>Архивная справка</option>
+                                    <option>Копия документа</option>
+                                    <option>Историческое исследование</option>
+                                    <option>Персональное дело</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="accessLevel">Уровень доступа</label>
+                                <select id="accessLevel" name="accessLevel" required>
+                                    <option value="">Выберите уровень</option>
+                                    <option>Открытый доступ</option>
+                                    <option>Служебная проверка</option>
+                                    <option>Персональные данные</option>
+                                    <option>Ограниченный доступ</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="period">Период документа</label>
+                                <input id="period" name="period" type="text" placeholder="Например: 1980-1995">
+                            </div>
+                            <div class="field">
+                                <label for="purpose">Цель обращения</label>
+                                <select id="purpose" name="purpose">
+                                    <option>Учебная / научная работа</option>
+                                    <option>Подтверждение стажа</option>
+                                    <option>Юридическое основание</option>
+                                    <option>Генеалогический поиск</option>
+                                </select>
+                            </div>
+                            <div class="field full">
+                                <label for="description">Описание запроса</label>
+                                <textarea id="description" name="description" placeholder="Опишите, какую информацию нужно найти в архиве..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <p class="form-note">Номер заявки формируется автоматически. Данные используются только для демонстрации интерфейса.</p>
+                            <button class="btn btn-primary" type="submit">Отправить заявку</button>
+                        </div>
+                    </form>
+
+                    <aside class="request-card">
+                        <h3>Последние заявки</h3>
+                        <p class="form-note">Статусы помогают показать обработку обращений в личном кабинете.</p>
+                        <div class="requests-feed" id="requestsFeed">
+                            <article class="feed-item">
+                                <header>
+                                    <strong>REQ-24018 · Архивная справка</strong>
+                                    <span class="tag approved">Готово</span>
+                                </header>
+                                <p>Справка о трудовом стаже подготовлена и доступна в личном кабинете.</p>
+                            </article>
+                            <article class="feed-item">
+                                <header>
+                                    <strong>REQ-24019 · Копия документа</strong>
+                                    <span class="tag review">Проверка</span>
+                                </header>
+                                <p>Оператор проверяет основание доступа к персональным данным.</p>
+                            </article>
+                            <article class="feed-item">
+                                <header>
+                                    <strong>REQ-24020 · Исследование</strong>
+                                    <span class="tag limited">В очереди</span>
+                                </header>
+                                <p>Заявка зарегистрирована и ожидает назначения исполнителя.</p>
+                            </article>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <section id="auth">
+            <div class="container auth-box">
+                <article class="login-card">
+                    <div class="login-tabs" role="tablist" aria-label="Формы входа и регистрации">
+                        <button class="active" type="button" data-tab="login">Вход</button>
+                        <button type="button" data-tab="register">Регистрация</button>
+                    </div>
+
+                    <form id="loginForm">
+                        <div class="form-grid">
+                            <div class="field full">
+                                <label for="loginEmail">Email</label>
+                                <input id="loginEmail" type="email" placeholder="user@archive.kz" required>
+                            </div>
+                            <div class="field full">
+                                <label for="loginPassword">Пароль</label>
+                                <input id="loginPassword" type="password" placeholder="Введите пароль" required>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <p class="form-note">Демо-вход имитирует личный кабинет пользователя.</p>
+                            <button class="btn btn-primary" type="submit">Войти</button>
+                        </div>
+                    </form>
+
+                    <form id="registerForm" class="hidden">
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="firstName">Имя</label>
+                                <input id="firstName" type="text" placeholder="Имя" required>
+                            </div>
+                            <div class="field">
+                                <label for="lastName">Фамилия</label>
+                                <input id="lastName" type="text" placeholder="Фамилия" required>
+                            </div>
+                            <div class="field full">
+                                <label for="registerEmail">Email</label>
+                                <input id="registerEmail" type="email" placeholder="name@example.com" required>
+                            </div>
+                            <div class="field full">
+                                <label for="registerPassword">Пароль</label>
+                                <input id="registerPassword" type="password" placeholder="Минимум 8 символов" minlength="8" required>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <p class="form-note">Профиль нужен для отслеживания статуса архивных запросов.</p>
+                            <button class="btn btn-primary" type="submit">Создать аккаунт</button>
+                        </div>
+                    </form>
+                </article>
+
+                <article class="panel">
+                    <div class="section-head">
+                        <div>
+                            <h2>Что можно описать в дипломе</h2>
+                            <p>
+                                Эта страница подходит как визуальная часть проекта. В пояснительной записке можно раскрыть
+                                архитектуру, базу данных, роли, алгоритм проверки доступа и диаграммы обработки заявок.
+                            </p>
+                        </div>
+                    </div>
+                    <ul class="security-list">
+                        <li>ER-диаграмма: пользователи, роли, документы, заявки, статусы и журнал аудита.</li>
+                        <li>Use Case: регистрация, поиск документа, подача заявки, проверка доступа, выдача результата.</li>
+                        <li>Алгоритм маршрутизации заявки между оператором, экспертом и администратором.</li>
+                        <li>Требования к безопасности: авторизация, аудит, защита персональных данных.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <footer>
+        <div class="container">
+            © 2026 Archive Access System · Дипломный проект по управлению доступом к архивной информации
+        </div>
+    </footer>
+
+    <script>
+        const toast = document.querySelector("#toast");
+        const requestForm = document.querySelector("#requestForm");
+        const requestsFeed = document.querySelector("#requestsFeed");
+        const tabButtons = document.querySelectorAll("[data-tab]");
+        const loginForm = document.querySelector("#loginForm");
+        const registerForm = document.querySelector("#registerForm");
+        const languageButtons = document.querySelectorAll(".language-switch button");
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add("show");
+            window.setTimeout(() => toast.classList.remove("show"), 3200);
+        }
+
+        requestForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const data = new FormData(requestForm);
+            const requestNumber = Math.floor(24000 + Math.random() * 900);
+            const documentType = data.get("documentType");
+            const description = data.get("description").trim();
+
+            const item = document.createElement("article");
+            const header = document.createElement("header");
+            const title = document.createElement("strong");
+            const status = document.createElement("span");
+            const summary = document.createElement("p");
+
+            item.className = "feed-item";
+            status.className = "tag limited";
+            title.textContent = `REQ-${requestNumber} · ${documentType}`;
+            status.textContent = "Новая";
+            summary.textContent = `${description.substring(0, 150)}${description.length > 150 ? "..." : ""}`;
+
+            header.append(title, status);
+            item.append(header, summary);
+
+            requestsFeed.prepend(item);
+            requestForm.reset();
+            showToast(`Заявка REQ-${requestNumber} успешно зарегистрирована`);
+        });
+
+        tabButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                tabButtons.forEach((item) => item.classList.remove("active"));
+                button.classList.add("active");
+
+                const isLogin = button.dataset.tab === "login";
+                loginForm.classList.toggle("hidden", !isLogin);
+                registerForm.classList.toggle("hidden", isLogin);
+            });
+        });
+
+        [loginForm, registerForm].forEach((form) => {
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+                showToast(form.id === "loginForm" ? "Вход выполнен в демо-режиме" : "Демо-аккаунт создан");
+                form.reset();
+            });
+        });
+
+        languageButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                languageButtons.forEach((item) => item.classList.remove("active"));
+                button.classList.add("active");
+                showToast(`Выбран язык интерфейса: ${button.textContent}`);
+            });
+        });
+    </script>
 </body>
 </html>
