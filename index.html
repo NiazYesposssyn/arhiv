@@ -3,38 +3,38 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Archive System</title>
+  <title>Archive Access System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #050a12;
-      --panel: rgba(5, 16, 30, .82);
-      --panel-2: rgba(7, 24, 45, .92);
-      --line: rgba(68, 155, 255, .22);
-      --line-strong: rgba(78, 169, 255, .52);
-      --gold: #ffbd35;
-      --gold-2: #ffe08a;
-      --blue: #14a6ff;
-      --blue-2: #4d7cff;
-      --purple: #9a55ff;
-      --green: #39d98a;
-      --red: #ff5b6b;
-      --text: #eaf6ff;
-      --muted: #86a4bf;
-      --shadow: 0 18px 60px rgba(0, 0, 0, .45);
+      --bg: #060914;
+      --bg-soft: #0a1022;
+      --panel: rgba(13, 21, 42, .74);
+      --panel-strong: rgba(13, 21, 42, .94);
+      --text: #f5f8ff;
+      --muted: #98a9c4;
+      --border: rgba(255, 255, 255, .12);
+      --brand: #5d6bff;
+      --brand-2: #10d7ff;
+      --gold: #f7c25b;
+      --green: #36d399;
+      --red: #ff667a;
+      --purple: #a45cff;
+      --shadow: 0 28px 90px rgba(0, 0, 0, .42);
+      --radius: 28px;
     }
 
     [data-theme="light"] {
-      --bg: #eef5ff;
-      --panel: rgba(255, 255, 255, .84);
-      --panel-2: rgba(255, 255, 255, .96);
-      --line: rgba(22, 88, 160, .16);
-      --line-strong: rgba(20, 112, 220, .35);
-      --text: #07182b;
-      --muted: #526b84;
-      --shadow: 0 18px 50px rgba(22, 43, 72, .16);
+      --bg: #f3f7ff;
+      --bg-soft: #eaf1ff;
+      --panel: rgba(255, 255, 255, .78);
+      --panel-strong: rgba(255, 255, 255, .96);
+      --text: #0b1729;
+      --muted: #62718a;
+      --border: rgba(15, 23, 42, .11);
+      --shadow: 0 28px 70px rgba(42, 65, 102, .16);
     }
 
     * { box-sizing: border-box; }
@@ -42,12 +42,13 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(circle at 16% 18%, rgba(20,166,255,.16), transparent 28rem),
-        radial-gradient(circle at 83% 12%, rgba(255,189,53,.12), transparent 23rem),
-        linear-gradient(180deg, var(--bg), #02050a 72%);
       color: var(--text);
-      font-family: Inter, system-ui, sans-serif;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 15% 12%, rgba(93, 107, 255, .34), transparent 34rem),
+        radial-gradient(circle at 84% 8%, rgba(16, 215, 255, .20), transparent 28rem),
+        radial-gradient(circle at 58% 92%, rgba(247, 194, 91, .14), transparent 28rem),
+        linear-gradient(145deg, var(--bg), var(--bg-soft));
       overflow-x: hidden;
     }
 
@@ -56,1303 +57,939 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background-image:
-        linear-gradient(var(--line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--line) 1px, transparent 1px);
-      background-size: 38px 38px;
-      mask-image: radial-gradient(circle at 55% 30%, #000 0 48%, transparent 78%);
-      opacity: .65;
       z-index: -2;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, .08) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, #000, transparent 86%);
     }
 
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        linear-gradient(90deg, transparent, rgba(20,166,255,.06), transparent),
-        repeating-linear-gradient(0deg, transparent 0 14px, rgba(20,166,255,.035) 15px);
-      z-index: -1;
-    }
-
-    button, input, select { font: inherit; }
+    button, input, textarea, select { font: inherit; }
     button { cursor: pointer; }
-    .page { width: min(1480px, calc(100vw - 22px)); margin: 0 auto; }
+    .hidden { display: none !important; }
+    .container { width: min(1180px, calc(100vw - 36px)); margin: 0 auto; }
+    .glass {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(26px) saturate(150%);
+    }
 
-    .topbar {
-      height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      border-bottom: 1px solid var(--line);
+    .landing-shell { min-height: 100vh; display: flex; flex-direction: column; }
+    .landing-nav {
       position: sticky;
       top: 0;
       z-index: 20;
-      background: linear-gradient(180deg, rgba(2,8,16,.92), rgba(2,8,16,.66));
-      backdrop-filter: blur(20px);
-    }
-
-    [data-theme="light"] .topbar { background: rgba(238,245,255,.82); }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 246px;
-    }
-
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      color: var(--gold);
-      font-size: 27px;
-      text-shadow: 0 0 20px rgba(255,189,53,.45);
-    }
-
-    .brand-title {
-      font-family: Cinzel, serif;
-      font-size: 21px;
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: .02em;
-    }
-
-    .brand-sub {
-      margin-top: 3px;
-      color: var(--muted);
-      font-size: 9px;
-      letter-spacing: .17em;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 30px;
-      flex: 1;
-    }
-
-    .nav button {
-      position: relative;
-      border: 0;
-      background: transparent;
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 800;
-      opacity: .82;
-      padding: 20px 0;
-    }
-
-    .nav button.active,
-    .nav button:hover { color: var(--gold); opacity: 1; }
-
-    .nav button.active::after,
-    .nav button:hover::after {
-      content: "";
-      position: absolute;
-      left: 8%;
-      right: 8%;
-      bottom: 11px;
-      height: 3px;
-      border-radius: 99px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      box-shadow: 0 0 14px rgba(255,189,53,.9);
-    }
-
-    .actions {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 10px;
-      min-width: 300px;
-    }
-
-    .btn {
-      border: 1px solid var(--line-strong);
-      border-radius: 9px;
-      min-height: 38px;
-      padding: 0 17px;
-      color: var(--text);
-      background: rgba(5,22,42,.62);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 900;
-      font-size: 13px;
-      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    }
-
-    [data-theme="light"] .btn { background: rgba(255,255,255,.72); }
-
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 24px rgba(20,166,255,.24); }
-    .btn.gold {
-      color: #07111e;
-      border-color: rgba(255,189,53,.72);
-      background: linear-gradient(180deg, #ffd875, var(--gold));
-      box-shadow: 0 0 24px rgba(255,189,53,.25);
-    }
-    .btn.blue {
-      color: white;
-      border: 0;
-      background: linear-gradient(135deg, var(--blue), var(--blue-2));
-      box-shadow: 0 0 24px rgba(20,166,255,.28);
-    }
-    .btn.icon { width: 38px; padding: 0; }
-
-    .language {
-      width: 74px;
-      border-radius: 9px;
-      border: 1px solid var(--line-strong);
-      min-height: 38px;
-      color: var(--text);
-      background: rgba(5,22,42,.62);
-      font-weight: 900;
-      padding: 0 8px;
-    }
-
-    .hero {
-      min-height: 300px;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .hero-grid {
-      min-height: 300px;
-      display: grid;
-      grid-template-columns: minmax(360px, .92fr) minmax(520px, 1.18fr) minmax(250px, .56fr);
-      gap: 18px;
-      align-items: center;
-    }
-
-    .hero-copy {
-      position: relative;
-      z-index: 2;
-      padding-left: 34px;
-    }
-
-    .hero-copy::before {
-      content: "❦";
-      position: absolute;
-      left: 0;
-      top: 4px;
-      color: rgba(255,189,53,.26);
-      font-size: 110px;
-      line-height: .75;
-      transform: rotate(-18deg);
-    }
-
-    .hero h1 {
-      position: relative;
-      margin: 0 0 16px;
-      font-family: Cinzel, serif;
-      font-size: clamp(34px, 3.25vw, 56px);
-      line-height: .98;
-      letter-spacing: -.045em;
-      text-shadow: 0 0 22px rgba(20,166,255,.16);
-    }
-
-    .hero h1 span { color: var(--gold); text-shadow: 0 0 22px rgba(255,189,53,.34); }
-    .hero p {
-      width: min(510px, 100%);
-      color: #c9d9e7;
-      font-size: 15px;
-      line-height: 1.65;
-      margin: 0 0 18px;
-    }
-    [data-theme="light"] .hero p { color: var(--muted); }
-    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
-
-    .building-scene {
-      position: relative;
-      height: 286px;
-      display: grid;
-      place-items: end center;
-    }
-
-    .blueprint {
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(90deg, transparent 0 49%, rgba(20,166,255,.22) 50%, transparent 51%),
-        linear-gradient(0deg, transparent 0 49%, rgba(20,166,255,.16) 50%, transparent 51%);
-      background-size: 54px 54px;
-      opacity: .55;
-    }
-
-    .building {
-      position: relative;
-      width: min(560px, 100%);
-      height: 220px;
-      filter: drop-shadow(0 0 28px rgba(20,166,255,.18));
-    }
-
-    .roof {
-      position: absolute;
-      left: 50%;
-      top: 9px;
-      transform: translateX(-50%);
-      width: 390px;
-      height: 66px;
-      clip-path: polygon(50% 0, 100% 100%, 0 100%);
-      background: linear-gradient(180deg, #9bb7d8, #315071 58%, #101927);
-      border-bottom: 4px solid var(--gold);
-    }
-
-    .facade {
-      position: absolute;
-      left: 50%;
-      top: 72px;
-      transform: translateX(-50%);
-      width: 430px;
-      height: 116px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: linear-gradient(180deg, rgba(130,160,190,.55), rgba(17,35,56,.92));
-      box-shadow: inset 0 0 38px rgba(255,255,255,.1);
-    }
-
-    .columns {
-      position: absolute;
-      left: 50%;
-      top: 76px;
-      transform: translateX(-50%);
-      width: 360px;
-      height: 108px;
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 14px;
-      padding: 0 10px;
-    }
-
-    .column {
-      border-radius: 7px 7px 2px 2px;
-      background: linear-gradient(90deg, #734711, var(--gold), #67400e);
-      box-shadow: 0 0 14px rgba(255,189,53,.26);
-    }
-
-    .steps {
-      position: absolute;
-      left: 50%;
-      bottom: 11px;
-      transform: translateX(-50%);
-      width: 480px;
-      height: 38px;
-      border-radius: 50%;
-      border: 3px solid rgba(20,166,255,.8);
-      box-shadow: 0 0 28px rgba(20,166,255,.72), inset 0 0 30px rgba(20,166,255,.28);
-    }
-
-    .flag {
-      position: absolute;
-      right: 18px;
-      top: 9px;
-      width: 76px;
-      height: 132px;
-      border-left: 4px solid #d6b46b;
-    }
-
-    .flag::after {
-      content: "☀";
-      position: absolute;
-      left: 4px;
-      top: 8px;
-      width: 63px;
-      height: 37px;
-      color: var(--gold);
-      display: grid;
-      place-items: center;
-      background: #1da1f2;
-      clip-path: polygon(0 0, 100% 11%, 88% 100%, 0 88%);
-      box-shadow: 0 0 16px rgba(29,161,242,.45);
-    }
-
-    .hologram {
-      position: absolute;
-      z-index: 4;
-      border: 1px solid rgba(20,166,255,.65);
-      border-radius: 10px;
-      background: linear-gradient(180deg, rgba(5,34,64,.78), rgba(1,12,24,.78));
-      box-shadow: 0 0 18px rgba(20,166,255,.42), inset 0 0 24px rgba(20,166,255,.12);
-      padding: 10px;
-    }
-
-    .hologram h4 {
-      margin: 0 0 8px;
-      color: #d8edff;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-    }
-
-    .holo-archive { width: 150px; height: 112px; left: 10px; top: 18px; }
-    .holo-doc { width: 142px; height: 126px; left: -72px; bottom: 30px; }
-    .holo-access { width: 158px; height: 148px; right: 16px; top: 32px; }
-    .holo-flow { width: 248px; height: 98px; right: 64px; bottom: 10px; }
-
-    .mini-building {
-      height: 62px;
-      border: 1px solid rgba(20,166,255,.55);
-      background:
-        linear-gradient(90deg, transparent 0 17%, rgba(20,166,255,.28) 18% 20%, transparent 21%),
-        linear-gradient(0deg, transparent 0 47%, rgba(20,166,255,.22) 48% 51%, transparent 52%);
-      background-size: 22px 18px;
-      clip-path: polygon(50% 0, 100% 30%, 100% 100%, 0 100%, 0 30%);
-    }
-
-    .doc-scan {
-      height: 72px;
-      border-radius: 6px;
-      background:
-        linear-gradient(90deg, rgba(255,255,255,.9), rgba(180,214,242,.8)),
-        repeating-linear-gradient(0deg, transparent 0 9px, rgba(25,82,140,.22) 10px);
-      box-shadow: 12px 10px 0 rgba(20,166,255,.18);
-    }
-
-    .lock {
-      width: 72px;
-      height: 72px;
-      margin: 4px auto 0;
-      border-radius: 50%;
-      border: 2px solid rgba(20,166,255,.7);
-      display: grid;
-      place-items: center;
-      color: #d9f1ff;
-      font-size: 36px;
-      box-shadow: inset 0 0 24px rgba(20,166,255,.25);
-    }
-
-    .flow-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      align-items: center;
-    }
-
-    .flow-step {
-      text-align: center;
-      color: #bde6ff;
-      font-size: 9px;
-      font-weight: 900;
-    }
-
-    .flow-step .circle {
-      width: 30px;
-      height: 30px;
-      margin: 0 auto 6px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: rgba(20,166,255,.16);
-      border: 1px solid rgba(20,166,255,.55);
-    }
-
-    .feature-row {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 10px;
-      padding: 10px 0;
-    }
-
-    .feature-card, .panel {
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, var(--panel), rgba(3,13,25,.82));
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-      border-radius: 14px;
-    }
-
-    [data-theme="light"] .feature-card,
-    [data-theme="light"] .panel {
-      background: var(--panel);
-    }
-
-    .feature-card {
-      min-height: 92px;
-      padding: 16px 16px 12px;
-      display: grid;
-      grid-template-columns: 54px 1fr 18px;
-      gap: 14px;
-      align-items: center;
-      transition: transform .18s ease, border-color .18s ease;
-    }
-
-    .feature-card:hover { transform: translateY(-4px); border-color: var(--line-strong); }
-
-    .feature-icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      font-size: 28px;
-      color: #bfeaff;
-      background: rgba(20,166,255,.13);
-      border: 1px solid rgba(20,166,255,.32);
-      box-shadow: inset 0 0 22px rgba(20,166,255,.14), 0 0 16px rgba(20,166,255,.12);
-    }
-
-    .feature-card.gold .feature-icon { color: var(--gold-2); background: rgba(255,189,53,.13); border-color: rgba(255,189,53,.35); }
-    .feature-card.purple .feature-icon { color: #d9c4ff; background: rgba(154,85,255,.14); border-color: rgba(154,85,255,.36); }
-    .feature-card h3 { margin: 0 0 5px; font-size: 13px; }
-    .feature-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
-    .arrow { color: #ccecff; font-size: 20px; opacity: .9; }
-
-    .dashboard {
-      display: grid;
-      grid-template-columns: 170px 1fr;
-      gap: 10px;
-      padding: 0 0 10px;
-    }
-
-    .side-menu {
-      padding: 12px;
-      border-radius: 14px;
-    }
-
-    .side-menu button {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border: 0;
-      border-radius: 9px;
-      color: #c9e4ff;
-      background: transparent;
-      padding: 10px 11px;
-      font-weight: 800;
-      font-size: 12px;
-      text-align: left;
-    }
-
-    .side-menu button.active,
-    .side-menu button:hover {
-      background: linear-gradient(90deg, rgba(20,166,255,.28), rgba(20,166,255,.08));
-      color: white;
-    }
-
-    .dash-content {
-      display: grid;
-      grid-template-rows: auto 1fr;
-      gap: 10px;
-    }
-
-    .kpis {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .kpi {
-      min-height: 86px;
-      padding: 15px;
-      display: grid;
-      grid-template-columns: 1fr 44px;
-      gap: 10px;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .kpi::after {
-      content: "";
-      position: absolute;
-      inset: auto -30px -45px auto;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: .1;
-    }
-
-    .kpi small { color: var(--muted); font-size: 11px; font-weight: 800; }
-    .kpi strong { display: block; margin: 5px 0 3px; font-size: 25px; letter-spacing: -.04em; }
-    .kpi span { color: var(--green); font-size: 10px; font-weight: 900; }
-    .kpi-icon {
-      width: 43px;
-      height: 43px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: var(--accent);
-      border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent);
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
-      font-size: 22px;
-    }
-
-    .dash-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr);
-      gap: 10px;
-    }
-
-    .table-panel { padding: 12px; }
-    .panel-title {
+      height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 9px;
-      font-size: 13px;
-      font-weight: 900;
+      gap: 18px;
+      background: rgba(5, 9, 20, .66);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 max(18px, calc((100vw - 1180px) / 2));
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      font-size: 11px;
-    }
-
-    th, td {
-      padding: 8px 9px;
-      border-bottom: 1px solid rgba(68,155,255,.12);
-      text-align: left;
-    }
-
-    th {
-      color: #a8cce9;
-      background: rgba(20,166,255,.08);
-      text-transform: uppercase;
-      font-size: 9px;
-      letter-spacing: .06em;
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 4px 8px;
-      font-size: 10px;
-      font-weight: 900;
-    }
-
-    .status.progress { color: #d6c0ff; background: rgba(154,85,255,.2); }
-    .status.review { color: #9fe9ff; background: rgba(20,166,255,.18); }
-    .status.approved { color: #a8ffc9; background: rgba(57,217,138,.16); }
-    .status.completed { color: #9fe9ff; background: rgba(20,166,255,.18); }
-    .status.rejected { color: #ffc0c8; background: rgba(255,91,107,.18); }
-
-    .chart-panel {
-      padding: 12px;
-      min-height: 194px;
-      display: grid;
-      grid-template-columns: 1fr 190px;
-      gap: 14px;
-    }
-
-    canvas { width: 100%; height: 145px; display: block; }
-    .donut-wrap { position: relative; height: 154px; }
-
-    .kazakhstan-section {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(330px, .9fr);
-      gap: 10px;
-      padding: 0 0 10px;
-    }
-
-    .map-panel {
-      min-height: 350px;
-      padding: 18px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .map-title h2 {
-      margin: 0 0 6px;
-      font-family: Cinzel, serif;
-      letter-spacing: -.03em;
-    }
-
-    .map-title p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
-
-    .kaz-map {
-      position: absolute;
-      left: 40px;
-      right: 28px;
-      bottom: 18px;
-      height: 225px;
-      filter: drop-shadow(0 0 22px rgba(20,166,255,.24));
-    }
-
-    .kaz-map svg { width: 100%; height: 100%; overflow: visible; }
-    .region-shape {
-      fill: rgba(20,166,255,.12);
-      stroke: rgba(20,166,255,.72);
-      stroke-width: 2;
-    }
-
-    .oskemen-pin {
-      position: absolute;
-      right: 13%;
-      top: 43%;
+    [data-theme="light"] .landing-nav { background: rgba(243, 247, 255, .76); }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; }
+    .brand-mark {
+      width: 46px;
+      height: 46px;
       display: grid;
       place-items: center;
+      border-radius: 16px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 14px 34px rgba(93, 107, 255, .34);
+      font-size: 23px;
+    }
+    .brand strong { display: block; font-weight: 900; letter-spacing: -.04em; }
+    .brand span { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      transition: color .18s ease;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      min-height: 44px;
+      padding: 0 18px;
+      color: var(--text);
+      background: rgba(255, 255, 255, .08);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-weight: 850;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.primary {
+      border: 0;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 18px 38px rgba(93, 107, 255, .30);
+    }
+    .btn.gold {
+      border: 0;
+      color: #171006;
+      background: linear-gradient(135deg, #ffe8a8, var(--gold));
+      box-shadow: 0 18px 38px rgba(247, 194, 91, .24);
+    }
+    .btn.icon { width: 44px; padding: 0; }
+    .btn.danger { border: 0; background: linear-gradient(135deg, var(--red), #ff9d66); color: #fff; }
+
+    .select {
+      min-height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 0 12px;
+      color: var(--text);
+      background: rgba(255, 255, 255, .08);
+      outline: none;
+      font-weight: 850;
     }
 
-    .oskemen-pin::before {
+    .hero {
+      flex: 1;
+      display: grid;
+      align-items: center;
+      padding: 62px 0 74px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(390px, .88fr);
+      gap: 38px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .06);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin: 20px 0 18px;
+      font-size: clamp(44px, 7vw, 92px);
+      line-height: .92;
+      letter-spacing: -.085em;
+      font-weight: 950;
+    }
+    .hero h1 span {
+      color: transparent;
+      background: linear-gradient(135deg, var(--text), var(--brand), var(--brand-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .hero p {
+      margin: 0 0 28px;
+      max-width: 670px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 34px; max-width: 650px; }
+    .stat {
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+    }
+    .stat strong { display: block; font-size: 28px; letter-spacing: -.05em; }
+    .stat span { color: var(--muted); font-size: 12px; font-weight: 800; }
+
+    .archive-art {
+      position: relative;
+      min-height: 540px;
+      border-radius: 42px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .archive-art::before {
       content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(180deg, rgba(5, 9, 20, .08), rgba(5, 9, 20, .68)),
+        radial-gradient(circle at 50% 80%, rgba(16, 215, 255, .30), transparent 16rem),
+        linear-gradient(135deg, rgba(93, 107, 255, .22), rgba(247, 194, 91, .12));
+    }
+    .archive-art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle at center, #000, transparent 78%);
+      z-index: -1;
+    }
+    .archive-building {
+      position: absolute;
+      left: 50%;
+      bottom: 70px;
+      width: 520px;
+      height: 290px;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 24px 38px rgba(0,0,0,.32));
+    }
+    .roof {
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      width: 430px;
+      height: 90px;
+      transform: translateX(-50%);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      background: linear-gradient(180deg, #e7f3ff, #516886 65%, #1b2636);
+      border-bottom: 5px solid var(--gold);
+    }
+    .facade {
+      position: absolute;
+      left: 50%;
+      top: 96px;
+      width: 470px;
+      height: 150px;
+      transform: translateX(-50%);
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(116, 146, 181, .64), rgba(25, 38, 58, .96));
+      box-shadow: inset 0 0 42px rgba(255,255,255,.08);
+    }
+    .columns {
+      position: absolute;
+      left: 50%;
+      top: 108px;
+      width: 380px;
+      height: 138px;
+      transform: translateX(-50%);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 18px;
+    }
+    .column { background: linear-gradient(90deg, #79531d, #ffd47d, #6f4917); border-radius: 8px 8px 2px 2px; box-shadow: 0 0 18px rgba(247,194,91,.24); }
+    .glow-ring {
+      position: absolute;
+      left: 50%;
+      bottom: 46px;
+      width: 520px;
+      height: 72px;
+      transform: translateX(-50%);
+      border: 3px solid rgba(16, 215, 255, .72);
+      border-radius: 50%;
+      box-shadow: 0 0 36px rgba(16, 215, 255, .72), inset 0 0 32px rgba(16, 215, 255, .20);
+    }
+    .floating-card {
+      position: absolute;
+      border-radius: 22px;
+      padding: 16px;
+      width: 178px;
+      min-height: 126px;
+      background: rgba(10, 22, 43, .72);
+      border: 1px solid rgba(16, 215, 255, .38);
+      box-shadow: 0 0 28px rgba(16, 215, 255, .18);
+      backdrop-filter: blur(18px);
+      animation: floaty 7s ease-in-out infinite;
+    }
+    [data-theme="light"] .floating-card { background: rgba(255,255,255,.72); }
+    .floating-card h3 { margin: 0 0 10px; color: var(--gold); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .floating-card .line { height: 8px; border-radius: 99px; background: rgba(148, 163, 184, .28); margin: 9px 0; }
+    .floating-card.one { left: 22px; top: 72px; }
+    .floating-card.two { right: 20px; top: 132px; animation-delay: -2s; }
+    .floating-card.three { left: 86px; bottom: 46px; animation-delay: -4s; }
+    @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+
+    .about-section { padding: 26px 0 74px; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .info-card { border-radius: var(--radius); padding: 24px; }
+    .info-card .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      margin-bottom: 18px;
+      font-size: 24px;
+    }
+    .info-card h3 { margin: 0 0 10px; font-size: 20px; letter-spacing: -.04em; }
+    .info-card p { margin: 0; color: var(--muted); line-height: 1.65; }
+
+    .auth-screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+    .auth-card {
+      width: min(1060px, 100%);
+      display: grid;
+      grid-template-columns: .92fr 1fr;
+      border-radius: 38px;
+      overflow: hidden;
+    }
+    .auth-visual {
+      min-height: 640px;
+      padding: 42px;
+      background:
+        linear-gradient(180deg, rgba(6, 9, 20, .16), rgba(6, 9, 20, .78)),
+        radial-gradient(circle at 20% 20%, rgba(93, 107, 255, .72), transparent 22rem),
+        radial-gradient(circle at 80% 30%, rgba(247, 194, 91, .24), transparent 18rem),
+        #071020;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .auth-visual h1 {
+      margin: 28px 0 12px;
+      font-size: 48px;
+      line-height: .98;
+      letter-spacing: -.07em;
+    }
+    .auth-visual p { color: #c8d5e8; line-height: 1.75; }
+    .auth-form { padding: 42px; background: var(--panel-strong); }
+    .auth-form h2 { margin: 0 0 8px; font-size: 34px; letter-spacing: -.055em; }
+    .auth-form > p { margin: 0 0 26px; color: var(--muted); line-height: 1.65; }
+    .form { display: grid; gap: 15px; }
+    .field label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); font-weight: 850; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 0 15px;
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+      outline: none;
+    }
+    .field textarea { min-height: 120px; padding-top: 14px; resize: vertical; }
+    [data-theme="light"] .field input,
+    [data-theme="light"] .field select,
+    [data-theme="light"] .field textarea { background: rgba(255,255,255,.72); }
+    .auth-foot { margin-top: 18px; color: var(--muted); }
+    .auth-foot button { border: 0; background: transparent; color: var(--brand-2); font-weight: 900; }
+
+    .app-shell { min-height: 100vh; display: grid; grid-template-columns: 290px minmax(0, 1fr); }
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .sidebar-inner {
+      height: 100%;
+      border-radius: 30px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .side-nav { display: grid; gap: 8px; }
+    .side-nav button {
+      border: 0;
+      width: 100%;
+      border-radius: 18px;
+      padding: 13px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      background: transparent;
+      text-align: left;
+      font-weight: 850;
+      transition: transform .18s ease, background .18s ease, color .18s ease;
+    }
+    .side-nav button:hover,
+    .side-nav button.active {
+      color: var(--text);
+      background: linear-gradient(135deg, rgba(93,107,255,.20), rgba(16,215,255,.12));
+      transform: translateX(4px);
+    }
+    .side-card {
+      margin-top: auto;
+      border-radius: 22px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(54,211,153,.14), rgba(93,107,255,.14));
+      border: 1px solid var(--border);
+    }
+    .side-card strong { display: block; margin-bottom: 6px; }
+    .side-card span { color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .app-main { padding: 18px 22px 34px 0; min-width: 0; }
+    .app-topbar {
+      min-height: 82px;
+      border-radius: 30px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      position: sticky;
+      top: 16px;
+      z-index: 15;
+    }
+    .app-topbar h2 { margin: 3px 0 0; font-size: 30px; letter-spacing: -.06em; }
+    .breadcrumbs { color: var(--muted); font-size: 12px; font-weight: 850; text-transform: uppercase; letter-spacing: .08em; }
+    .user-chip { display: flex; align-items: center; gap: 10px; }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--gold), var(--brand));
+      color: #fff;
+      font-weight: 950;
+    }
+    .app-content { padding-top: 20px; }
+    .view { display: none; animation: rise .28s ease both; }
+    .view.active { display: block; }
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .grid { display: grid; gap: 18px; }
+    .kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .two-col { grid-template-columns: minmax(0, 1.25fr) minmax(330px, .75fr); }
+    .page-card { border-radius: 28px; padding: 24px; }
+    .kpi strong { display: block; font-size: 32px; letter-spacing: -.055em; margin: 12px 0 4px; }
+    .kpi span { color: var(--muted); font-weight: 800; }
+    .kpi-icon { width: 48px; height: 48px; border-radius: 17px; display: grid; place-items: center; background: rgba(93,107,255,.16); color: var(--brand-2); font-size: 23px; }
+    .table-wrap { overflow: auto; border-radius: 22px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
+    th, td { padding: 15px 16px; border-bottom: 1px solid var(--border); text-align: left; }
+    th { color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+    .badge { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: rgba(93,107,255,.14); color: var(--brand-2); font-size: 12px; font-weight: 900; }
+    .badge.green { background: rgba(54,211,153,.14); color: var(--green); }
+    .badge.gold { background: rgba(247,194,91,.14); color: var(--gold); }
+    .badge.red { background: rgba(255,102,122,.14); color: var(--red); }
+    canvas { width: 100%; height: 280px; display: block; }
+    .toolbar { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .search { min-height: 44px; border-radius: 16px; border: 1px solid var(--border); padding: 0 14px; color: var(--text); background: rgba(255,255,255,.08); outline: none; min-width: 260px; }
+    [data-theme="light"] .search { background: rgba(255,255,255,.72); }
+    .map-box {
+      min-height: 430px;
+      border-radius: 28px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(93,107,255,.18), rgba(16,215,255,.10)),
+        linear-gradient(rgba(148,163,184,.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.10) 1px, transparent 1px);
+      background-size: auto, 34px 34px, 34px 34px;
+      border: 1px solid var(--border);
+    }
+    .kaz-shape {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: 42px;
+      height: 230px;
+      filter: drop-shadow(0 0 26px rgba(16,215,255,.28));
+    }
+    .kaz-shape svg { width: 100%; height: 100%; }
+    .kaz-shape path { fill: rgba(16,215,255,.10); stroke: rgba(16,215,255,.72); stroke-width: 2; }
+    .city-pin {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
       width: 18px;
       height: 18px;
       border-radius: 50%;
       background: var(--gold);
-      box-shadow: 0 0 0 9px rgba(255,189,53,.16), 0 0 22px rgba(255,189,53,.74);
-      animation: pulse 1.8s infinite;
+      box-shadow: 0 0 0 10px rgba(247,194,91,.16), 0 0 28px rgba(247,194,91,.70);
     }
-
-    .oskemen-pin span {
+    .city-pin span {
       position: absolute;
-      left: 21px;
-      top: -14px;
+      left: 22px;
+      top: -10px;
       white-space: nowrap;
-      border: 1px solid rgba(255,189,53,.54);
       border-radius: 999px;
       padding: 7px 10px;
-      color: var(--gold-2);
-      background: rgba(5,16,30,.9);
+      color: var(--text);
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
       font-size: 12px;
       font-weight: 900;
     }
-
-    @keyframes pulse {
-      0%,100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.2); opacity: .75; }
-    }
-
-    .city-card {
-      padding: 18px;
+    .chat-window {
+      border-radius: 24px;
+      padding: 16px;
+      min-height: 420px;
       display: grid;
-      gap: 12px;
+      grid-template-rows: 1fr auto;
+      gap: 14px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+    }
+    .messages { display: grid; align-content: start; gap: 10px; overflow: auto; max-height: 330px; }
+    .msg { max-width: 82%; border-radius: 18px; padding: 12px 14px; background: rgba(93,107,255,.15); line-height: 1.55; }
+    .msg.user { justify-self: end; background: rgba(16,215,255,.14); }
+    .chat-input { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+    .toast-zone { position: fixed; right: 18px; top: 18px; z-index: 80; display: grid; gap: 10px; width: min(380px, calc(100vw - 36px)); }
+    .toast { border-radius: 18px; padding: 14px 16px; background: var(--panel-strong); border: 1px solid var(--border); box-shadow: var(--shadow); }
+
+    @media (max-width: 1050px) {
+      .nav-links { display: none; }
+      .hero-grid, .auth-card, .two-col { grid-template-columns: 1fr; }
+      .archive-art { min-height: 460px; }
+      .cards, .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .app-shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; padding-bottom: 0; }
+      .sidebar-inner { height: auto; }
+      .side-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .side-nav button { justify-content: center; }
+      .side-nav button span.label { display: none; }
+      .side-card { display: none; }
+      .app-main { padding: 18px; }
+      .app-topbar { position: static; flex-direction: column; align-items: stretch; }
     }
 
-    .city-card h3 {
-      margin: 0;
-      font-family: Cinzel, serif;
-      font-size: 24px;
-    }
-
-    .metric-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .metric-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      border: 1px solid rgba(68,155,255,.16);
-      border-radius: 12px;
-      padding: 12px;
-      background: rgba(20,166,255,.06);
-    }
-
-    .metric-row span { color: var(--muted); font-size: 12px; }
-    .metric-row strong { color: var(--gold-2); }
-
-    footer {
-      border-top: 1px solid var(--line);
-      border-radius: 14px 14px 0 0;
-      display: grid;
-      grid-template-columns: 1.15fr .7fr .75fr .9fr .9fr;
-      gap: 24px;
-      padding: 22px 28px;
-      margin-bottom: 10px;
-    }
-
-    footer h4 { margin: 0 0 10px; font-size: 13px; }
-    footer p, footer a { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; text-decoration: none; display: block; }
-    .subscribe { display: flex; gap: 0; }
-    .subscribe input { min-width: 0; border-radius: 8px 0 0 8px; }
-    .subscribe button { border-radius: 0 8px 8px 0; }
-
-    input {
-      border: 1px solid var(--line);
-      background: rgba(4,15,29,.7);
-      color: var(--text);
-      min-height: 38px;
-      padding: 0 12px;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    [data-theme="light"] input { background: rgba(255,255,255,.75); }
-
-    .toast-area {
-      position: fixed;
-      right: 16px;
-      top: 74px;
-      z-index: 50;
-      display: grid;
-      gap: 10px;
-      width: min(360px, calc(100vw - 32px));
-    }
-
-    .toast {
-      border: 1px solid var(--line-strong);
-      background: var(--panel-2);
-      border-radius: 12px;
-      padding: 12px 14px;
-      box-shadow: var(--shadow);
-      animation: slide .24s ease both;
-    }
-
-    @keyframes slide { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: translateX(0); } }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 60;
-      display: none;
-      place-items: center;
-      padding: 18px;
-      background: rgba(0,0,0,.62);
-      backdrop-filter: blur(12px);
-    }
-
-    .modal-backdrop.show { display: grid; }
-
-    .modal {
-      width: min(680px, 100%);
-      border: 1px solid var(--line-strong);
-      border-radius: 16px;
-      background: var(--panel-2);
-      box-shadow: var(--shadow);
-      padding: 20px;
-    }
-
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .modal h2 { margin: 0 0 5px; font-family: Cinzel, serif; }
-    .modal p { margin: 0; color: var(--muted); }
-    .form-grid { display: grid; gap: 12px; }
-    textarea, select {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: rgba(4,15,29,.7);
-      color: var(--text);
-      min-height: 42px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    [data-theme="light"] textarea,
-    [data-theme="light"] select { background: rgba(255,255,255,.75); }
-
-    textarea { min-height: 112px; resize: vertical; }
-    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
-
-    @media (max-width: 1180px) {
-      .topbar { height: auto; padding: 12px 0; flex-wrap: wrap; }
-      .brand, .actions { min-width: auto; }
-      .nav { order: 3; width: 100%; gap: 16px; overflow-x: auto; justify-content: flex-start; }
-      .hero-grid { grid-template-columns: 1fr; }
-      .building-scene { min-height: 320px; }
-      .feature-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .dashboard { grid-template-columns: 1fr; }
-      .side-menu { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .dash-grid, .kazakhstan-section { grid-template-columns: 1fr; }
-      footer { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 680px) {
-      .page { width: min(100vw - 14px, 1480px); }
-      .hero-copy { padding-left: 10px; }
-      .feature-row, .kpis, footer { grid-template-columns: 1fr; }
-      .side-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .chart-panel { grid-template-columns: 1fr; }
-      .hologram { transform: scale(.82); transform-origin: center; }
-      .holo-doc { left: -26px; }
-      .holo-flow { right: 8px; }
-      .kaz-map { left: 10px; right: 10px; }
+    @media (max-width: 650px) {
+      .landing-nav { height: auto; padding: 12px 16px; flex-wrap: wrap; }
+      .nav-actions { width: 100%; justify-content: space-between; }
+      .hero h1 { font-size: 44px; }
+      .stats, .cards, .kpi-grid { grid-template-columns: 1fr; }
+      .auth-screen { padding: 12px; }
+      .auth-visual, .auth-form, .page-card { padding: 22px; }
+      .side-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .archive-building { transform: translateX(-50%) scale(.78); }
+      .floating-card { transform: scale(.86); }
     }
   </style>
 </head>
 <body>
-  <div class="toast-area" id="toastArea"></div>
-  <div class="page">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark">🏛</div>
-        <div>
-          <div class="brand-title">Archive System</div>
-          <div class="brand-sub" data-i18n="brandSub">Information • Access • Preserve</div>
-        </div>
-      </div>
+  <div class="toast-zone" id="toastZone"></div>
 
-      <nav class="nav" id="nav">
-        <button class="active" data-target="home" data-i18n="home">Home</button>
-        <button data-target="about" data-i18n="about">About</button>
-        <button data-target="archives" data-i18n="archives">Archives</button>
-        <button data-target="requests" data-i18n="requests">Requests</button>
-        <button data-target="reports" data-i18n="reports">Reports</button>
-        <button data-target="map" data-i18n="map">Map</button>
-        <button data-target="contact" data-i18n="contact">Contact</button>
+  <section class="landing-shell" id="landingScreen">
+    <header class="landing-nav">
+      <a class="brand" href="#top">
+        <span class="brand-mark">🏛</span>
+        <span><strong>Archive Access</strong><span data-i18n="brandSub">Intelligent archive platform</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#about" data-i18n="about">About</a>
+        <a href="#features" data-i18n="features">Features</a>
+        <a href="#archiveArt" data-i18n="archiveVisual">Archive Visual</a>
       </nav>
-
-      <div class="actions">
-        <select class="language" id="languageSelect">
+      <div class="nav-actions">
+        <select class="select" id="languageSelect">
           <option value="kk">KK</option>
           <option value="ru">RU</option>
           <option value="en">EN</option>
         </select>
-        <button class="btn icon" id="themeToggle" title="Theme">◐</button>
-        <button class="btn" data-open="login">♙ <span data-i18n="login">Login</span></button>
-        <button class="btn gold" data-open="register">♚ <span data-i18n="register">Register</span></button>
+        <button class="btn icon" id="themeToggle">◐</button>
+        <button class="btn" data-screen="login" data-i18n="login">Login</button>
+        <button class="btn gold" data-screen="register" data-i18n="register">Register</button>
       </div>
     </header>
 
-    <main id="home">
-      <section class="hero">
-        <div class="hero-grid">
-          <div class="hero-copy">
-            <h1 data-i18n-html="heroTitle">Centralized Access.<br>Trusted Archives.<br><span>Efficient</span> Request Processing.</h1>
-            <p data-i18n="heroText">Archive System is a secure, transparent, and intelligent platform for managing archival records and processing information requests with efficiency and accountability.</p>
-            <div class="hero-actions">
-              <button class="btn gold" data-open="request"><span data-i18n="submitRequest">Submit a Request</span> →</button>
-              <button class="btn" data-scroll="archives"><span data-i18n="browseArchives">Browse Archives</span> ▢</button>
-            </div>
-            <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:18px">
-              <span class="status completed">🔒 <span data-i18n="secure">Secure & Encrypted</span></span>
-              <span class="status approved">⏱ <span data-i18n="realtime">Real-time Processing</span></span>
-              <span class="status progress">🛡 <span data-i18n="reliable">Reliable & Immutable</span></span>
-            </div>
+    <main class="hero container" id="top">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">● <span data-i18n="heroBadge">Archive information access system</span></span>
+          <h1 data-i18n-html="heroTitle">Beautiful access to <span>archive intelligence</span></h1>
+          <p data-i18n="heroText">A premium digital system for managing archive information, processing citizen requests, controlling access, and visualizing regional archive data.</p>
+          <div class="hero-actions">
+            <button class="btn primary" data-screen="login" data-i18n="enterSystem">Enter system</button>
+            <button class="btn" data-screen="register" data-i18n="createAccount">Create account</button>
           </div>
-
-          <div class="building-scene">
-            <div class="blueprint"></div>
-            <div class="building">
-              <div class="roof"></div>
-              <div class="facade"></div>
-              <div class="columns">
-                <div class="column"></div><div class="column"></div><div class="column"></div><div class="column"></div><div class="column"></div><div class="column"></div><div class="column"></div>
-              </div>
-              <div class="steps"></div>
-              <div class="flag"></div>
-            </div>
-
-            <div class="hologram holo-archive">
-              <h4>Archive Blueprint</h4>
-              <div class="mini-building"></div>
-            </div>
-            <div class="hologram holo-doc">
-              <h4>Document Scan</h4>
-              <div class="doc-scan"></div>
-            </div>
-            <div class="hologram holo-access">
-              <h4>Access Control</h4>
-              <div class="lock">♙</div>
-              <div style="font-size:9px;text-align:center;margin-top:8px;color:#bde6ff">Authorized Access</div>
-            </div>
-            <div class="hologram holo-flow">
-              <h4>Request Processing</h4>
-              <div class="flow-steps">
-                <div class="flow-step"><div class="circle">↧</div>Submit</div>
-                <div class="flow-step"><div class="circle">□</div>Review</div>
-                <div class="flow-step"><div class="circle">✓</div>Approved</div>
-                <div class="flow-step"><div class="circle">●</div>Completed</div>
-              </div>
-            </div>
+          <div class="stats">
+            <div class="stat"><strong>330K+</strong><span data-i18n="statDocs">digital documents</span></div>
+            <div class="stat"><strong>24/7</strong><span data-i18n="statAccess">secure access</span></div>
+            <div class="stat"><strong>AI</strong><span data-i18n="statAi">assistant ready</span></div>
           </div>
-
-          <div></div>
         </div>
-      </section>
 
-      <section class="feature-row" id="about">
-        <article class="feature-card"><div class="feature-icon">▣</div><div><h3 data-i18n="featureArchive">Archive Management</h3><p data-i18n="featureArchiveText">Organize, categorize, and preserve records.</p></div><div class="arrow">→</div></article>
-        <article class="feature-card purple"><div class="feature-icon">▤</div><div><h3 data-i18n="featureRequests">Request Processing</h3><p data-i18n="featureRequestsText">Submit, track, and manage requests.</p></div><div class="arrow">→</div></article>
-        <article class="feature-card gold"><div class="feature-icon">▧</div><div><h3 data-i18n="featureAccess">Access Control</h3><p data-i18n="featureAccessText">Role-based permissions and privacy.</p></div><div class="arrow">→</div></article>
-        <article class="feature-card"><div class="feature-icon">▨</div><div><h3 data-i18n="featureSecurity">Security</h3><p data-i18n="featureSecurityText">Enterprise-grade encryption.</p></div><div class="arrow">→</div></article>
-        <article class="feature-card purple"><div class="feature-icon">▥</div><div><h3 data-i18n="featureAnalytics">Analytics & Reports</h3><p data-i18n="featureAnalyticsText">Insights and export-ready reports.</p></div><div class="arrow">→</div></article>
-        <article class="feature-card"><div class="feature-icon">◌</div><div><h3 data-i18n="featureNotifications">Notifications</h3><p data-i18n="featureNotificationsText">Stay updated with alerts.</p></div><div class="arrow">→</div></article>
-      </section>
-
-      <section class="dashboard" id="archives">
-        <aside class="panel side-menu">
-          <button class="active">▧ <span data-i18n="dashboard">Dashboard</span></button>
-          <button>▣ <span data-i18n="archives">Archives</span></button>
-          <button>◎ <span data-i18n="requests">Requests</span></button>
-          <button>▥ <span data-i18n="reports">Reports</span></button>
-          <button>♙ <span data-i18n="users">Users</span></button>
-          <button>⌂ <span data-i18n="departments">Departments</span></button>
-          <button>⚙ <span data-i18n="settings">Settings</span></button>
-        </aside>
-
-        <div class="dash-content">
-          <section class="kpis">
-            <article class="panel kpi" style="--accent:var(--blue)"><div><small data-i18n="totalArchives">Total Archives</small><strong id="archiveCount">24,589</strong><span>+12.5% from last month</span></div><div class="kpi-icon">▣</div></article>
-            <article class="panel kpi" style="--accent:var(--purple)"><div><small data-i18n="activeRequests">Active Requests</small><strong id="requestCount">156</strong><span>+8.3% from last month</span></div><div class="kpi-icon">◴</div></article>
-            <article class="panel kpi" style="--accent:var(--green)"><div><small data-i18n="completedRequests">Completed Requests</small><strong>2,341</strong><span>+15.7% from last month</span></div><div class="kpi-icon">✓</div></article>
-            <article class="panel kpi" style="--accent:var(--gold)"><div><small data-i18n="users">Users</small><strong>432</strong><span>+6.2% from last month</span></div><div class="kpi-icon">♚</div></article>
-          </section>
-
-          <section class="dash-grid">
-            <article class="panel table-panel" id="requests">
-              <div class="panel-title"><span data-i18n="recentRequests">Recent Requests</span><button class="btn blue" data-open="request">+ <span data-i18n="new">New</span></button></div>
-              <table>
-                <thead><tr><th>Request ID</th><th>Request Title</th><th>Department</th><th>Submitted</th><th>Status</th><th>Actions</th></tr></thead>
-                <tbody id="requestTable"></tbody>
-              </table>
-              <div style="text-align:center;margin-top:8px"><button class="btn" data-action="view-all" data-i18n="viewAll">View All Requests</button></div>
-            </article>
-
-            <article class="panel chart-panel" id="reports">
-              <div>
-                <div class="panel-title"><span data-i18n="requestsTrend">Requests Trend</span></div>
-                <canvas id="lineChart"></canvas>
-              </div>
-              <div>
-                <div class="panel-title"><span data-i18n="requestsByStatus">Requests by Status</span></div>
-                <div class="donut-wrap"><canvas id="donutChart"></canvas></div>
-              </div>
-            </article>
-          </section>
+        <div class="archive-art glass" id="archiveArt" aria-label="Premium archive illustration">
+          <div class="archive-building">
+            <div class="roof"></div>
+            <div class="facade"></div>
+            <div class="columns">
+              <div class="column"></div><div class="column"></div><div class="column"></div><div class="column"></div><div class="column"></div><div class="column"></div>
+            </div>
+            <div class="glow-ring"></div>
+          </div>
+          <div class="floating-card one"><h3>Secure Vault</h3><div class="line"></div><div class="line"></div><div class="line" style="width:60%"></div></div>
+          <div class="floating-card two"><h3>Access Control</h3><div class="line"></div><div class="line" style="width:72%"></div><strong>RBAC + 2FA</strong></div>
+          <div class="floating-card three"><h3>Request Flow</h3><div class="line"></div><div class="line"></div><strong>Approved</strong></div>
         </div>
-      </section>
-
-      <section class="kazakhstan-section" id="map">
-        <article class="panel map-panel">
-          <div class="map-title">
-            <h2 data-i18n="kazMapTitle">Kazakhstan Archive Access Map</h2>
-            <p data-i18n="kazMapText">Additional regional module with highlighted Ust-Kamenogorsk / Өскемен archive access node in East Kazakhstan.</p>
-          </div>
-          <div class="kaz-map">
-            <svg viewBox="0 0 920 420" aria-label="Kazakhstan map">
-              <path class="region-shape" d="M76 203 L122 143 L216 111 L326 82 L431 111 L516 83 L655 111 L771 155 L842 220 L801 293 L690 337 L568 315 L462 354 L329 322 L217 344 L107 293 Z"/>
-              <path d="M216 111 L245 192 L176 263 M326 82 L363 184 L329 322 M431 111 L430 237 L462 354 M516 83 L545 207 L568 315 M655 111 L646 229 L690 337 M771 155 L706 248 L801 293" fill="none" stroke="rgba(20,166,255,.25)" stroke-width="2"/>
-              <circle cx="735" cy="168" r="8" fill="#ffbd35"/>
-              <circle cx="735" cy="168" r="22" fill="rgba(255,189,53,.14)"/>
-            </svg>
-            <div class="oskemen-pin"><span data-i18n="oskemen">Өскемен / Ust-Kamenogorsk</span></div>
-          </div>
-        </article>
-
-        <article class="panel city-card">
-          <h3 data-i18n="oskemenCard">Өскемен Archive Node</h3>
-          <p data-i18n="oskemenDesc">Regional archive access center for East Kazakhstan with request processing, secure document delivery, and local branch analytics.</p>
-          <div class="metric-list">
-            <div class="metric-row"><span data-i18n="cityDocs">Regional documents</span><strong>18,420</strong></div>
-            <div class="metric-row"><span data-i18n="cityRequests">Monthly requests</span><strong>312</strong></div>
-            <div class="metric-row"><span data-i18n="citySla">Average SLA</span><strong>1.9h</strong></div>
-            <div class="metric-row"><span data-i18n="citySecurity">Security level</span><strong>99.8%</strong></div>
-          </div>
-          <button class="btn gold" data-open="mapDetails" data-i18n="openCity">Open city module</button>
-        </article>
-      </section>
+      </div>
     </main>
 
-    <footer class="panel" id="contact">
-      <div>
-        <div class="brand" style="min-width:0;margin-bottom:8px"><div class="brand-mark">🏛</div><div><div class="brand-title">Archive System</div><div class="brand-sub">Information • Access • Preserve</div></div></div>
-        <p data-i18n="footerAbout">A modern archival information system that ensures secure access, efficient request processing, and the preservation of valuable records for the future.</p>
+    <section class="about-section container" id="about">
+      <div class="cards" id="features">
+        <article class="info-card glass"><div class="icon">🔐</div><h3 data-i18n="cardAccess">Access management</h3><p data-i18n="cardAccessText">Roles, permissions, protected routes, audit logs, and secure document visibility.</p></article>
+        <article class="info-card glass"><div class="icon">📁</div><h3 data-i18n="cardDocs">Archive documents</h3><p data-i18n="cardDocsText">Beautiful document catalogue with categories, statuses, tags, preview, and export.</p></article>
+        <article class="info-card glass"><div class="icon">🤖</div><h3 data-i18n="cardAi">AI assistant</h3><p data-i18n="cardAiText">A smart assistant area for future archive search, request help, and Telegram chatbot integration.</p></article>
       </div>
-      <div><h4 data-i18n="quickLinks">Quick Links</h4><a href="#home">Home</a><a href="#about">About</a><a href="#archives">Archives</a><a href="#requests">Requests</a><a href="#reports">Reports</a></div>
-      <div><h4 data-i18n="help">Help & Support</h4><a href="#">User Guide</a><a href="#">FAQ</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Data Protection</a></div>
-      <div><h4 data-i18n="contactUs">Contact Us</h4><p>123 Archive Avenue, Civic Center</p><p>+63 912 345 6789</p><p>info@archivesystem.gov</p><p>Mon - Fri: 8:00 AM - 5:00 PM</p></div>
-      <div><h4 data-i18n="stayUpdated">Stay Updated</h4><p data-i18n="newsletter">Subscribe to our newsletter for updates and system announcements.</p><div class="subscribe"><input id="emailInput" placeholder="Enter your email"><button class="btn gold" data-action="subscribe">↗</button></div></div>
-    </footer>
-  </div>
+    </section>
+  </section>
 
-  <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal">
-      <div class="modal-head">
-        <div><h2 id="modalTitle"></h2><p id="modalText"></p></div>
-        <button class="btn icon" data-action="close">×</button>
+  <section class="auth-screen hidden" id="loginScreen">
+    <div class="auth-card glass">
+      <div class="auth-visual">
+        <div class="brand"><span class="brand-mark">🏛</span><span><strong>Archive Access</strong><span data-i18n="secureLogin">Secure login</span></span></div>
+        <div><h1 data-i18n="loginHero">Welcome back to your archive workspace</h1><p data-i18n="loginHeroText">Enter your account and continue managing requests, documents, maps, and analytics.</p></div>
+        <button class="btn" data-screen="landing" data-i18n="backHome">Back to home</button>
       </div>
-      <div id="modalBody"></div>
+      <div class="auth-form">
+        <h2 data-i18n="login">Login</h2>
+        <p data-i18n="loginText">Demo mode: write any email and password to enter the system.</p>
+        <form class="form" id="loginForm">
+          <div class="field"><label>Email</label><input type="email" required placeholder="admin@archive.kz"></div>
+          <div class="field"><label data-i18n="password">Password</label><input type="password" required placeholder="••••••••"></div>
+          <button class="btn primary" type="submit" data-i18n="enterSystem">Enter system</button>
+        </form>
+        <div class="auth-foot"><span data-i18n="noAccount">No account?</span> <button data-screen="register" data-i18n="register">Register</button></div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section class="auth-screen hidden" id="registerScreen">
+    <div class="auth-card glass">
+      <div class="auth-visual">
+        <div class="brand"><span class="brand-mark">🏛</span><span><strong>Archive Access</strong><span data-i18n="registration">Registration</span></span></div>
+        <div><h1 data-i18n="registerHero">Create your archive access profile</h1><p data-i18n="registerHeroText">Register as a citizen, researcher, archivist, or administrator and start working in the platform.</p></div>
+        <button class="btn" data-screen="landing" data-i18n="backHome">Back to home</button>
+      </div>
+      <div class="auth-form">
+        <h2 data-i18n="register">Register</h2>
+        <p data-i18n="registerText">After registration you will automatically enter the dashboard.</p>
+        <form class="form" id="registerForm">
+          <div class="field"><label data-i18n="fullName">Full name</label><input required placeholder="Aruzhan Archive"></div>
+          <div class="field"><label>Email</label><input type="email" required placeholder="user@archive.kz"></div>
+          <div class="field"><label data-i18n="role">Role</label><select><option>Пайдаланушы</option><option>Архивариус</option><option>Администратор</option></select></div>
+          <div class="field"><label data-i18n="password">Password</label><input type="password" required placeholder="••••••••"></div>
+          <button class="btn gold" type="submit" data-i18n="createAccount">Create account</button>
+        </form>
+        <div class="auth-foot"><span data-i18n="hasAccount">Already have an account?</span> <button data-screen="login" data-i18n="login">Login</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="app-shell hidden" id="appScreen">
+    <aside class="sidebar">
+      <div class="sidebar-inner glass">
+        <a class="brand" href="#"><span class="brand-mark">🏛</span><span><strong>Archive Access</strong><span data-i18n="workspace">Workspace</span></span></a>
+        <nav class="side-nav" id="sideNav"></nav>
+        <div class="side-card"><strong data-i18n="telegramSoon">Telegram chatbot</strong><span data-i18n="telegramSoonText">Later you can connect your Telegram bot token and webhook here.</span></div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar glass">
+        <div><div class="breadcrumbs">Archive Access System</div><h2 id="viewTitle">Dashboard</h2></div>
+        <div class="nav-actions">
+          <button class="btn icon" id="appThemeToggle">◐</button>
+          <div class="user-chip"><span class="avatar">A</span><span><strong id="userName">Archive User</strong><br><small style="color:var(--muted)">admin@archive.kz</small></span></div>
+          <button class="btn danger" id="logoutBtn" data-i18n="logout">Logout</button>
+        </div>
+      </header>
+      <div class="app-content">
+        <section class="view active" id="view-dashboard"></section>
+        <section class="view" id="view-documents"></section>
+        <section class="view" id="view-requests"></section>
+        <section class="view" id="view-map"></section>
+        <section class="view" id="view-ai"></section>
+        <section class="view" id="view-telegram"></section>
+        <section class="view" id="view-settings"></section>
+      </div>
+    </main>
+  </section>
 
   <script>
-    const dictionary = {
+    const translations = {
       kk: {
-        brandSub: "Ақпарат • Қолжетімділік • Сақтау", home: "Басты", about: "Жүйе", archives: "Архивтер", requests: "Сұраныстар", reports: "Есептер", map: "Карта", contact: "Байланыс", login: "Кіру", register: "Тіркелу",
-        heroTitle: "Орталықтандырылған қолжетімділік.<br>Сенімді архивтер.<br><span>Жедел</span> сұраныс өңдеу.", heroText: "Archive System — архивтік жазбаларды басқаруға және ақпараттық сұраныстарды тиімді әрі ашық өңдеуге арналған қауіпсіз интеллектуалды платформа.",
-        submitRequest: "Сұраныс жіберу", browseArchives: "Архивтерді қарау", secure: "Қауіпсіз және шифрланған", realtime: "Нақты уақыттағы өңдеу", reliable: "Сенімді және өзгермейтін",
-        featureArchive: "Архивті басқару", featureArchiveText: "Құжаттарды ұйымдастыру, санаттау және сақтау.", featureRequests: "Сұраныстарды өңдеу", featureRequestsText: "Сұраныстарды жіберу, бақылау және басқару.", featureAccess: "Қолжетімділік бақылауы", featureAccessText: "Рөлдік рұқсаттар және құпиялылық.", featureSecurity: "Қауіпсіздік", featureSecurityText: "Enterprise деңгейіндегі шифрлау.", featureAnalytics: "Аналитика және есептер", featureAnalyticsText: "Нақты деректер және экспорт есептері.", featureNotifications: "Хабарламалар", featureNotificationsText: "Маңызды жаңартуларды алыңыз.",
-        dashboard: "Панель", users: "Пайдаланушылар", departments: "Бөлімдер", settings: "Баптаулар", totalArchives: "Барлық архивтер", activeRequests: "Белсенді сұраныстар", completedRequests: "Аяқталған сұраныстар", recentRequests: "Соңғы сұраныстар", new: "Жаңа", viewAll: "Барлық сұраныстар", requestsTrend: "Сұраныстар динамикасы", requestsByStatus: "Мәртебелер бойынша",
-        kazMapTitle: "Қазақстан архив қолжетімділік картасы", kazMapText: "Шығыс Қазақстандағы Усть-Каменогорск / Өскемен архивтік қолжетімділік торабы бар қосымша аймақтық модуль.", oskemen: "Өскемен / Ust-Kamenogorsk", oskemenCard: "Өскемен архив торабы", oskemenDesc: "Шығыс Қазақстанға арналған аймақтық архив орталығы: сұраныстарды өңдеу, қауіпсіз құжат жеткізу және филиал аналитикасы.", cityDocs: "Аймақтық құжаттар", cityRequests: "Айлық сұраныстар", citySla: "Орташа SLA", citySecurity: "Қауіпсіздік деңгейі", openCity: "Қала модулін ашу",
-        footerAbout: "Қауіпсіз қолжетімділік, тиімді сұраныс өңдеу және құнды жазбаларды болашаққа сақтау үшін жасалған заманауи архивтік ақпараттық жүйе.", quickLinks: "Жылдам сілтемелер", help: "Көмек және қолдау", contactUs: "Байланыс", stayUpdated: "Жаңалықтар", newsletter: "Жүйе жаңартулары мен хабарландыруларға жазылыңыз.", modalRequest: "Жаңа сұраныс", modalRequestText: "Демо сұранысты жіберіңіз.", modalLogin: "Жүйеге кіру", modalRegister: "Тіркелу", saved: "Сәтті сақталды", subscribed: "Жазылым қабылданды", cityOpened: "Өскемен модулі ашылды"
+        brandSub: "Интеллектуалды архив платформасы", about: "Ақпарат", features: "Мүмкіндіктер", archiveVisual: "Архив көрінісі", login: "Кіру", register: "Тіркелу", heroBadge: "Архивтік ақпаратқа қолжетімділік жүйесі", heroTitle: "Архивтік интеллектке <span>әдемі қолжетімділік</span>", heroText: "Архивтік ақпаратты басқару, азаматтық сұраныстарды өңдеу, рұқсаттарды бақылау және аймақтық деректерді визуализациялауға арналған премиум жүйе.", enterSystem: "Жүйеге кіру", createAccount: "Аккаунт құру", statDocs: "цифрлық құжат", statAccess: "қауіпсіз қолжетімділік", statAi: "AI көмекші дайын", cardAccess: "Қолжетімділікті басқару", cardAccessText: "Рөлдер, рұқсаттар, қорғалған бөлімдер, аудит және құжат көрінуі.", cardDocs: "Архив құжаттары", cardDocsText: "Санаттар, мәртебелер, тегтер, preview және экспорт бар әдемі каталог.", cardAi: "AI көмекші", cardAiText: "Архив іздеу, сұранысқа көмек және Telegram chatbot интеграциясына арналған бөлім.", secureLogin: "Қауіпсіз кіру", loginHero: "Архив жұмыс кеңістігіне қош келдіңіз", loginHeroText: "Сұраныстарды, құжаттарды, картаны және аналитиканы басқаруды жалғастырыңыз.", backHome: "Басты бетке", loginText: "Демо режим: жүйеге кіру үшін кез келген email және құпиясөз жазыңыз.", password: "Құпиясөз", noAccount: "Аккаунт жоқ па?", registration: "Тіркелу", registerHero: "Архив профиліңізді құрыңыз", registerHeroText: "Пайдаланушы, зерттеуші, архивариус немесе әкімші ретінде тіркеліңіз.", registerText: "Тіркелгеннен кейін dashboard автоматты түрде ашылады.", fullName: "Аты-жөні", role: "Рөл", hasAccount: "Аккаунтыңыз бар ма?", workspace: "Жұмыс кеңістігі", telegramSoon: "Telegram chatbot", telegramSoonText: "Кейін Telegram bot token және webhook осы жерге қосылады.", logout: "Шығу", dashboard: "Dashboard", documents: "Құжаттар", requests: "Сұраныстар", cityMap: "Қала картасы", aiAssistant: "AI көмекші", telegram: "Telegram bot", settings: "Баптаулар", totalDocs: "Құжаттар", activeReq: "Белсенді сұраныстар", users: "Пайдаланушылар", security: "Қауіпсіздік", recentDocs: "Соңғы құжаттар", recentReq: "Соңғы сұраныстар", addDoc: "Құжат қосу", addRequest: "Сұраныс қосу", mapTitle: "Қала картасын қосу", mapText: "Мұнда өз қалаңыздың картасын кейін қосуға болады. Әзірге Өскемен / Усть-Каменогорск demo белгісі тұр.", mapUrl: "Google/Yandex/2GIS карта сілтемесі", saveMap: "Картаны сақтау", aiTitle: "Archive AI Assistant", aiText: "Құжат табу, сұраныс толтыру және архив ережелерін түсіндіру үшін көмекші.", ask: "Сұрақ жазыңыз...", send: "Жіберу", telegramTitle: "Telegram chatbot интеграциясы", telegramText: "Соңғы кезеңде бот token, webhook URL және админ командаларын осы жерден баптайсыз.", botToken: "Bot token", webhook: "Webhook URL", save: "Сақтау"
       },
       ru: {
-        brandSub: "Информация • Доступ • Сохранение", home: "Главная", about: "О системе", archives: "Архивы", requests: "Запросы", reports: "Отчеты", map: "Карта", contact: "Контакты", login: "Вход", register: "Регистрация",
-        heroTitle: "Централизованный доступ.<br>Надежные архивы.<br><span>Эффективная</span> обработка запросов.", heroText: "Archive System — безопасная, прозрачная и интеллектуальная платформа для управления архивными записями и обработки информационных запросов.",
-        submitRequest: "Отправить запрос", browseArchives: "Смотреть архивы", secure: "Безопасно и зашифровано", realtime: "Обработка в реальном времени", reliable: "Надежно и неизменно",
-        featureArchive: "Управление архивом", featureArchiveText: "Организация, категории и хранение записей.", featureRequests: "Обработка запросов", featureRequestsText: "Отправка, контроль и управление запросами.", featureAccess: "Контроль доступа", featureAccessText: "Ролевые разрешения и приватность.", featureSecurity: "Безопасность", featureSecurityText: "Шифрование enterprise-уровня.", featureAnalytics: "Аналитика и отчеты", featureAnalyticsText: "Инсайты и экспортные отчеты.", featureNotifications: "Уведомления", featureNotificationsText: "Получайте важные обновления.",
-        dashboard: "Панель", users: "Пользователи", departments: "Отделы", settings: "Настройки", totalArchives: "Всего архивов", activeRequests: "Активные запросы", completedRequests: "Завершенные запросы", recentRequests: "Последние запросы", new: "Новый", viewAll: "Все запросы", requestsTrend: "Динамика запросов", requestsByStatus: "Запросы по статусу",
-        kazMapTitle: "Карта архивного доступа Казахстана", kazMapText: "Дополнительный региональный модуль с выделенным узлом Усть-Каменогорск / Өскемен в Восточном Казахстане.", oskemen: "Усть-Каменогорск / Өскемен", oskemenCard: "Архивный узел Усть-Каменогорск", oskemenDesc: "Региональный центр доступа для Восточного Казахстана: обработка запросов, безопасная выдача документов и аналитика филиала.", cityDocs: "Региональные документы", cityRequests: "Запросов в месяц", citySla: "Средний SLA", citySecurity: "Уровень безопасности", openCity: "Открыть модуль города",
-        footerAbout: "Современная архивная информационная система для безопасного доступа, эффективной обработки запросов и сохранения ценных записей.", quickLinks: "Быстрые ссылки", help: "Помощь", contactUs: "Контакты", stayUpdated: "Будьте в курсе", newsletter: "Подпишитесь на обновления и системные объявления.", modalRequest: "Новый запрос", modalRequestText: "Отправьте demo-запрос.", modalLogin: "Вход в систему", modalRegister: "Регистрация", saved: "Успешно сохранено", subscribed: "Подписка оформлена", cityOpened: "Модуль Усть-Каменогорска открыт"
+        brandSub: "Интеллектуальная архивная платформа", about: "О системе", features: "Функции", archiveVisual: "Архивный образ", login: "Вход", register: "Регистрация", heroBadge: "Система управления доступом к архивной информации", heroTitle: "Красивый доступ к <span>архивному интеллекту</span>", heroText: "Премиальная цифровая система для управления архивной информацией, обработки запросов граждан, контроля доступа и визуализации региональных архивных данных.", enterSystem: "Войти в систему", createAccount: "Создать аккаунт", statDocs: "цифровых документов", statAccess: "безопасный доступ", statAi: "AI помощник готов", cardAccess: "Управление доступом", cardAccessText: "Роли, разрешения, защищенные разделы, аудит и видимость документов.", cardDocs: "Архивные документы", cardDocsText: "Красивый каталог с категориями, статусами, тегами, preview и экспортом.", cardAi: "AI помощник", cardAiText: "Раздел для будущего архивного поиска, помощи с запросами и Telegram chatbot.", secureLogin: "Безопасный вход", loginHero: "Добро пожаловать в архивное рабочее пространство", loginHeroText: "Продолжайте управлять запросами, документами, картой и аналитикой.", backHome: "На главную", loginText: "Демо-режим: введите любой email и пароль для входа.", password: "Пароль", noAccount: "Нет аккаунта?", registration: "Регистрация", registerHero: "Создайте архивный профиль", registerHeroText: "Зарегистрируйтесь как пользователь, исследователь, архивариус или администратор.", registerText: "После регистрации dashboard откроется автоматически.", fullName: "ФИО", role: "Роль", hasAccount: "Уже есть аккаунт?", workspace: "Рабочая область", telegramSoon: "Telegram chatbot", telegramSoonText: "Позже здесь можно подключить Telegram bot token и webhook.", logout: "Выйти", dashboard: "Dashboard", documents: "Документы", requests: "Запросы", cityMap: "Карта города", aiAssistant: "AI помощник", telegram: "Telegram bot", settings: "Настройки", totalDocs: "Документы", activeReq: "Активные запросы", users: "Пользователи", security: "Безопасность", recentDocs: "Последние документы", recentReq: "Последние запросы", addDoc: "Добавить документ", addRequest: "Добавить запрос", mapTitle: "Добавление карты города", mapText: "Здесь позже можно добавить карту вашего города. Пока стоит demo-метка Өскемен / Усть-Каменогорск.", mapUrl: "Ссылка Google/Yandex/2GIS карты", saveMap: "Сохранить карту", aiTitle: "Archive AI Assistant", aiText: "Помощник для поиска документов, заполнения запросов и объяснения архивных правил.", ask: "Напишите вопрос...", send: "Отправить", telegramTitle: "Интеграция Telegram chatbot", telegramText: "На финальном этапе здесь настраиваются bot token, webhook URL и админ-команды.", botToken: "Bot token", webhook: "Webhook URL", save: "Сохранить"
       },
       en: {
-        brandSub: "Information • Access • Preserve", home: "Home", about: "About", archives: "Archives", requests: "Requests", reports: "Reports", map: "Map", contact: "Contact", login: "Login", register: "Register",
-        heroTitle: "Centralized Access.<br>Trusted Archives.<br><span>Efficient</span> Request Processing.", heroText: "Archive System is a secure, transparent, and intelligent platform for managing archival records and processing information requests with efficiency and accountability.",
-        submitRequest: "Submit a Request", browseArchives: "Browse Archives", secure: "Secure & Encrypted", realtime: "Real-time Processing", reliable: "Reliable & Immutable",
-        featureArchive: "Archive Management", featureArchiveText: "Organize, categorize, and preserve records.", featureRequests: "Request Processing", featureRequestsText: "Submit, track, and manage requests.", featureAccess: "Access Control", featureAccessText: "Role-based permissions and privacy.", featureSecurity: "Security", featureSecurityText: "Enterprise-grade encryption.", featureAnalytics: "Analytics & Reports", featureAnalyticsText: "Insights and export-ready reports.", featureNotifications: "Notifications", featureNotificationsText: "Stay updated with alerts.",
-        dashboard: "Dashboard", users: "Users", departments: "Departments", settings: "Settings", totalArchives: "Total Archives", activeRequests: "Active Requests", completedRequests: "Completed Requests", recentRequests: "Recent Requests", new: "New", viewAll: "View All Requests", requestsTrend: "Requests Trend", requestsByStatus: "Requests by Status",
-        kazMapTitle: "Kazakhstan Archive Access Map", kazMapText: "Additional regional module with highlighted Ust-Kamenogorsk / Өскемен archive access node in East Kazakhstan.", oskemen: "Өскемен / Ust-Kamenogorsk", oskemenCard: "Ust-Kamenogorsk Archive Node", oskemenDesc: "Regional archive access center for East Kazakhstan with request processing, secure document delivery, and local branch analytics.", cityDocs: "Regional documents", cityRequests: "Monthly requests", citySla: "Average SLA", citySecurity: "Security level", openCity: "Open city module",
-        footerAbout: "A modern archival information system that ensures secure access, efficient request processing, and preservation of valuable records.", quickLinks: "Quick Links", help: "Help & Support", contactUs: "Contact Us", stayUpdated: "Stay Updated", newsletter: "Subscribe to our newsletter for updates and system announcements.", modalRequest: "New Request", modalRequestText: "Submit a demo archive request.", modalLogin: "System Login", modalRegister: "Registration", saved: "Successfully saved", subscribed: "Subscription received", cityOpened: "Ust-Kamenogorsk module opened"
+        brandSub: "Intelligent archive platform", about: "About", features: "Features", archiveVisual: "Archive visual", login: "Login", register: "Register", heroBadge: "Archive information access system", heroTitle: "Beautiful access to <span>archive intelligence</span>", heroText: "A premium digital system for managing archive information, processing citizen requests, controlling access, and visualizing regional archive data.", enterSystem: "Enter system", createAccount: "Create account", statDocs: "digital documents", statAccess: "secure access", statAi: "AI assistant ready", cardAccess: "Access management", cardAccessText: "Roles, permissions, protected sections, audit logs, and document visibility.", cardDocs: "Archive documents", cardDocsText: "Beautiful catalogue with categories, statuses, tags, preview, and export.", cardAi: "AI assistant", cardAiText: "Area for future archive search, request help, and Telegram chatbot integration.", secureLogin: "Secure login", loginHero: "Welcome back to your archive workspace", loginHeroText: "Continue managing requests, documents, maps, and analytics.", backHome: "Back to home", loginText: "Demo mode: write any email and password to enter the system.", password: "Password", noAccount: "No account?", registration: "Registration", registerHero: "Create your archive access profile", registerHeroText: "Register as a citizen, researcher, archivist, or administrator.", registerText: "After registration the dashboard opens automatically.", fullName: "Full name", role: "Role", hasAccount: "Already have an account?", workspace: "Workspace", telegramSoon: "Telegram chatbot", telegramSoonText: "Later you can connect your Telegram bot token and webhook here.", logout: "Logout", dashboard: "Dashboard", documents: "Documents", requests: "Requests", cityMap: "City map", aiAssistant: "AI assistant", telegram: "Telegram bot", settings: "Settings", totalDocs: "Documents", activeReq: "Active requests", users: "Users", security: "Security", recentDocs: "Recent documents", recentReq: "Recent requests", addDoc: "Add document", addRequest: "Add request", mapTitle: "Add city map", mapText: "Later you can add your city map here. For now there is a demo marker for Oskemen / Ust-Kamenogorsk.", mapUrl: "Google/Yandex/2GIS map link", saveMap: "Save map", aiTitle: "Archive AI Assistant", aiText: "Assistant for finding documents, completing requests, and explaining archive rules.", ask: "Write a question...", send: "Send", telegramTitle: "Telegram chatbot integration", telegramText: "At the final stage, configure bot token, webhook URL, and admin commands here.", botToken: "Bot token", webhook: "Webhook URL", save: "Save"
       }
     };
 
     const state = {
-      lang: localStorage.getItem("archive-lang") || "en",
+      lang: localStorage.getItem("archive-lang") || "ru",
       theme: localStorage.getItem("archive-theme") || "dark",
+      currentView: "dashboard",
+      userName: localStorage.getItem("archive-user") || "Archive User",
+      documents: [
+        ["AAS-2026-001", "1916 regional records", "PDF", "Тарихи қор", "Active"],
+        ["AAS-2026-002", "Administrative orders", "DOCX", "Әкімшілік", "Review"],
+        ["AAS-2026-003", "Photo archive catalogue", "JPG", "Медиа", "Archived"]
+      ],
       requests: [
-        ["REQ-2025-00156", "Land Ownership Documents", "Planning Dept.", "May 31, 2025", "progress"],
-        ["REQ-2025-00155", "Building Permits 2018-2020", "Building Dept.", "May 30, 2025", "review"],
-        ["REQ-2025-00154", "Environmental Reports", "Environment Dept.", "May 29, 2025", "approved"],
-        ["REQ-2025-00153", "Financial Statements 2022", "Finance Dept.", "May 28, 2025", "completed"],
-        ["REQ-2025-00152", "Infrastructure Plans", "Public Works Dept.", "May 27, 2025", "progress"]
+        ["REQ-2026-101", "Request document copy", "High", "In progress"],
+        ["REQ-2026-102", "Access to financial record", "Normal", "Waiting"],
+        ["REQ-2026-103", "Search city archive map", "Low", "Completed"]
       ]
     };
 
-    const $ = selector => document.querySelector(selector);
-    const $$ = selector => [...document.querySelectorAll(selector)];
-    const t = key => dictionary[state.lang][key] || key;
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    const t = key => translations[state.lang][key] || key;
+
+    const views = [
+      ["dashboard", "◈"],
+      ["documents", "▣"],
+      ["requests", "◎"],
+      ["cityMap", "⌖"],
+      ["aiAssistant", "🤖"],
+      ["telegram", "✈"],
+      ["settings", "⚙"]
+    ];
 
     function applyLanguage() {
       document.documentElement.lang = state.lang;
       $("#languageSelect").value = state.lang;
       $$("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
       $$("[data-i18n-html]").forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
+      renderApp();
     }
 
     function applyTheme() {
       document.documentElement.dataset.theme = state.theme;
     }
 
-    function renderRequests() {
-      $("#requestTable").innerHTML = state.requests.map(row => `
-        <tr>
-          <td>${row[0]}</td>
-          <td>${row[1]}</td>
-          <td>${row[2]}</td>
-          <td>${row[3]}</td>
-          <td><span class="status ${row[4]}">${labelStatus(row[4])}</span></td>
-          <td><button class="btn icon" data-action="eye" title="View">◉</button></td>
-        </tr>
-      `).join("");
-      $("#requestCount").textContent = String(151 + state.requests.length);
+    function showScreen(name) {
+      $("#landingScreen").classList.toggle("hidden", name !== "landing");
+      $("#loginScreen").classList.toggle("hidden", name !== "login");
+      $("#registerScreen").classList.toggle("hidden", name !== "register");
+      $("#appScreen").classList.toggle("hidden", name !== "app");
+      window.scrollTo(0, 0);
     }
 
-    function labelStatus(status) {
-      const labels = {
-        progress: "In Progress",
-        review: "In Review",
-        approved: "Approved",
-        completed: "Completed",
-        rejected: "Rejected"
-      };
-      return labels[status] || status;
+    function enterApp(name) {
+      state.userName = name || "Archive User";
+      localStorage.setItem("archive-user", state.userName);
+      $("#userName").textContent = state.userName;
+      showScreen("app");
+      setView("dashboard");
+      toast("Welcome");
     }
 
-    function drawLineChart() {
-      const canvas = $("#lineChart");
-      const ctx = setup(canvas);
-      if (!ctx) return;
-      const values = [80, 190, 120, 230, 170, 260, 150, 280, 240, 330, 300, 380, 350, 420];
-      const approved = [40, 75, 60, 120, 90, 150, 110, 180, 130, 210, 170, 230, 200, 245];
-      const completed = [20, 45, 52, 90, 76, 112, 88, 134, 124, 165, 148, 180, 172, 196];
-      drawLine(ctx, canvas, values, "#14a6ff");
-      drawLine(ctx, canvas, approved, "#39d98a");
-      drawLine(ctx, canvas, completed, "#9a55ff");
+    function renderApp() {
+      $("#sideNav").innerHTML = views.map(([key, icon]) => `
+        <button class="${state.currentView === key ? "active" : ""}" data-view="${key}">
+          <span>${icon}</span><span class="label">${t(key)}</span>
+        </button>`).join("");
+      renderViews();
     }
 
-    function drawLine(ctx, canvas, values, color) {
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
-      const pad = 20;
-      const max = 450;
+    function setView(view) {
+      state.currentView = view;
+      $$(".view").forEach(el => el.classList.remove("active"));
+      $(`#view-${view === "cityMap" ? "map" : view === "aiAssistant" ? "ai" : view}`)?.classList.add("active");
+      $("#viewTitle").textContent = t(view);
+      renderApp();
+      drawChart();
+    }
+
+    function renderViews() {
+      $("#view-dashboard").innerHTML = `
+        <div class="grid">
+          <div class="grid kpi-grid">
+            ${kpi("▣", "24,589", t("totalDocs"))}
+            ${kpi("◎", "156", t("activeReq"))}
+            ${kpi("◉", "432", t("users"))}
+            ${kpi("🔐", "99.8%", t("security"))}
+          </div>
+          <div class="grid two-col">
+            <article class="page-card glass"><h3>${t("recentDocs")}</h3>${table(["ID","Title","Type","Category","Status"], state.documents)}</article>
+            <article class="page-card glass"><h3>${t("recentReq")}</h3><canvas id="mainChart"></canvas></article>
+          </div>
+        </div>`;
+      $("#view-documents").innerHTML = `
+        <article class="page-card glass">
+          <div class="toolbar"><h3>${t("documents")}</h3><button class="btn primary" id="addDocBtn">${t("addDoc")}</button></div>
+          ${table(["ID","Title","Type","Category","Status"], state.documents)}
+        </article>`;
+      $("#view-requests").innerHTML = `
+        <article class="page-card glass">
+          <div class="toolbar"><h3>${t("requests")}</h3><button class="btn gold" id="addReqBtn">${t("addRequest")}</button></div>
+          ${table(["ID","Subject","Priority","Status"], state.requests)}
+        </article>`;
+      $("#view-map").innerHTML = `
+        <div class="grid two-col">
+          <article class="page-card glass">
+            <h3>${t("mapTitle")}</h3><p style="color:var(--muted);line-height:1.7">${t("mapText")}</p>
+            <div class="field"><label>${t("mapUrl")}</label><input id="mapUrlInput" placeholder="https://2gis.kz/..." /></div>
+            <button class="btn primary" style="margin-top:14px" id="saveMapBtn">${t("saveMap")}</button>
+          </article>
+          <article class="map-box">
+            <div class="kaz-shape"><svg viewBox="0 0 920 420"><path d="M76 203 L122 143 L216 111 L326 82 L431 111 L516 83 L655 111 L771 155 L842 220 L801 293 L690 337 L568 315 L462 354 L329 322 L217 344 L107 293 Z"/></svg></div>
+            <div class="city-pin" style="--x:76%;--y:43%"><span>Өскемен / Усть-Каменогорск</span></div>
+          </article>
+        </div>`;
+      $("#view-ai").innerHTML = `
+        <div class="grid two-col">
+          <article class="page-card glass"><h3>${t("aiTitle")}</h3><p style="color:var(--muted);line-height:1.7">${t("aiText")}</p></article>
+          <article class="chat-window">
+            <div class="messages" id="messages"><div class="msg">Сәлем! Мен архив бойынша көмекшімін. Қандай құжат керек?</div></div>
+            <div class="chat-input"><input class="search" id="aiInput" placeholder="${t("ask")}"><button class="btn primary" id="sendAiBtn">${t("send")}</button></div>
+          </article>
+        </div>`;
+      $("#view-telegram").innerHTML = `
+        <article class="page-card glass">
+          <h3>${t("telegramTitle")}</h3><p style="color:var(--muted);line-height:1.7">${t("telegramText")}</p>
+          <div class="grid" style="margin-top:18px">
+            <div class="field"><label>${t("botToken")}</label><input placeholder="123456:ABC-DEF..." /></div>
+            <div class="field"><label>${t("webhook")}</label><input placeholder="https://your-domain.kz/api/telegram/webhook" /></div>
+            <button class="btn gold" id="saveTelegramBtn">${t("save")}</button>
+          </div>
+        </article>`;
+      $("#view-settings").innerHTML = `
+        <article class="page-card glass">
+          <h3>${t("settings")}</h3>
+          <div class="grid" style="margin-top:18px">
+            <button class="btn">Two-factor authentication</button>
+            <button class="btn">Audit logs</button>
+            <button class="btn">Backup configuration</button>
+            <button class="btn">Email notifications</button>
+          </div>
+        </article>`;
+      bindDynamicButtons();
+    }
+
+    function kpi(icon, value, label) {
+      return `<article class="page-card glass kpi"><div class="kpi-icon">${icon}</div><strong>${value}</strong><span>${label}</span></article>`;
+    }
+
+    function table(headers, rows) {
+      return `<div class="table-wrap"><table><thead><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td>${i === r.length - 1 ? `<span class="badge ${String(c).includes("Active") || String(c).includes("Completed") ? "green" : String(c).includes("Review") || String(c).includes("Waiting") ? "gold" : ""}">${c}</span>` : c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    }
+
+    function bindDynamicButtons() {
+      $("#addDocBtn")?.addEventListener("click", () => {
+        state.documents.unshift([`AAS-2026-${String(100 + state.documents.length)}`, "New uploaded archive file", "PDF", "Demo", "Review"]);
+        renderApp();
+        toast("Document added");
+      });
+      $("#addReqBtn")?.addEventListener("click", () => {
+        state.requests.unshift([`REQ-2026-${String(200 + state.requests.length)}`, "New archive access request", "Normal", "In progress"]);
+        renderApp();
+        toast("Request added");
+      });
+      $("#saveMapBtn")?.addEventListener("click", () => toast("Map link saved"));
+      $("#saveTelegramBtn")?.addEventListener("click", () => toast("Telegram settings saved"));
+      $("#sendAiBtn")?.addEventListener("click", sendAi);
+      $("#aiInput")?.addEventListener("keydown", e => { if (e.key === "Enter") sendAi(); });
+    }
+
+    function sendAi() {
+      const input = $("#aiInput");
+      if (!input || !input.value.trim()) return;
+      const box = $("#messages");
+      box.insertAdjacentHTML("beforeend", `<div class="msg user">${input.value}</div>`);
+      box.insertAdjacentHTML("beforeend", `<div class="msg">Мен demo AI көмекшімін. Бұл сұрақ бойынша архив құжаттарын, карта бөлімін немесе сұраныс формасын қарауды ұсынамын.</div>`);
+      input.value = "";
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function drawChart() {
+      const canvas = $("#mainChart");
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      const w = rect.width;
+      const h = rect.height;
+      ctx.clearRect(0, 0, w, h);
+      const values = [20, 48, 36, 72, 58, 95, 84, 128, 112, 146];
+      const max = 160;
+      const pad = 28;
+      ctx.strokeStyle = "rgba(148,163,184,.18)";
+      for (let i = 0; i < 4; i++) {
+        const y = pad + i * (h - pad * 2) / 3;
+        ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke();
+      }
       ctx.beginPath();
       values.forEach((v, i) => {
         const x = pad + i * (w - pad * 2) / (values.length - 1);
         const y = h - pad - (v / max) * (h - pad * 2);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
       });
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 3;
-      ctx.shadowColor = color;
-      ctx.shadowBlur = 8;
+      ctx.strokeStyle = "#10d7ff";
+      ctx.lineWidth = 4;
+      ctx.shadowColor = "#10d7ff";
+      ctx.shadowBlur = 14;
       ctx.stroke();
       ctx.shadowBlur = 0;
-      values.forEach((v, i) => {
-        const x = pad + i * (w - pad * 2) / (values.length - 1);
-        const y = h - pad - (v / max) * (h - pad * 2);
-        ctx.beginPath();
-        ctx.arc(x, y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.fill();
-      });
     }
 
-    function drawDonutChart() {
-      const canvas = $("#donutChart");
-      const ctx = setup(canvas);
-      if (!ctx) return;
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
-      const cx = w / 2;
-      const cy = h / 2;
-      const r = Math.min(w, h) * .28;
-      const data = [
-        [35, "#9a55ff"],
-        [20, "#14a6ff"],
-        [30, "#39d98a"],
-        [15, "#ffbd35"]
-      ];
-      let start = -Math.PI / 2;
-      data.forEach(([value, color]) => {
-        const end = start + Math.PI * 2 * value / 100;
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, start, end);
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 24;
-        ctx.lineCap = "round";
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 10;
-        ctx.stroke();
-        start = end;
-      });
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--text");
-      ctx.font = "800 12px Inter";
-      ctx.textAlign = "center";
-      ctx.fillText("Status", cx, cy + 4);
-    }
-
-    function setup(canvas) {
-      if (!canvas) return null;
-      const dpr = window.devicePixelRatio || 1;
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      const ctx = canvas.getContext("2d");
-      ctx.scale(dpr, dpr);
-      ctx.clearRect(0, 0, w, h);
-      ctx.strokeStyle = "rgba(68,155,255,.12)";
-      ctx.lineWidth = 1;
-      for (let i = 0; i < 4; i++) {
-        const y = 18 + i * (h - 36) / 3;
-        ctx.beginPath();
-        ctx.moveTo(18, y);
-        ctx.lineTo(w - 18, y);
-        ctx.stroke();
-      }
-      return ctx;
-    }
-
-    function openModal(type) {
-      const backdrop = $("#modalBackdrop");
-      const title = $("#modalTitle");
-      const text = $("#modalText");
-      const body = $("#modalBody");
-      if (type === "request") {
-        title.textContent = t("modalRequest");
-        text.textContent = t("modalRequestText");
-        body.innerHTML = `
-          <form class="form-grid" id="requestForm">
-            <input name="title" placeholder="Request title" required>
-            <select name="department"><option>Planning Dept.</option><option>Archives Dept.</option><option>East Kazakhstan Branch</option></select>
-            <textarea name="description" placeholder="Description"></textarea>
-            <div class="modal-actions"><button class="btn" type="button" data-action="close">${t("contact")}</button><button class="btn gold" type="submit">${t("submitRequest")}</button></div>
-          </form>`;
-        body.querySelector("form").addEventListener("submit", event => {
-          event.preventDefault();
-          const form = new FormData(event.target);
-          state.requests.unshift([`REQ-2025-${String(160 + state.requests.length).padStart(5, "0")}`, form.get("title"), form.get("department"), "Today", "review"]);
-          renderRequests();
-          closeModal();
-          toast(t("saved"));
-        });
-      } else if (type === "mapDetails") {
-        title.textContent = t("oskemenCard");
-        text.textContent = t("oskemenDesc");
-        body.innerHTML = `<div class="metric-list"><div class="metric-row"><span>${t("cityDocs")}</span><strong>18,420</strong></div><div class="metric-row"><span>${t("cityRequests")}</span><strong>312</strong></div><div class="metric-row"><span>${t("citySla")}</span><strong>1.9h</strong></div><div class="metric-row"><span>${t("citySecurity")}</span><strong>99.8%</strong></div></div>`;
-        toast(t("cityOpened"));
-      } else {
-        title.textContent = type === "login" ? t("modalLogin") : t("modalRegister");
-        text.textContent = "Demo access form";
-        body.innerHTML = `<div class="form-grid"><input placeholder="Email"><input placeholder="Password" type="password"><button class="btn gold" data-action="save">${type === "login" ? t("login") : t("register")}</button></div>`;
-      }
-      backdrop.classList.add("show");
-    }
-
-    function closeModal() {
-      $("#modalBackdrop").classList.remove("show");
-    }
-
-    function toast(message) {
+    function toast(text) {
       const el = document.createElement("div");
       el.className = "toast";
-      el.textContent = message;
-      $("#toastArea").appendChild(el);
-      setTimeout(() => el.remove(), 2800);
+      el.textContent = text;
+      $("#toastZone").appendChild(el);
+      setTimeout(() => el.remove(), 2600);
     }
 
     function init() {
       applyTheme();
       applyLanguage();
-      renderRequests();
-      drawLineChart();
-      drawDonutChart();
-
-      $("#languageSelect").addEventListener("change", event => {
-        state.lang = event.target.value;
+      $("#userName").textContent = state.userName;
+      $("[data-screen='landing']")?.addEventListener("click", () => showScreen("landing"));
+      document.body.addEventListener("click", e => {
+        const screen = e.target.closest("[data-screen]");
+        if (screen) showScreen(screen.dataset.screen);
+      });
+      $("#languageSelect").addEventListener("change", e => {
+        state.lang = e.target.value;
         localStorage.setItem("archive-lang", state.lang);
         applyLanguage();
-        toast(state.lang.toUpperCase());
       });
+      $("#themeToggle").addEventListener("click", toggleTheme);
+      $("#appThemeToggle").addEventListener("click", toggleTheme);
+      $("#loginForm").addEventListener("submit", e => {
+        e.preventDefault();
+        const email = e.target.querySelector("input[type='email']").value;
+        enterApp(email.split("@")[0] || "Archive User");
+      });
+      $("#registerForm").addEventListener("submit", e => {
+        e.preventDefault();
+        const name = e.target.querySelector("input").value;
+        enterApp(name);
+      });
+      $("#sideNav").addEventListener("click", e => {
+        const btn = e.target.closest("[data-view]");
+        if (btn) setView(btn.dataset.view);
+      });
+      $("#logoutBtn").addEventListener("click", () => showScreen("landing"));
+      renderApp();
+    }
 
-      $("#themeToggle").addEventListener("click", () => {
-        state.theme = state.theme === "dark" ? "light" : "dark";
-        localStorage.setItem("archive-theme", state.theme);
-        applyTheme();
-        drawLineChart();
-        drawDonutChart();
-      });
-
-      $("#nav").addEventListener("click", event => {
-        const button = event.target.closest("button[data-target]");
-        if (!button) return;
-        $$("#nav button").forEach(item => item.classList.remove("active"));
-        button.classList.add("active");
-        document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-
-      document.body.addEventListener("click", event => {
-        const open = event.target.closest("[data-open]");
-        const action = event.target.closest("[data-action]");
-        const scroll = event.target.closest("[data-scroll]");
-        if (open) openModal(open.dataset.open);
-        if (scroll) document.getElementById(scroll.dataset.scroll)?.scrollIntoView({ behavior: "smooth" });
-        if (action?.dataset.action === "close") closeModal();
-        if (action?.dataset.action === "save") { closeModal(); toast(t("saved")); }
-        if (action?.dataset.action === "subscribe") toast(t("subscribed"));
-        if (action?.dataset.action === "eye") toast("Request opened");
-        if (action?.dataset.action === "view-all") toast("All requests loaded");
-      });
-
-      $("#modalBackdrop").addEventListener("click", event => {
-        if (event.target.id === "modalBackdrop") closeModal();
-      });
-
-      window.addEventListener("resize", () => {
-        drawLineChart();
-        drawDonutChart();
-      });
+    function toggleTheme() {
+      state.theme = state.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("archive-theme", state.theme);
+      applyTheme();
+      drawChart();
     }
 
     init();
