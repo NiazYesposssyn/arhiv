@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Archive Access System - корпоративный государственный цифровой портал для управления архивами, документами и запросами." />
+  <title>Archive Access System | Государственный архивный портал</title>
+  <style>
+    :root {
+      --bg: #f5f8fc;
+      --bg-soft: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.74);
+      --text: #14213d;
+      --muted: #5d6b85;
+      --line: rgba(31, 48, 86, 0.12);
+      --brand: #2457c5;
+      --brand-2: #09a6a3;
+      --brand-3: #7c3aed;
+      --gold: #d7a84b;
+      --danger: #dc3545;
+      --success: #15a46e;
+      --shadow: 0 24px 60px rgba(20, 33, 61, 0.13);
+      --shadow-soft: 0 14px 36px rgba(20, 33, 61, 0.09);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --nav-height: 76px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #08111f;
+      --bg-soft: #0f1d32;
+      --bg-glass: rgba(15, 29, 50, 0.76);
+      --text: #eef5ff;
+      --muted: #a8b6ce;
+      --line: rgba(238, 245, 255, 0.12);
+      --brand: #6ea8fe;
+      --brand-2: #39d7d4;
+      --brand-3: #a78bfa;
+      --gold: #f4c96b;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+      --shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(36, 87, 197, 0.22), transparent 30rem),
+        radial-gradient(circle at 85% 15%, rgba(9, 166, 163, 0.18), transparent 24rem),
+        linear-gradient(180deg, var(--bg), var(--bg));
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(36, 87, 197, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(36, 87, 197, 0.04) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), transparent);
+      pointer-events: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(20px);
+      background: var(--bg-glass);
+      box-shadow: 0 12px 34px rgba(20, 33, 61, 0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: max-content;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 14px 30px rgba(36, 87, 197, 0.28);
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link,
+    .nav-action {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--muted);
+      background: transparent;
+      font-weight: 700;
+      transition: 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active,
+    .nav-action:hover {
+      color: var(--text);
+      background: rgba(36, 87, 197, 0.10);
+    }
+
+    .mega-menu {
+      position: absolute;
+      top: calc(100% + 16px);
+      left: 50%;
+      width: min(760px, 88vw);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-glass);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+      transform: translate(-50%, 10px);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.24s ease;
+    }
+
+    .nav-item:hover .mega-menu,
+    .nav-item:focus-within .mega-menu {
+      transform: translate(-50%, 0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mega-panel {
+      padding: 18px;
+      border-radius: 18px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(36, 87, 197, 0.94), rgba(9, 166, 163, 0.90)),
+        url("data:image/svg+xml,%3Csvg width='360' height='240' viewBox='0 0 360 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(255,255,255,.25)'%3E%3Cpath d='M24 50h312M24 98h312M24 146h312M24 194h312'/%3E%3Cpath d='M70 24v192M140 24v192M210 24v192M280 24v192'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: cover;
+    }
+
+    .mega-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .mega-link {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 15px;
+      transition: 0.22s ease;
+    }
+
+    .mega-link:hover {
+      background: rgba(36, 87, 197, 0.10);
+      transform: translateX(3px);
+    }
+
+    .mega-icon,
+    .icon-chip {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      background: rgba(36, 87, 197, 0.12);
+      color: var(--brand);
+      font-weight: 850;
+    }
+
+    .mega-link strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .mega-link span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-select,
+    .icon-button {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      background: var(--bg-glass);
+      transition: 0.25s ease;
+    }
+
+    .pill-select {
+      padding: 0 12px;
+      outline: 0;
+    }
+
+    .icon-button {
+      width: 42px;
+      display: grid;
+      place-items: center;
+    }
+
+    .icon-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    main {
+      padding-top: var(--nav-height);
+    }
+
+    .page {
+      display: none;
+      min-height: calc(100vh - var(--nav-height));
+      animation: pageIn 0.38s ease both;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: 86px 0 64px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(115deg, rgba(245, 248, 252, 0.92), rgba(245, 248, 252, 0.66)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='540' viewBox='0 0 900 540'%3E%3Crect width='900' height='540' fill='%23dbe7f6'/%3E%3Cg opacity='.48'%3E%3Crect x='78' y='74' width='150' height='340' rx='12' fill='%23a5763f'/%3E%3Crect x='246' y='45' width='150' height='374' rx='12' fill='%23754f2c'/%3E%3Crect x='414' y='82' width='150' height='330' rx='12' fill='%23946b3d'/%3E%3Crect x='582' y='62' width='150' height='356' rx='12' fill='%236b4b2e'/%3E%3Cpath d='M105 130h96M105 164h96M105 198h96M273 113h96M273 147h96M273 181h96M441 142h96M441 176h96M441 210h96M609 121h96M609 155h96M609 189h96' stroke='%23fff' stroke-width='8' stroke-linecap='round'/%3E%3C/g%3E%3Cg opacity='.25' fill='none' stroke='%232457c5'%3E%3Cpath d='M0 470C170 398 272 521 443 449s250-87 457-14' stroke-width='6'/%3E%3Cpath d='M0 510C170 438 272 561 443 489s250-87 457-14' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: center;
+    }
+
+    [data-theme="dark"] .hero::before {
+      background:
+        linear-gradient(115deg, rgba(8, 17, 31, 0.94), rgba(8, 17, 31, 0.68)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='540' viewBox='0 0 900 540'%3E%3Crect width='900' height='540' fill='%230d1b2f'/%3E%3Cg opacity='.55'%3E%3Crect x='78' y='74' width='150' height='340' rx='12' fill='%238b6537'/%3E%3Crect x='246' y='45' width='150' height='374' rx='12' fill='%23614226'/%3E%3Crect x='414' y='82' width='150' height='330' rx='12' fill='%23795632'/%3E%3Crect x='582' y='62' width='150' height='356' rx='12' fill='%23523b28'/%3E%3Cpath d='M105 130h96M105 164h96M105 198h96M273 113h96M273 147h96M273 181h96M441 142h96M441 176h96M441 210h96M609 121h96M609 155h96M609 189h96' stroke='%23fff' stroke-width='8' stroke-linecap='round'/%3E%3C/g%3E%3Cg opacity='.3' fill='none' stroke='%236ea8fe'%3E%3Cpath d='M0 470C170 398 272 521 443 449s250-87 457-14' stroke-width='6'/%3E%3Cpath d='M0 510C170 438 272 561 443 489s250-87 457-14' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) 0.92fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--brand);
+      background: var(--bg-glass);
+      box-shadow: var(--shadow-soft);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 18px;
+      max-width: 820px;
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: 0.95;
+      letter-spacing: -0.075em;
+    }
+
+    .lead {
+      max-width: 740px;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 21px);
+      line-height: 1.72;
+    }
+
+    .hero-actions,
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 26px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 850;
+      transition: 0.25s ease;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 18px 35px rgba(36, 87, 197, 0.28);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      border-color: var(--line);
+      background: var(--bg-glass);
+    }
+
+    .btn-gold {
+      color: #1a2438;
+      background: linear-gradient(135deg, #ffe19a, var(--gold));
+      box-shadow: 0 16px 34px rgba(215, 168, 75, 0.24);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .archive-terminal {
+      position: relative;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: var(--bg-glass);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+      animation: floatCard 7s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--brand);
+      opacity: 0.75;
+    }
+
+    .search-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(36, 87, 197, 0.07);
+    }
+
+    .search-box input,
+    .form-control {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 13px;
+      color: var(--text);
+      background: var(--bg-soft);
+      outline: 0;
+      transition: 0.2s ease;
+    }
+
+    .search-box input {
+      border: 0;
+      background: transparent;
+    }
+
+    .search-box input:focus,
+    .form-control:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(36, 87, 197, 0.14);
+    }
+
+    .doc-preview {
+      display: grid;
+      gap: 10px;
+    }
+
+    .doc-row {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--bg-soft);
+      transition: 0.22s ease;
+    }
+
+    .doc-row:hover {
+      transform: translateX(4px);
+      border-color: rgba(36, 87, 197, 0.36);
+    }
+
+    .doc-row strong,
+    .card strong {
+      display: block;
+    }
+
+    .doc-row span,
+    .muted {
+      color: var(--muted);
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: var(--success);
+      background: rgba(21, 164, 110, 0.12);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .section {
+      padding: 70px 0;
+    }
+
+    .section.compact {
+      padding: 42px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 22px;
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      margin-bottom: 10px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1;
+      letter-spacing: -0.055em;
+    }
+
+    .section-kicker {
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-glass);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(20px);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -50% 25%;
+      height: 140px;
+      background: radial-gradient(circle, rgba(36, 87, 197, 0.15), transparent 66%);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(36, 87, 197, 0.30);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card {
+      min-height: 148px;
+    }
+
+    .stat-value {
+      margin: 14px 0 6px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--brand);
+      background: rgba(36, 87, 197, 0.08);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 12px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .feature-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: var(--muted);
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      display: grid;
+      place-items: center;
+      flex: 0 0 22px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 16px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 94px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .year {
+      display: inline-flex;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-3));
+      font-weight: 900;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+    }
+
+    .photo-card {
+      min-height: 230px;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(20, 33, 61, 0.42), rgba(36, 87, 197, 0.18)),
+        var(--image);
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .map-card {
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 34% 40%, rgba(36, 87, 197, 0.30) 0 8px, transparent 9px),
+        radial-gradient(circle at 60% 48%, rgba(9, 166, 163, 0.34) 0 9px, transparent 10px),
+        radial-gradient(circle at 48% 64%, rgba(215, 168, 75, 0.38) 0 7px, transparent 8px),
+        linear-gradient(135deg, rgba(36, 87, 197, 0.12), rgba(9, 166, 163, 0.08)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='380' viewBox='0 0 640 380'%3E%3Cg fill='none' stroke='%232457c5' stroke-opacity='.22' stroke-width='2'%3E%3Cpath d='M50 205c50-90 125-130 230-112 89 15 129 94 210 87 50-5 74 20 96 60'/%3E%3Cpath d='M118 276c70-76 133-86 220-36 75 43 137 8 198 54'/%3E%3Cpath d='M226 54c-28 75-12 140 48 196 51 48 63 82 52 120'/%3E%3Cpath d='M408 42c-32 70-24 134 24 193 44 55 54 91 31 121'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: cover;
+    }
+
+    .pricing-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .pricing-card.featured {
+      border-color: rgba(36, 87, 197, 0.45);
+      transform: translateY(-8px);
+    }
+
+    .price {
+      margin: 20px 0 4px;
+      font-size: 40px;
+      font-weight: 950;
+      letter-spacing: -0.06em;
+    }
+
+    .compare-table,
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--bg-glass);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .compare-table th,
+    .compare-table td,
+    .data-table th,
+    .data-table td {
+      padding: 15px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .compare-table th,
+    .data-table th {
+      color: var(--muted);
+      background: rgba(36, 87, 197, 0.08);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .news-card {
+      min-height: 270px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #fff;
+      background:
+        linear-gradient(to top, rgba(8, 17, 31, 0.88), rgba(8, 17, 31, 0.14)),
+        var(--image);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .faq-tools {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--muted);
+      background: var(--bg-glass);
+      font-weight: 800;
+    }
+
+    .chip.active {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    }
+
+    .faq-item {
+      margin-bottom: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--bg-glass);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 0;
+      padding: 18px;
+      color: var(--text);
+      background: transparent;
+      font-weight: 900;
+      text-align: left;
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 18px 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    textarea.form-control {
+      min-height: 132px;
+      resize: vertical;
+    }
+
+    .auth-shell {
+      min-height: calc(100vh - var(--nav-height));
+      display: grid;
+      place-items: center;
+      padding: 52px 0;
+    }
+
+    .auth-card {
+      width: min(1040px, calc(100% - 32px));
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background: var(--bg-glass);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+    }
+
+    .auth-visual {
+      padding: 34px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(36, 87, 197, 0.94), rgba(124, 58, 237, 0.86)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='640'%3E%3Cg fill='none' stroke='white' stroke-opacity='.22'%3E%3Cpath d='M48 90h350M48 150h350M48 210h350M48 270h350M48 330h350M48 390h350M48 450h350M48 510h350'/%3E%3Cpath d='M120 50v520M230 50v520M340 50v520'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: cover;
+    }
+
+    .auth-form {
+      padding: 34px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 10px 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .workspace {
+      padding: 32px 0 64px;
+    }
+
+    .workspace-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .workspace-nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--bg-glass);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .workspace-tab {
+      min-width: max-content;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--muted);
+      background: transparent;
+      font-weight: 850;
+    }
+
+    .workspace-tab.active {
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    }
+
+    .workspace-panel {
+      display: none;
+      animation: pageIn 0.28s ease both;
+    }
+
+    .workspace-panel.active {
+      display: block;
+    }
+
+    .kpi-card {
+      min-height: 150px;
+      background:
+        linear-gradient(135deg, rgba(36, 87, 197, 0.12), rgba(9, 166, 163, 0.07)),
+        var(--bg-glass);
+    }
+
+    .progress {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(36, 87, 197, 0.12);
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+    }
+
+    .chart {
+      min-height: 270px;
+      display: flex;
+      align-items: end;
+      gap: 12px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-glass);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .bar {
+      flex: 1;
+      min-height: 24px;
+      border-radius: 12px 12px 4px 4px;
+      background: linear-gradient(180deg, var(--brand-2), var(--brand));
+      animation: barIn 0.85s ease both;
+      transform-origin: bottom;
+    }
+
+    @keyframes barIn {
+      from {
+        transform: scaleY(0.05);
+        opacity: 0;
+      }
+    }
+
+    .donut {
+      width: 210px;
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border-radius: 50%;
+      background: conic-gradient(var(--brand) 0 48%, var(--brand-2) 48% 78%, var(--gold) 78% 91%, rgba(36, 87, 197, 0.14) 91%);
+      position: relative;
+    }
+
+    .donut::after {
+      content: "92% SLA";
+      position: absolute;
+      inset: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--text);
+      background: var(--bg-soft);
+      font-weight: 950;
+    }
+
+    .module-card {
+      min-height: 178px;
+    }
+
+    .admin-shell .workspace-nav {
+      border-radius: 24px;
+      flex-wrap: wrap;
+    }
+
+    .sitemap-list {
+      columns: 3 260px;
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 2.1;
+    }
+
+    .footer {
+      padding: 42px 0;
+      border-top: 1px solid var(--line);
+      background: var(--bg-glass);
+      backdrop-filter: blur(18px);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .footer a {
+      display: block;
+      margin: 8px 0;
+      color: var(--muted);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: 0.7s cubic-bezier(0.2, 0.75, 0.2, 1);
+    }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skeleton {
+      position: relative;
+      overflow: hidden;
+      min-height: 16px;
+      border-radius: 999px;
+      background: rgba(36, 87, 197, 0.12);
+    }
+
+    .skeleton::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      to {
+        transform: translateX(100%);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        position: fixed;
+        top: var(--nav-height);
+        left: 16px;
+        right: 16px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--bg-glass);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(24px);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-item,
+      .nav-link,
+      .nav-action {
+        width: 100%;
+        text-align: left;
+      }
+
+      .mega-menu {
+        position: static;
+        width: 100%;
+        grid-template-columns: 1fr;
+        margin-top: 8px;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        display: none;
+      }
+
+      .nav-item:hover .mega-menu,
+      .nav-item:focus-within .mega-menu {
+        display: grid;
+      }
+
+      .mobile-menu {
+        display: grid;
+      }
+
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .contact-grid,
+      .auth-card,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head,
+      .workspace-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .pricing-card.featured {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --nav-height: 68px;
+      }
+
+      .brand small,
+      .nav-controls .pill-select {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 48px;
+      }
+
+      .card,
+      .auth-form,
+      .auth-visual {
+        padding: 18px;
+      }
+
+      .form-row,
+      .faq-tools,
+      .search-box,
+      .timeline-item,
+      .doc-row {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-table,
+      .data-table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="container nav" aria-label="Основная навигация">
+      <a class="brand nav-link" href="#home" data-page="home" aria-label="Archive Access System">
+        <span class="brand-mark">AAS</span>
+        <span>Archive Access<br /><small>Digital Government Portal</small></span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <div class="nav-item">
+          <button class="nav-action" type="button">Портал ▾</button>
+          <div class="mega-menu">
+            <div class="mega-panel">
+              <span class="badge">Единое окно архива</span>
+              <h3>Публичные сервисы, справки и цифровые фонды</h3>
+              <p>Доступ к документам, услугам и справочному центру для граждан, бизнеса и государственных организаций.</p>
+            </div>
+            <div class="mega-grid">
+              <a class="mega-link nav-link" href="#about-system" data-page="about-system"><span class="mega-icon">01</span><span><strong>О системе</strong><span>Архитектура, безопасность, возможности</span></span></a>
+              <a class="mega-link nav-link" href="#archive" data-page="archive"><span class="mega-icon">02</span><span><strong>Об архиве</strong><span>История, филиалы, карта</span></span></a>
+              <a class="mega-link nav-link" href="#services" data-page="services"><span class="mega-icon">03</span><span><strong>Услуги</strong><span>Справки, поиск, консультации</span></span></a>
+              <a class="mega-link nav-link" href="#help" data-page="help"><span class="mega-icon">04</span><span><strong>Справочный центр</strong><span>Инструкции и база знаний</span></span></a>
+            </div>
+          </div>
+        </div>
+        <a class="nav-link" href="#pricing" data-page="pricing">Тарифы</a>
+        <a class="nav-link" href="#news" data-page="news">Новости</a>
+        <a class="nav-link" href="#faq" data-page="faq">FAQ</a>
+        <a class="nav-link" href="#contacts" data-page="contacts">Контакты</a>
+        <div class="nav-item">
+          <button class="nav-action" type="button">Рабочие зоны ▾</button>
+          <div class="mega-menu">
+            <div class="mega-grid">
+              <a class="mega-link nav-link" href="#dashboard" data-page="dashboard"><span class="mega-icon">LC</span><span><strong>Личный кабинет</strong><span>Документы, запросы, аналитика</span></span></a>
+              <a class="mega-link nav-link" href="#admin" data-page="admin"><span class="mega-icon">AD</span><span><strong>Панель администратора</strong><span>Пользователи, роли, мониторинг</span></span></a>
+              <a class="mega-link nav-link" href="#login" data-page="login"><span class="mega-icon">2F</span><span><strong>Авторизация</strong><span>Вход, регистрация, 2FA</span></span></a>
+            </div>
+            <div class="mega-panel">
+              <h3>Enterprise workspace</h3>
+              <p>Горизонтальная навигация, KPI, таблицы, журналы аудита, уведомления и системные настройки.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-controls">
+        <select class="pill-select" aria-label="Выбор языка">
+          <option>Русский</option>
+          <option>Қазақша</option>
+          <option>English</option>
+        </select>
+        <button class="icon-button" id="themeToggle" type="button" aria-label="Переключить тему">☾</button>
+        <button class="icon-button mobile-menu" id="mobileToggle" type="button" aria-label="Открыть меню">☰</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page active" id="home">
+      <div class="hero">
+        <div class="container hero-grid">
+          <div class="reveal">
+            <span class="eyebrow">Государственный цифровой сервис нового поколения</span>
+            <h1>Archive Access System для безопасного доступа к архивным фондам</h1>
+            <p class="lead">Единый корпоративный портал уровня eGov, Microsoft Admin Center и Azure Portal: электронные услуги, AI-поиск, OCR, заявки, отчеты, аудит и управление архивной инфраструктурой.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary nav-link" href="#login" data-page="login">Войти</a>
+              <a class="btn btn-secondary nav-link" href="#register" data-page="register">Регистрация</a>
+              <a class="btn btn-gold nav-link" href="#dashboard" data-page="dashboard">Подать запрос</a>
+              <a class="btn btn-secondary nav-link" href="#contacts" data-page="contacts">Связаться с нами</a>
+            </div>
+          </div>
+          <aside class="archive-terminal reveal" aria-label="Демонстрация поиска документов">
+            <div class="terminal-header">
+              <strong>AI Document Search</strong>
+              <div class="dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="search-box">
+              <input value="Найти архивную справку по фамилии и периоду" aria-label="Поиск документов" />
+              <button class="btn btn-primary" type="button">Поиск</button>
+            </div>
+            <div class="doc-preview">
+              <div class="doc-row"><span class="icon-chip">OCR</span><span><strong>Фонд 18 / Опись 4 / Дело 229</strong><span>Распознано 96%, персональные данные защищены</span></span><span class="status">Готово</span></div>
+              <div class="doc-row"><span class="icon-chip">PDF</span><span><strong>Архивная справка №AAS-2026-1840</strong><span>Электронная подпись, экспорт PDF/Excel</span></span><span class="status">Подписано</span></div>
+              <div class="doc-row"><span class="icon-chip">API</span><span><strong>Интеграция с ведомственным контуром</strong><span>Логирование, кэширование, аудит безопасности</span></span><span class="status">Online</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="section compact">
+        <div class="container grid grid-4">
+          <article class="card stat-card reveal"><span class="badge">Документы</span><div class="stat-value counter" data-target="2480000">0</div><p class="muted">оцифрованных единиц хранения</p></article>
+          <article class="card stat-card reveal"><span class="badge">Пользователи</span><div class="stat-value counter" data-target="184500">0</div><p class="muted">граждан и организаций</p></article>
+          <article class="card stat-card reveal"><span class="badge">Заявки</span><div class="stat-value counter" data-target="972300">0</div><p class="muted">обработанных обращений</p></article>
+          <article class="card stat-card reveal"><span class="badge">Фонды</span><div class="stat-value counter" data-target="1260">0</div><p class="muted">архивных фондов в реестре</p></article>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <span class="section-kicker">Профессиональные модули</span>
+              <h2 class="section-title">Готовая цифровая платформа для реального использования</h2>
+            </div>
+            <a class="btn btn-secondary nav-link" href="#services" data-page="services">Все услуги</a>
+          </div>
+          <div class="grid grid-4" id="modulesGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="about-system">
+      <div class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="section-kicker">О системе</span>
+              <h2 class="section-title">Archive Access System</h2>
+              <p class="lead">Платформа объединяет публичный портал, личный кабинет, администрирование, защищенный документооборот и интеграционный слой для ведомственных систем.</p>
+            </div>
+          </div>
+          <div class="grid grid-3">
+            <article class="card"><span class="icon-chip">01</span><h3>Преимущества</h3><ul class="feature-list"><li>Единое окно для граждан, бизнеса и госорганов.</li><li>Прозрачный статус каждой заявки.</li><li>Снижение ручной обработки за счет OCR и AI-поиска.</li></ul></article>
+            <article class="card"><span class="icon-chip">02</span><h3>Основные возможности</h3><ul class="feature-list"><li>Полнотекстовый поиск по фондам и описям.</li><li>Генерация архивных справок и электронная подпись.</li><li>Импорт, экспорт PDF/Excel и API-интеграции.</li></ul></article>
+            <article class="card"><span class="icon-chip">03</span><h3>Безопасность данных</h3><ul class="feature-list"><li>RBAC, 2FA, журнал аудита и сессии устройств.</li><li>Шифрование каналов и контроль доступа к ПДн.</li><li>Резервное копирование и мониторинг инцидентов.</li></ul></article>
+          </div>
+          <div class="section compact">
+            <div class="card">
+              <span class="section-kicker">Архитектура</span>
+              <h3>Модульная схема корпоративного портала</h3>
+              <div class="grid grid-4">
+                <div class="card"><strong>Public Portal</strong><span class="muted">Landing, новости, FAQ, контакты, справочный центр.</span></div>
+                <div class="card"><strong>Identity</strong><span class="muted">Login, registration, password recovery, 2FA, email verification.</span></div>
+                <div class="card"><strong>Archive Core</strong><span class="muted">Документы, фонды, заявки, справки, OCR, AI search.</span></div>
+                <div class="card"><strong>Admin Center</strong><span class="muted">Пользователи, роли, тарифы, аудит, мониторинг, бэкапы.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="archive">
+      <div class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="section-kicker">Об архиве</span>
+              <h2 class="section-title">История, миссия и филиальная сеть</h2>
+              <p class="lead">Архив сохраняет документальное наследие, обеспечивает доказательную базу прав граждан и открывает доступ к историческим данным через цифровые сервисы.</p>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="card">
+              <h3>История архива</h3>
+              <div class="timeline">
+                <div class="timeline-item"><span class="year">1928</span><p><strong>Основание фонда.</strong><br /><span class="muted">Созданы первые описи административных и исторических документов.</span></p></div>
+                <div class="timeline-item"><span class="year">1997</span><p><strong>Региональная модернизация.</strong><br /><span class="muted">Филиалы объединены в централизованную сеть хранения.</span></p></div>
+                <div class="timeline-item"><span class="year">2026</span><p><strong>Цифровой портал.</strong><br /><span class="muted">Запущена модель полного онлайн-доступа к архивным услугам.</span></p></div>
+              </div>
+            </div>
+            <div class="photo-grid">
+              <div class="photo-card" style="--image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22520%22 height=%22420%22%3E%3Crect width=%22520%22 height=%22420%22 fill=%22%238aa5c7%22/%3E%3Cpath d=%22M70 320V145l190-80 190 80v175%22 fill=%22%23f1f5fb%22/%3E%3Cpath d=%22M110 320V175h55v145M210 320V175h55v145M310 320V175h55v145%22 fill=%22%232457c5%22 opacity=%22.55%22/%3E%3C/svg%3E')"></div>
+              <div class="grid">
+                <div class="photo-card" style="--image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22200%22%3E%3Crect width=%22320%22 height=%22200%22 fill=%22%23d7a84b%22/%3E%3Crect x=%2240%22 y=%2240%22 width=%2255%22 height=%22120%22 rx=%226%22 fill=%22%23654%22/%3E%3Crect x=%22108%22 y=%2228%22 width=%2255%22 height=%22132%22 rx=%226%22 fill=%22%23855%22/%3E%3Crect x=%22176%22 y=%2250%22 width=%2255%22 height=%22110%22 rx=%226%22 fill=%22%23644%22/%3E%3C/svg%3E')"></div>
+                <div class="photo-card" style="--image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22200%22%3E%3Crect width=%22320%22 height=%22200%22 fill=%22%2309a6a3%22/%3E%3Cpath d=%22M40 125c55-55 95-74 145-50s65 65 105 47%22 stroke=%22white%22 stroke-width=%2212%22 fill=%22none%22 opacity=%22.75%22/%3E%3C/svg%3E')"></div>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-2 section compact">
+            <div class="card"><h3>Структура архива</h3><ul class="feature-list"><li>Департамент комплектования и экспертизы ценности.</li><li>Центр оцифровки и OCR-распознавания.</li><li>Служба обслуживания запросов и выдачи справок.</li><li>Отдел информационной безопасности и аудита.</li></ul></div>
+            <div class="card map-card"><div class="card"><h3>Интерактивная карта филиалов</h3><p class="muted">Центральный офис, Северный, Южный, Западный и Восточный филиалы с единым SLA обработки заявок.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="services">
+      <div class="section">
+        <div class="container">
+          <div class="section-head">
+            <div><span class="section-kicker">Услуги</span><h2 class="section-title">Электронные архивные услуги</h2></div>
+            <a class="btn btn-primary nav-link" href="#dashboard" data-page="dashboard">Подать заявку</a>
+          </div>
+          <div class="grid grid-3">
+            <article class="card"><span class="icon-chip">С</span><h3>Выдача архивных справок</h3><p class="muted">Автоматизированная генерация справок по подтвержденным фондам с ЭЦП и QR-проверкой.</p></article>
+            <article class="card"><span class="icon-chip">AI</span><h3>Поиск документов</h3><p class="muted">Полнотекстовый и семантический поиск по метаданным, OCR-текстам, описям и делам.</p></article>
+            <article class="card"><span class="icon-chip">К</span><h3>Консультации</h3><p class="muted">Онлайн-консультации, маршрутизация вопросов и база готовых ответов.</p></article>
+            <article class="card"><span class="icon-chip">E</span><h3>Электронные услуги</h3><p class="muted">Регистрация обращений, оплата, уведомления, экспорт результатов в PDF/Excel.</p></article>
+            <article class="card"><span class="icon-chip">SLA</span><h3>Обработка заявок</h3><p class="muted">Очереди, приоритеты, статусы, контроль сроков и уведомления Email/Push.</p></article>
+            <article class="card"><span class="icon-chip">API</span><h3>Интеграции</h3><p class="muted">Безопасный API для ведомственных систем, журналирование и кэширование.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="pricing">
+      <div class="section">
+        <div class="container">
+          <div class="section-head">
+            <div><span class="section-kicker">Тарифы и услуги</span><h2 class="section-title">Прозрачные пакеты доступа</h2></div>
+          </div>
+          <div class="grid grid-3">
+            <article class="card pricing-card"><span class="badge">Бесплатный</span><div class="price">0 ₸</div><p class="muted">Для гражданских запросов и базового поиска.</p><ul class="feature-list"><li>3 запроса в месяц</li><li>Базовый поиск</li><li>Email-уведомления</li></ul><a class="btn btn-secondary nav-link" href="#register" data-page="register">Начать</a></article>
+            <article class="card pricing-card featured"><span class="badge">Базовый</span><div class="price">9 900 ₸</div><p class="muted">Для специалистов, исследователей и малого бизнеса.</p><ul class="feature-list"><li>50 запросов в месяц</li><li>AI-поиск и OCR</li><li>Экспорт PDF/Excel</li></ul><a class="btn btn-primary nav-link" href="#register" data-page="register">Выбрать</a></article>
+            <article class="card pricing-card"><span class="badge">Корпоративный</span><div class="price">Индивидуально</div><p class="muted">Для государственных и крупных организаций.</p><ul class="feature-list"><li>Безлимитные заявки</li><li>API и SSO</li><li>Персональный SLA</li></ul><a class="btn btn-secondary nav-link" href="#contacts" data-page="contacts">Связаться</a></article>
+          </div>
+          <div class="section compact">
+            <table class="compare-table" aria-label="Сравнение тарифов">
+              <thead><tr><th>Возможность</th><th>Бесплатный</th><th>Базовый</th><th>Корпоративный</th></tr></thead>
+              <tbody>
+                <tr><td>Полнотекстовый поиск</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                <tr><td>AI-поиск документов</td><td>—</td><td>✓</td><td>✓</td></tr>
+                <tr><td>API-интеграция</td><td>—</td><td>—</td><td>✓</td></tr>
+                <tr><td>Электронная подпись</td><td>Ограниченно</td><td>✓</td><td>✓</td></tr>
+                <tr><td>Персональный SLA</td><td>—</td><td>24 часа</td><td>Настраиваемый</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="news">
+      <div class="section">
+        <div class="container">
+          <div class="section-head"><div><span class="section-kicker">Новости</span><h2 class="section-title">Объявления, события и публикации</h2></div></div>
+          <div class="grid grid-3">
+            <article class="card news-card" style="--image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22420%22 height=%22290%22%3E%3Crect width=%22420%22 height=%22290%22 fill=%22%232457c5%22/%3E%3Ccircle cx=%22330%22 cy=%2270%22 r=%2290%22 fill=%22%2309a6a3%22 opacity=%22.6%22/%3E%3C/svg%3E')"><span class="badge">Новость</span><h3>Запущен AI-поиск по историческим фондам</h3><p>Семантическая выдача стала доступна для пилотных пользователей.</p></article>
+            <article class="card news-card" style="--image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22420%22 height=%22290%22%3E%3Crect width=%22420%22 height=%22290%22 fill=%22%2309a6a3%22/%3E%3Cpath d=%22M60 210h300M80 170h260M100 130h220%22 stroke=%22white%22 stroke-width=%2218%22 opacity=%22.55%22/%3E%3C/svg%3E')"><span class="badge">Событие</span><h3>Открытие обновленного центра оцифровки</h3><p>Новые сканеры ускоряют обработку крупноформатных документов.</p></article>
+            <article class="card news-card" style="--image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22420%22 height=%22290%22%3E%3Crect width=%22420%22 height=%22290%22 fill=%22%237c3aed%22/%3E%3Crect x=%2270%22 y=%2260%22 width=%22280%22 height=%22170%22 rx=%2228%22 fill=%22white%22 opacity=%22.26%22/%3E%3C/svg%3E')"><span class="badge">Публикация</span><h3>Методические рекомендации по электронным справкам</h3><p>Опубликован новый регламент для ведомственных пользователей.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="faq">
+      <div class="section">
+        <div class="container">
+          <div class="section-head"><div><span class="section-kicker">FAQ</span><h2 class="section-title">Часто задаваемые вопросы</h2></div></div>
+          <div class="faq-tools">
+            <input class="form-control" id="faqSearch" placeholder="Поиск по вопросам..." />
+            <div class="chips" id="faqChips"></div>
+          </div>
+          <div id="faqList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="contacts">
+      <div class="section">
+        <div class="container contact-grid">
+          <div>
+            <span class="section-kicker">Контакты</span>
+            <h2 class="section-title">Свяжитесь с нами</h2>
+            <p class="lead">Центр поддержки принимает обращения по вопросам архивных услуг, доступа к документам и корпоративных интеграций.</p>
+            <div class="grid">
+              <div class="card"><strong>Адрес</strong><span class="muted">010000, Республика Казахстан, г. Астана, проспект Архивный, 12</span></div>
+              <div class="card"><strong>Телефон</strong><span class="muted">+7 (7172) 00-00-00</span></div>
+              <div class="card"><strong>Email</strong><span class="muted">support@archive-access.gov.kz</span></div>
+              <div class="card"><strong>Рабочее время</strong><span class="muted">Пн-Пт 09:00-18:30, онлайн-сервисы 24/7</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Форма обратной связи</h3>
+            <form class="form-grid">
+              <div class="form-row"><input class="form-control" placeholder="Имя" /><input class="form-control" placeholder="Email" /></div>
+              <input class="form-control" placeholder="Тема обращения" />
+              <textarea class="form-control" placeholder="Сообщение"></textarea>
+              <button class="btn btn-primary" type="button">Отправить</button>
+            </form>
+            <div class="map-card" style="min-height:220px;margin-top:16px;border-radius:20px;"><span class="badge">Карта головного офиса и филиалов</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="help">
+      <div class="section">
+        <div class="container">
+          <div class="section-head"><div><span class="section-kicker">Справочный центр</span><h2 class="section-title">Инструкции, документация и база знаний</h2></div></div>
+          <div class="grid grid-4">
+            <article class="card"><span class="icon-chip">DOC</span><h3>Документация</h3><p class="muted">Регламенты, API reference, политики безопасности и пользовательские инструкции.</p></article>
+            <article class="card"><span class="icon-chip">▶</span><h3>Видеоуроки</h3><p class="muted">Пошаговые сценарии подачи запроса, проверки справки и экспорта отчета.</p></article>
+            <article class="card"><span class="icon-chip">KB</span><h3>База знаний</h3><p class="muted">Решения типовых вопросов для граждан, операторов и администраторов.</p></article>
+            <article class="card"><span class="icon-chip">24</span><h3>Поддержка</h3><p class="muted">SLA, статусы обращений, маршрутизация и уведомления.</p></article>
+          </div>
+          <div class="section compact grid grid-3">
+            <div class="card"><div class="skeleton" style="width:70%"></div><br /><div class="skeleton"></div><br /><div class="skeleton" style="width:48%"></div></div>
+            <div class="card"><div class="skeleton" style="width:55%"></div><br /><div class="skeleton"></div><br /><div class="skeleton" style="width:64%"></div></div>
+            <div class="card"><div class="skeleton" style="width:62%"></div><br /><div class="skeleton"></div><br /><div class="skeleton" style="width:42%"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="privacy">
+      <div class="section"><div class="container card"><span class="section-kicker">Политика конфиденциальности</span><h2 class="section-title">Защита персональных данных</h2><p class="lead">Портал обрабатывает персональные данные только для предоставления архивных услуг, ведет журнал доступа, применяет разграничение прав, шифрование каналов связи и регламентированные сроки хранения.</p><ul class="feature-list"><li>Пользователь управляет согласиями и уведомлениями.</li><li>Доступ к документам предоставляется по роли и основанию.</li><li>Все действия фиксируются в журнале аудита безопасности.</li></ul></div></div>
+    </section>
+
+    <section class="page" id="terms">
+      <div class="section"><div class="container card"><span class="section-kicker">Пользовательское соглашение</span><h2 class="section-title">Правила использования портала</h2><p class="lead">Используя Archive Access System, пользователь подтверждает достоверность предоставляемых данных, соблюдает требования информационной безопасности и принимает электронный формат взаимодействия.</p><ul class="feature-list"><li>Запросы проходят проверку полномочий и комплектности.</li><li>Результаты могут быть подписаны электронной подписью.</li><li>Нарушение правил доступа может привести к блокировке учетной записи.</li></ul></div></div>
+    </section>
+
+    <section class="page" id="sitemap">
+      <div class="section"><div class="container card"><span class="section-kicker">Карта сайта</span><h2 class="section-title">Все разделы портала</h2><ul class="sitemap-list"><li><a class="nav-link" href="#home" data-page="home">Главная</a></li><li><a class="nav-link" href="#about-system" data-page="about-system">О системе</a></li><li><a class="nav-link" href="#archive" data-page="archive">Об архиве</a></li><li><a class="nav-link" href="#services" data-page="services">Услуги</a></li><li><a class="nav-link" href="#pricing" data-page="pricing">Тарифы</a></li><li><a class="nav-link" href="#news" data-page="news">Новости</a></li><li><a class="nav-link" href="#faq" data-page="faq">FAQ</a></li><li><a class="nav-link" href="#contacts" data-page="contacts">Контакты</a></li><li><a class="nav-link" href="#help" data-page="help">Справочный центр</a></li><li><a class="nav-link" href="#privacy" data-page="privacy">Политика конфиденциальности</a></li><li><a class="nav-link" href="#terms" data-page="terms">Пользовательское соглашение</a></li><li><a class="nav-link" href="#login" data-page="login">Вход</a></li><li><a class="nav-link" href="#register" data-page="register">Регистрация</a></li><li><a class="nav-link" href="#recover" data-page="recover">Восстановление пароля</a></li><li><a class="nav-link" href="#two-factor" data-page="two-factor">2FA</a></li><li><a class="nav-link" href="#email-confirm" data-page="email-confirm">Подтверждение Email</a></li><li><a class="nav-link" href="#dashboard" data-page="dashboard">Личный кабинет</a></li><li><a class="nav-link" href="#admin" data-page="admin">Панель администратора</a></li></ul></div></div>
+    </section>
+
+    <section class="page" id="login"></section>
+    <section class="page" id="register"></section>
+    <section class="page" id="recover"></section>
+    <section class="page" id="two-factor"></section>
+    <section class="page" id="email-confirm"></section>
+
+    <section class="page" id="dashboard">
+      <div class="workspace">
+        <div class="container">
+          <div class="workspace-top">
+            <div><span class="section-kicker">Личный кабинет</span><h2 class="section-title">Рабочее пространство пользователя</h2></div>
+            <button class="btn btn-primary" type="button">Новый архивный запрос</button>
+          </div>
+          <div class="workspace-nav" id="cabinetTabs"></div>
+          <div id="cabinetPanels"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page admin-shell" id="admin">
+      <div class="workspace">
+        <div class="container">
+          <div class="workspace-top">
+            <div><span class="section-kicker">Панель администратора</span><h2 class="section-title">Archive Admin Center</h2></div>
+            <button class="btn btn-gold" type="button">Экспорт аудита</button>
+          </div>
+          <div class="workspace-nav" id="adminTabs"></div>
+          <div id="adminPanels"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand nav-link" href="#home" data-page="home"><span class="brand-mark">AAS</span><span>Archive Access<br /><small>Digital Government Portal</small></span></a>
+        <p class="muted">Корпоративный портал для архивных услуг, цифровых фондов, запросов, аналитики и администрирования.</p>
+      </div>
+      <div><strong>Портал</strong><a class="nav-link" href="#about-system" data-page="about-system">О системе</a><a class="nav-link" href="#services" data-page="services">Услуги</a><a class="nav-link" href="#pricing" data-page="pricing">Тарифы</a></div>
+      <div><strong>Поддержка</strong><a class="nav-link" href="#faq" data-page="faq">FAQ</a><a class="nav-link" href="#help" data-page="help">Справочный центр</a><a class="nav-link" href="#contacts" data-page="contacts">Контакты</a></div>
+      <div><strong>Документы</strong><a class="nav-link" href="#privacy" data-page="privacy">Конфиденциальность</a><a class="nav-link" href="#terms" data-page="terms">Соглашение</a><a class="nav-link" href="#sitemap" data-page="sitemap">Карта сайта</a></div>
+    </div>
+  </footer>
+
+  <script>
+    const pages = Array.from(document.querySelectorAll(".page"));
+    const navLinks = Array.from(document.querySelectorAll(".nav-link[data-page]"));
+    const navLinksBox = document.getElementById("navLinks");
+    const themeToggle = document.getElementById("themeToggle");
+    const mobileToggle = document.getElementById("mobileToggle");
+
+    const modules = [
+      ["FT", "Полнотекстовый поиск", "Поиск по метаданным, OCR-текстам и электронным копиям."],
+      ["AI", "AI-поиск документов", "Семантические подсказки, похожие дела и умная выдача."],
+      ["OCR", "OCR распознавание", "Пакетная обработка сканов и контроль качества текста."],
+      ["PDF", "Генерация справок", "Шаблоны, ЭЦП, QR-проверка и экспорт PDF."],
+      ["XLS", "Экспорт Excel", "Выгрузки для отчетности и ведомственных реестров."],
+      ["IMP", "Импорт документов", "Массовый импорт, классификация и валидация данных."],
+      ["SIGN", "Электронная подпись", "Подписание результатов и проверка подлинности."],
+      ["PUSH", "Уведомления", "Email, Push и события в личном кабинете."],
+      ["REP", "Система отчетности", "KPI, SLA, диаграммы и управленческие отчеты."],
+      ["API", "API интеграция", "Ведомственные интеграции, токены и лимиты."],
+      ["LOG", "Логирование", "Трассировка операций и журнал ошибок."],
+      ["SEC", "Аудит безопасности", "RBAC, 2FA, история действий и контроль рисков."]
+    ];
+
+    const faqs = [
+      ["Заявки", "Как подать архивный запрос?", "Откройте личный кабинет, выберите тип услуги, заполните данные заявителя и прикрепите подтверждающие документы."],
+      ["Документы", "Можно ли получить справку онлайн?", "Да, справка формируется в электронном виде, подписывается ЭЦП и доступна для скачивания в PDF."],
+      ["Оплата", "Какие услуги бесплатные?", "Базовый поиск, часть гражданских запросов и получение публичной информации доступны бесплатно."],
+      ["Безопасность", "Как защищены персональные данные?", "Используются разграничение прав, 2FA, журнал аудита, шифрование каналов и проверка оснований доступа."],
+      ["Интеграции", "Есть ли API для организаций?", "Да, корпоративный тариф поддерживает API, SSO, лимиты, ключи доступа и мониторинг интеграций."]
+    ];
+
+    const cabinetTabsData = [
+      "Dashboard", "Документы", "Архивные запросы", "Аналитика", "Карта филиалов", "Уведомления", "История действий", "Отчеты", "Профиль", "Настройки"
+    ];
+
+    const adminTabsData = [
+      "Управление пользователями", "Управление ролями", "Управление документами", "Управление архивами", "Управление филиалами", "Управление категориями", "Управление новостями", "Управление справочником", "Управление заявками", "Журнал аудита", "Управление уведомлениями", "Управление тарифами", "Резервное копирование", "Системные настройки", "Мониторинг системы"
+    ];
+
+    function showPage(pageId) {
+      const fallback = document.getElementById(pageId) ? pageId : "home";
+      pages.forEach((page) => page.classList.toggle("active", page.id === fallback));
+      navLinks.forEach((link) => link.classList.toggle("active", link.dataset.page === fallback));
+      navLinksBox.classList.remove("open");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (location.hash !== "#" + fallback) {
+        history.replaceState(null, "", "#" + fallback);
+      }
+      runCounters();
+      revealVisible();
+    }
+
+    function renderModules() {
+      document.getElementById("modulesGrid").innerHTML = modules.map(([icon, title, text]) => `
+        <article class="card module-card reveal">
+          <span class="icon-chip">${icon}</span>
+          <h3>${title}</h3>
+          <p class="muted">${text}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderFaq(category = "Все", query = "") {
+      const chips = ["Все", ...new Set(faqs.map((item) => item[0]))];
+      document.getElementById("faqChips").innerHTML = chips.map((chip) => `<button class="chip ${chip === category ? "active" : ""}" type="button" data-category="${chip}">${chip}</button>`).join("");
+      const normalized = query.trim().toLowerCase();
+      const filtered = faqs.filter(([cat, q, a]) => (category === "Все" || cat === category) && (q + a).toLowerCase().includes(normalized));
+      document.getElementById("faqList").innerHTML = filtered.map(([cat, q, a], index) => `
+        <article class="faq-item ${index === 0 ? "open" : ""}" data-cat="${cat}">
+          <button class="faq-question" type="button"><span>${q}</span><span>+</span></button>
+          <div class="faq-answer">${a}</div>
+        </article>
+      `).join("") || `<div class="card"><strong>Ничего не найдено</strong><p class="muted">Попробуйте изменить поисковый запрос или категорию.</p></div>`;
+    }
+
+    function authPage(type) {
+      const config = {
+        login: ["Вход в систему", "Используйте корпоративную учетную запись, 2FA и remember me для безопасного доступа.", "Войти", "login"],
+        register: ["Регистрация", "Создайте учетную запись гражданина, сотрудника организации или ведомственного пользователя.", "Зарегистрироваться", "register"],
+        recover: ["Восстановление пароля", "Введите Email, чтобы получить защищенную ссылку для восстановления доступа.", "Отправить ссылку", "recover"],
+        "two-factor": ["Двухфакторная аутентификация", "Введите одноразовый код из приложения или Push-уведомления.", "Подтвердить код", "2fa"],
+        "email-confirm": ["Подтверждение Email", "Проверьте почту и подтвердите адрес для завершения регистрации.", "Проверить статус", "email"]
+      }[type];
+
+      const fields = {
+        login: `<input class="form-control" placeholder="Email или ИИН/БИН" /><input class="form-control" type="password" placeholder="Пароль" />`,
+        register: `<div class="form-row"><input class="form-control" placeholder="Имя" /><input class="form-control" placeholder="Фамилия" /></div><input class="form-control" placeholder="Email" /><input class="form-control" type="password" placeholder="Пароль" />`,
+        recover: `<input class="form-control" placeholder="Email" />`,
+        "two-factor": `<input class="form-control" placeholder="Код 000 000" />`,
+        "email-confirm": `<input class="form-control" placeholder="Email" />`
+      }[type];
+
+      document.getElementById(type).innerHTML = `
+        <div class="auth-shell">
+          <div class="auth-card">
+            <aside class="auth-visual">
+              <span class="badge">Secure Identity</span>
+              <h2>${config[0]}</h2>
+              <p>${config[1]}</p>
+              <ul class="feature-list"><li>2FA и подтверждение Email.</li><li>Remember me с контролем устройств.</li><li>Единый доступ к кабинету и админ-панели.</li></ul>
+            </aside>
+            <div class="auth-form">
+              <span class="section-kicker">Авторизация</span>
+              <h2 class="section-title">${config[0]}</h2>
+              <form class="form-grid">${fields}
+                <div class="check-row"><label><input type="checkbox" /> Remember me</label><a class="nav-link" href="#recover" data-page="recover">Забыли пароль?</a></div>
+                <button class="btn btn-primary" type="button">${config[2]}</button>
+              </form>
+              <div class="actions-row">
+                <a class="btn btn-secondary nav-link" href="#login" data-page="login">Вход</a>
+                <a class="btn btn-secondary nav-link" href="#register" data-page="register">Регистрация</a>
+                <a class="btn btn-secondary nav-link" href="#two-factor" data-page="two-factor">2FA</a>
+                <a class="btn btn-secondary nav-link" href="#email-confirm" data-page="email-confirm">Email</a>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function workspacePanel(title, index, isAdmin = false) {
+      const rows = isAdmin
+        ? [["AAS-001", "Активно", "Высокий"], ["AAS-002", "На проверке", "Средний"], ["AAS-003", "Запланировано", "Низкий"]]
+        : [["REQ-2026-1840", "В обработке", "Справка"], ["DOC-7782", "Готово", "Документ"], ["NOT-443", "Новое", "Уведомление"]];
+
+      return `
+        <div class="workspace-panel ${index === 0 ? "active" : ""}" data-panel="${index}">
+          <div class="grid grid-4 section compact">
+            <article class="card kpi-card"><span class="badge">SLA</span><div class="stat-value">92%</div><div class="progress"><span style="width:92%"></span></div></article>
+            <article class="card kpi-card"><span class="badge">В работе</span><div class="stat-value">${isAdmin ? "1 284" : "12"}</div><p class="muted">активных процессов</p></article>
+            <article class="card kpi-card"><span class="badge">Уведомления</span><div class="stat-value">${isAdmin ? "47" : "8"}</div><p class="muted">новых событий</p></article>
+            <article class="card kpi-card"><span class="badge">Риск</span><div class="stat-value">${isAdmin ? "Low" : "OK"}</div><p class="muted">по результатам аудита</p></article>
+          </div>
+          <div class="grid grid-2">
+            <div class="card">
+              <h3>${title}</h3>
+              <p class="muted">Рабочий модуль с быстрыми действиями, фильтрами, статусами, KPI и экспортом данных.</p>
+              <table class="data-table">
+                <thead><tr><th>ID</th><th>Статус</th><th>Тип</th></tr></thead>
+                <tbody>${rows.map((row) => `<tr><td>${row[0]}</td><td><span class="status">${row[1]}</span></td><td>${row[2]}</td></tr>`).join("")}</tbody>
+              </table>
+            </div>
+            <div class="grid">
+              <div class="chart" aria-label="Диаграмма активности">${[66, 82, 44, 73, 91, 58, 86, 69].map((height) => `<span class="bar" style="height:${height}%"></span>`).join("")}</div>
+              <div class="card"><div class="donut"></div></div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderWorkspace(containerTabsId, containerPanelsId, data, isAdmin = false) {
+      document.getElementById(containerTabsId).innerHTML = data.map((title, index) => `<button class="workspace-tab ${index === 0 ? "active" : ""}" type="button" data-tab="${index}">${title}</button>`).join("");
+      document.getElementById(containerPanelsId).innerHTML = data.map((title, index) => workspacePanel(title, index, isAdmin)).join("");
+    }
+
+    function bindWorkspace(containerId) {
+      const root = document.getElementById(containerId).parentElement;
+      root.addEventListener("click", (event) => {
+        const tab = event.target.closest(".workspace-tab");
+        if (!tab) return;
+        const index = tab.dataset.tab;
+        root.querySelectorAll(".workspace-tab").forEach((item) => item.classList.toggle("active", item.dataset.tab === index));
+        root.querySelectorAll(".workspace-panel").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === index));
+      });
+    }
+
+    function runCounters() {
+      document.querySelectorAll(".counter").forEach((counter) => {
+        if (counter.dataset.done) return;
+        counter.dataset.done = "true";
+        const target = Number(counter.dataset.target);
+        let current = 0;
+        const steps = 70;
+        const increment = target / steps;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          counter.textContent = Math.round(current).toLocaleString("ru-RU");
+        }, 18);
+      });
+    }
+
+    function revealVisible() {
+      document.querySelectorAll(".reveal").forEach((element) => {
+        const box = element.getBoundingClientRect();
+        if (box.top < window.innerHeight - 60) element.classList.add("in-view");
+      });
+    }
+
+    renderModules();
+    renderFaq();
+    ["login", "register", "recover", "two-factor", "email-confirm"].forEach(authPage);
+    renderWorkspace("cabinetTabs", "cabinetPanels", cabinetTabsData);
+    renderWorkspace("adminTabs", "adminPanels", adminTabsData, true);
+    bindWorkspace("cabinetTabs");
+    bindWorkspace("adminTabs");
+
+    document.addEventListener("click", (event) => {
+      const nav = event.target.closest(".nav-link[data-page]");
+      if (nav) {
+        event.preventDefault();
+        showPage(nav.dataset.page);
+      }
+      const faqButton = event.target.closest(".faq-question");
+      if (faqButton) {
+        faqButton.parentElement.classList.toggle("open");
+      }
+      const chip = event.target.closest(".chip[data-category]");
+      if (chip) {
+        renderFaq(chip.dataset.category, document.getElementById("faqSearch").value);
+      }
+    });
+
+    document.getElementById("faqSearch").addEventListener("input", (event) => {
+      const active = document.querySelector(".chip.active")?.dataset.category || "Все";
+      renderFaq(active, event.target.value);
+    });
+
+    mobileToggle.addEventListener("click", () => navLinksBox.classList.toggle("open"));
+    themeToggle.addEventListener("click", () => {
+      const html = document.documentElement;
+      const next = html.dataset.theme === "dark" ? "light" : "dark";
+      html.dataset.theme = next;
+      themeToggle.textContent = next === "dark" ? "☀" : "☾";
+      localStorage.setItem("aas-theme", next);
+    });
+
+    const savedTheme = localStorage.getItem("aas-theme");
+    if (savedTheme) {
+      document.documentElement.dataset.theme = savedTheme;
+      themeToggle.textContent = savedTheme === "dark" ? "☀" : "☾";
+    }
+
+    window.addEventListener("hashchange", () => showPage(location.hash.slice(1) || "home"));
+    window.addEventListener("scroll", revealVisible, { passive: true });
+    showPage(location.hash.slice(1) || "home");
+    revealVisible();
+  </script>
+</body>
+</html>
