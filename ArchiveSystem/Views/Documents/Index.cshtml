@@ -1,0 +1,73 @@
+@model DocumentIndexViewModel
+@{
+    ViewData["Title"] = "Құжаттар";
+    ViewData["PageTitle"] = "Архив құжаттары";
+}
+
+<div class="page-grid">
+    <form method="get" class="premium-card search-panel">
+        <input name="search" value="@Model.Search" class="form-control" placeholder="Нөмір, атау немесе тег бойынша іздеу..." />
+        <select name="categoryId" class="form-select">
+            <option value="">Барлық санаттар</option>
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.Id" selected="@(Model.CategoryId == category.Id)">@category.Name</option>
+            }
+        </select>
+        <select name="status" class="form-select" asp-items="Html.GetEnumSelectList<DocumentStatus>()">
+            <option value="">Барлық мәртебелер</option>
+        </select>
+        <div class="d-flex gap-2">
+            <button class="btn btn-premium" type="submit"><i class="bi bi-search me-2"></i>Іздеу</button>
+            <a class="btn btn-ghost" asp-action="Export"><i class="bi bi-download"></i></a>
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2 class="h4 fw-bold mb-1">Құжаттар каталогы</h2>
+            <p class="muted mb-0">PDF, DOCX, XLSX, JPG және PNG файлдарын басқарыңыз.</p>
+        </div>
+        <a class="btn btn-premium" asp-action="Create"><i class="bi bi-cloud-upload me-2"></i>Құжат жүктеу</a>
+    </div>
+
+    <div class="data-table-wrap">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Құжат</th>
+                    <th>Санат</th>
+                    <th>Тегтер</th>
+                    <th>Формат</th>
+                    <th>Мәртебе</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var document in Model.Documents)
+                {
+                    <tr>
+                        <td>
+                            <div class="fw-bold">@document.Title</div>
+                            <div class="muted small">@document.Number · @document.UpdatedAt.ToLocalTime().ToString("dd.MM.yyyy")</div>
+                        </td>
+                        <td><span class="badge-soft" style="color:@document.Category?.AccentColor">@document.Category?.Name</span></td>
+                        <td>
+                            @foreach (var tag in document.Tags.Take(3))
+                            {
+                                <span class="badge-soft me-1">#@tag.Name</span>
+                            }
+                        </td>
+                        <td><i class="bi bi-file-earmark-text me-1"></i>@document.FileType</td>
+                        <td>@document.Status</td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-ghost" asp-action="Details" asp-route-id="@document.Id">Ашу</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

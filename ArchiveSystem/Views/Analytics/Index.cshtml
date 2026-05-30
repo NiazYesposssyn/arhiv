@@ -1,0 +1,73 @@
+@model AnalyticsViewModel
+@{
+    ViewData["Title"] = "Аналитика";
+    ViewData["PageTitle"] = "Карта және аналитика";
+    string Accent(string value) => value switch
+    {
+        "cyan" => "#06b6d4",
+        "emerald" => "#10b981",
+        "amber" => "#f59e0b",
+        _ => "#6366f1"
+    };
+    var positions = new[] { (Left: 54, Top: 28), (Left: 38, Top: 60), (Left: 66, Top: 74), (Left: 48, Top: 42) };
+}
+
+<div class="page-grid">
+    <section class="kpi-grid">
+        @foreach (var kpi in Model.Kpis)
+        {
+            <article class="premium-card kpi-card" style="--card-accent:@Accent(kpi.Accent)">
+                <span class="kpi-icon"><i class="@kpi.Icon"></i></span>
+                <div class="kpi-value">@kpi.Value</div>
+                <div class="muted fw-semibold">@kpi.Label</div>
+                <span class="trend mt-3">@kpi.Trend</span>
+            </article>
+        }
+    </section>
+
+    <section class="section-grid">
+        <article class="premium-card map-panel">
+            <h2 class="h4 fw-bold">Архив филиалдарының интерактивті картасы</h2>
+            <p class="muted">Аймақтық құжат қоры және сұраныс белсенділігі</p>
+            @for (var i = 0; i < Model.Branches.Count; i++)
+            {
+                var branch = Model.Branches[i];
+                var position = positions[i % positions.Length];
+                <div class="branch-dot" style="left:@position.Left%;top:@position.Top%">
+                    <span>@branch.Region · @branch.Requests</span>
+                </div>
+            }
+        </article>
+
+        <article class="premium-card">
+            <h2 class="h4 fw-bold">Аймақтық сұраныстар</h2>
+            <div style="height:360px"><canvas id="regionsBar"></canvas></div>
+        </article>
+    </section>
+
+    <section class="section-grid">
+        <article class="premium-card">
+            <h2 class="h4 fw-bold">Санаттар бойынша құжаттар</h2>
+            <div style="height:320px"><canvas id="categoriesDoughnut"></canvas></div>
+        </article>
+        <article class="premium-card">
+            <h2 class="h4 fw-bold">Activity heatmap</h2>
+            <p class="muted">Сағаттар бойынша жүйелік белсенділік</p>
+            <div style="height:320px"><canvas id="activityBar"></canvas></div>
+        </article>
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        archiveCharts.renderBar("regionsBar",
+            @Html.Raw(JsonSerializer.Serialize(Model.RequestsByRegion.Select(x => x.Label))),
+            @Html.Raw(JsonSerializer.Serialize(Model.RequestsByRegion.Select(x => x.Value))));
+        archiveCharts.renderDoughnut("categoriesDoughnut",
+            @Html.Raw(JsonSerializer.Serialize(Model.DocumentsByCategory.Select(x => x.Label))),
+            @Html.Raw(JsonSerializer.Serialize(Model.DocumentsByCategory.Select(x => x.Value))));
+        archiveCharts.renderBar("activityBar",
+            @Html.Raw(JsonSerializer.Serialize(Model.ActivityHeatmap.Select(x => x.Label))),
+            @Html.Raw(JsonSerializer.Serialize(Model.ActivityHeatmap.Select(x => x.Value))));
+    </script>
+}

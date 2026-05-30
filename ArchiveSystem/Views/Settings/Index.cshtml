@@ -1,0 +1,32 @@
+@model IReadOnlyList<SystemSetting>
+@{
+    ViewData["Title"] = "Баптаулар";
+    ViewData["PageTitle"] = "Жүйе баптаулары";
+}
+
+<div class="section-grid">
+    <form asp-action="Save" method="post" class="premium-card">
+        <h2 class="h4 fw-bold">Конфигурация</h2>
+        <p class="muted">Сақтау саясаты, upload лимиттері және notification параметрлері.</p>
+        <div class="d-grid gap-3">
+            @foreach (var setting in Model)
+            {
+                <div>
+                    <label class="form-label fw-semibold">@setting.Key</label>
+                    <input name="values[@setting.Id]" value="@setting.Value" class="form-control form-control-lg" />
+                    <div class="muted small">@setting.Description</div>
+                </div>
+            }
+        </div>
+        <button class="btn btn-premium mt-4" type="submit">Баптауларды сақтау</button>
+    </form>
+
+    <aside class="premium-card">
+        <h2 class="h4 fw-bold">Есеп және backup</h2>
+        <p class="muted">Басқарушы HTML/PDF-ready есепті экспорттаңыз немесе PostgreSQL backup процесіне дайындаңыз.</p>
+        <a class="btn btn-premium w-100 mb-3" asp-action="ExecutiveReport"><i class="bi bi-file-earmark-pdf me-2"></i>Executive report</a>
+        <div class="p-3 rounded-4 bg-primary bg-opacity-10 small">
+            Backup стратегиясы: PostgreSQL WAL архивтеу, күнделікті snapshot және encrypted offsite storage.
+        </div>
+    </aside>
+</div>
