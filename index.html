@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Archive Access System - архивтік ақпаратқа қауіпсіз қол жеткізу және сұраулар нәтижелерін өңдеу платформасы.">
+    <title>Archive Access System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="#top" aria-label="Archive Access System">
+                <span class="brand__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                        <path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm1.5 4h7M8.5 12h7M8.5 16h4.5" />
+                    </svg>
+                </span>
+                <span>Archive Access System</span>
+            </a>
+
+            <nav class="topbar__actions" aria-label="Жылдам әрекеттер">
+                <div class="language-switcher" aria-label="Тілді таңдау">
+                    <button class="language-switcher__item is-active" type="button" data-lang="kk">KZ</button>
+                    <button class="language-switcher__item" type="button" data-lang="ru">RU</button>
+                    <button class="language-switcher__item" type="button" data-lang="en">EN</button>
+                </div>
+                <button class="theme-toggle" type="button" aria-pressed="false">Түн</button>
+                <button class="login-button" type="button" data-open-request data-i18n="primaryAction">Жүйеге кіру</button>
+            </nav>
+        </header>
+
+        <main class="hero" id="top">
+            <section class="hero__content" aria-labelledby="page-title">
+                <p class="status-badge">
+                    <span class="status-badge__dot"></span>
+                    Enterprise-grade archive access
+                </p>
+                <h1 id="page-title" data-i18n="title">Archive Access System</h1>
+                <p class="hero__subtitle" data-i18n="subtitle">
+                    Мұрағаттық құжаттардың басқарудың ақылды платформасы
+                </p>
+                <p class="hero__description" data-i18n="description">
+                    Қауіпсіз мұрағаттандыру, электрондық құжаттарды сақтау,
+                    сұрауларды өңдеу және нәтижелерді жылдам жеткізу жүйесі.
+                </p>
+
+                <div class="hero__actions">
+                    <button class="primary-action" type="button" data-open-request data-i18n="primaryAction">Жүйеге кіру</button>
+                    <a class="secondary-action" href="#features" data-i18n="secondaryAction">Таныстыру</a>
+                </div>
+            </section>
+
+            <section class="stats-grid" aria-label="Платформа көрсеткіштері">
+                <article class="stat-card">
+                    <strong>330K+</strong>
+                    <span>Documents</span>
+                </article>
+                <article class="stat-card">
+                    <strong>6</strong>
+                    <span>Branches</span>
+                </article>
+                <article class="stat-card">
+                    <strong>99.9%</strong>
+                    <span>Uptime</span>
+                </article>
+                <article class="stat-card">
+                    <strong>&lt;200ms</strong>
+                    <span>Latency</span>
+                </article>
+            </section>
+
+            <section class="features-grid" id="features" aria-label="Жүйе мүмкіндіктері">
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M12 3 5 6v5c0 4.3 2.8 8.2 7 9.8 4.2-1.6 7-5.5 7-9.8V6l-7-3Z" />
+                            <path d="m9.5 12 1.7 1.7 3.6-4" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="securityTitle">Қауіпсіздік</h2>
+                    <p data-i18n="securityText">JWT, 2FA, рөлдік қолжетімділік</p>
+                </article>
+
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M7 3h7l4 4v14H7V3Z" />
+                            <path d="M14 3v5h5M9.5 13h5M9.5 17h5" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="docsTitle">Құжаттар</h2>
+                    <p data-i18n="docsText">PDF, DOCX, XLSX сақтау</p>
+                </article>
+
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M5 19V5M5 19h14" />
+                            <path d="M9 16v-5M13 16V8M17 16v-7" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="analyticsTitle">Аналитика</h2>
+                    <p data-i18n="analyticsText">Real-time дашбордтар</p>
+                </article>
+
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M8 8h8v8H8V8Z" />
+                            <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="autoTitle">Автоматтандыру</h2>
+                    <p data-i18n="autoText">Сұрауларды өңдеу</p>
+                </article>
+
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" />
+                            <path d="M3.6 9h16.8M3.6 15h16.8M12 3c2.2 2.5 3.3 5.5 3.3 9S14.2 18.5 12 21M12 3C9.8 5.5 8.7 8.5 8.7 12S9.8 18.5 12 21" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="langTitle">Көптілдік</h2>
+                    <p data-i18n="langText">KZ / RU / EN</p>
+                </article>
+
+                <article class="feature-card">
+                    <span class="feature-card__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false">
+                            <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16l-6-3-6 3Z" />
+                            <path d="M9 8h6M9 12h6" />
+                        </svg>
+                    </span>
+                    <h2 data-i18n="auditTitle">Аудит</h2>
+                    <p data-i18n="auditText">Іс-әрекеттер журналы</p>
+                </article>
+            </section>
+
+            <dialog class="request-dialog" id="request-dialog" aria-labelledby="request-title">
+                <button class="dialog-close" type="button" aria-label="Close" data-close-request>&times;</button>
+                <p class="panel-kicker" data-i18n="requestKicker">Сұрауды өңдеу</p>
+                <h2 id="request-title" data-i18n="requestTitle">Архивтік ақпаратқа өтінім</h2>
+                <p data-i18n="requestText">
+                    Жүйе пайдаланушы рөлін, құжат түрін және қолжетімділік деңгейін тексеріп,
+                    нәтижені қауіпсіз түрде дайындайды.
+                </p>
+                <form class="request-form" id="request-form">
+                    <label>
+                        <span data-i18n="topicLabel">Сұрау тақырыбы</span>
+                        <input type="text" name="topic" placeholder="Құжат атауы немесе архив қоры" required>
+                    </label>
+                    <label>
+                        <span data-i18n="roleLabel">Пайдаланушы рөлі</span>
+                        <select name="role" required>
+                            <option value="guest">Guest</option>
+                            <option value="researcher">Researcher</option>
+                            <option value="archivist">Archivist</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </label>
+                    <button class="primary-action" type="submit" data-i18n="submitAction">Өңдеу</button>
+                    <p class="form-message" id="form-message" role="status"></p>
+                </form>
+            </dialog>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Archive Access System</p>
+            <span>Republic of Kazakhstan</span>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
