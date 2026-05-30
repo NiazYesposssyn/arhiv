@@ -304,6 +304,44 @@
       display: block;
     }
 
+    .page-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 35% 20%, rgba(124, 58, 237, 0.34), transparent 28rem),
+        radial-gradient(circle at 70% 65%, rgba(36, 87, 197, 0.30), transparent 26rem),
+        var(--bg);
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-orb {
+      width: 86px;
+      height: 86px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #2457c5, #7c3aed, #09a6a3);
+      box-shadow: 0 28px 70px rgba(36, 87, 197, 0.35);
+      animation: loaderSpin 1.25s ease-in-out infinite;
+    }
+
+    @keyframes loaderSpin {
+      0%, 100% {
+        transform: rotate(0deg) scale(0.9);
+        border-radius: 30px;
+      }
+      50% {
+        transform: rotate(180deg) scale(1.08);
+        border-radius: 50%;
+      }
+    }
+
     @keyframes pageIn {
       from {
         opacity: 0;
@@ -319,7 +357,13 @@
       position: relative;
       isolation: isolate;
       overflow: hidden;
-      padding: 86px 0 64px;
+      min-height: calc(100vh - var(--nav-height));
+      padding: 96px 0 76px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.22), transparent 17rem),
+        radial-gradient(circle at 86% 18%, rgba(9, 166, 163, 0.28), transparent 20rem),
+        linear-gradient(135deg, #14213d 0%, #2457c5 42%, #7c3aed 100%);
     }
 
     .hero::before {
@@ -328,23 +372,158 @@
       inset: 0;
       z-index: -1;
       background:
-        linear-gradient(115deg, rgba(245, 248, 252, 0.92), rgba(245, 248, 252, 0.66)),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='540' viewBox='0 0 900 540'%3E%3Crect width='900' height='540' fill='%23dbe7f6'/%3E%3Cg opacity='.48'%3E%3Crect x='78' y='74' width='150' height='340' rx='12' fill='%23a5763f'/%3E%3Crect x='246' y='45' width='150' height='374' rx='12' fill='%23754f2c'/%3E%3Crect x='414' y='82' width='150' height='330' rx='12' fill='%23946b3d'/%3E%3Crect x='582' y='62' width='150' height='356' rx='12' fill='%236b4b2e'/%3E%3Cpath d='M105 130h96M105 164h96M105 198h96M273 113h96M273 147h96M273 181h96M441 142h96M441 176h96M441 210h96M609 121h96M609 155h96M609 189h96' stroke='%23fff' stroke-width='8' stroke-linecap='round'/%3E%3C/g%3E%3Cg opacity='.25' fill='none' stroke='%232457c5'%3E%3Cpath d='M0 470C170 398 272 521 443 449s250-87 457-14' stroke-width='6'/%3E%3Cpath d='M0 510C170 438 272 561 443 489s250-87 457-14' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E");
-      background-size: cover;
+        linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.10) 1px, transparent 1px);
+      background-size: 64px 64px;
       background-position: center;
-    }
-
-    [data-theme="dark"] .hero::before {
-      background:
-        linear-gradient(115deg, rgba(8, 17, 31, 0.94), rgba(8, 17, 31, 0.68)),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='540' viewBox='0 0 900 540'%3E%3Crect width='900' height='540' fill='%230d1b2f'/%3E%3Cg opacity='.55'%3E%3Crect x='78' y='74' width='150' height='340' rx='12' fill='%238b6537'/%3E%3Crect x='246' y='45' width='150' height='374' rx='12' fill='%23614226'/%3E%3Crect x='414' y='82' width='150' height='330' rx='12' fill='%23795632'/%3E%3Crect x='582' y='62' width='150' height='356' rx='12' fill='%23523b28'/%3E%3Cpath d='M105 130h96M105 164h96M105 198h96M273 113h96M273 147h96M273 181h96M441 142h96M441 176h96M441 210h96M609 121h96M609 155h96M609 189h96' stroke='%23fff' stroke-width='8' stroke-linecap='round'/%3E%3C/g%3E%3Cg opacity='.3' fill='none' stroke='%236ea8fe'%3E%3Cpath d='M0 470C170 398 272 521 443 449s250-87 457-14' stroke-width='6'/%3E%3Cpath d='M0 510C170 438 272 561 443 489s250-87 457-14' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E");
+      mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.9), transparent 76%);
     }
 
     .hero-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.08fr) 0.92fr;
-      gap: 34px;
+      gap: 54px;
       align-items: center;
+    }
+
+    .hero .lead,
+    .hero .muted {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .hero .eyebrow {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .hero h1 {
+      max-width: 880px;
+      text-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 30px;
+      max-width: 720px;
+    }
+
+    .hero-metric {
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.14);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-metric strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 950;
+    }
+
+    .saas-visual {
+      position: relative;
+      min-height: 560px;
+      perspective: 1200px;
+    }
+
+    .visual-orbit {
+      position: absolute;
+      inset: 8%;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 50%;
+      animation: orbitPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes orbitPulse {
+      50% {
+        transform: scale(1.04) rotate(8deg);
+      }
+    }
+
+    .visual-card {
+      position: absolute;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 26px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.13);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(24px);
+      transform-style: preserve-3d;
+      animation: visualFloat 7s ease-in-out infinite;
+    }
+
+    .visual-card.main {
+      top: 74px;
+      left: 52px;
+      right: 32px;
+      min-height: 320px;
+      transform: rotateY(-12deg) rotateX(8deg);
+    }
+
+    .visual-card.server {
+      left: 0;
+      bottom: 52px;
+      width: 230px;
+      animation-delay: -1.5s;
+    }
+
+    .visual-card.cloud {
+      right: 0;
+      bottom: 20px;
+      width: 240px;
+      animation-delay: -2.2s;
+    }
+
+    @keyframes visualFloat {
+      0%, 100% {
+        translate: 0 0;
+      }
+      50% {
+        translate: 0 -16px;
+      }
+    }
+
+    .folder-stack {
+      display: grid;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .folder-line {
+      height: 54px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.90), rgba(255, 255, 255, 0.42));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+    }
+
+    .mini-bars {
+      display: flex;
+      align-items: end;
+      gap: 9px;
+      min-height: 92px;
+      margin-top: 12px;
+    }
+
+    .mini-bars span {
+      flex: 1;
+      border-radius: 999px 999px 8px 8px;
+      background: linear-gradient(180deg, #39d7d4, #ffffff);
+    }
+
+    .cube {
+      width: 76px;
+      height: 76px;
+      margin: 8px auto 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(110, 168, 254, 0.55));
+      box-shadow: 0 22px 45px rgba(0, 0, 0, 0.20);
+      transform: rotateX(58deg) rotateZ(42deg);
     }
 
     .eyebrow {
@@ -1102,6 +1281,307 @@
       }
     }
 
+    .premium-section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .premium-section::before {
+      content: "";
+      position: absolute;
+      inset: 10% auto auto -12%;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.16), transparent 68%);
+      pointer-events: none;
+    }
+
+    .archive-showcase {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .archive-photo {
+      min-height: 460px;
+      border-radius: 34px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(20, 33, 61, 0.52), rgba(36, 87, 197, 0.16)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='520' viewBox='0 0 760 520'%3E%3Crect width='760' height='520' fill='%23d9e5f7'/%3E%3Cpath d='M72 430V150L380 42l308 108v280' fill='%23f8fbff'/%3E%3Cpath d='M118 430V190h70v240M250 430V190h70v240M382 430V190h70v240M514 430V190h70v240' fill='%232457c5' opacity='.58'/%3E%3Cpath d='M70 430h620M90 150h580' stroke='%2314213d' stroke-opacity='.22' stroke-width='18'/%3E%3Ccircle cx='620' cy='96' r='54' fill='%237c3aed' opacity='.26'/%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--shadow);
+    }
+
+    .archive-benefit,
+    .capability-card,
+    .testimonial-card {
+      min-height: 100%;
+    }
+
+    .card-illustration {
+      height: 132px;
+      margin: -4px -4px 18px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 78% 24%, rgba(255, 255, 255, 0.72), transparent 3rem),
+        linear-gradient(135deg, rgba(36, 87, 197, 0.95), rgba(124, 58, 237, 0.82));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-illustration::before,
+    .card-illustration::after {
+      content: "";
+      position: absolute;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.38);
+    }
+
+    .card-illustration::before {
+      width: 68%;
+      height: 18px;
+      left: 18px;
+      top: 28px;
+      box-shadow: 0 32px 0 rgba(255, 255, 255, 0.26), 0 64px 0 rgba(255, 255, 255, 0.18);
+    }
+
+    .card-illustration::after {
+      width: 82px;
+      height: 82px;
+      right: -18px;
+      bottom: -18px;
+      transform: rotate(18deg);
+    }
+
+    .capability-card .btn {
+      margin-top: 10px;
+    }
+
+    .product-demo {
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background: linear-gradient(135deg, rgba(36, 87, 197, 0.12), rgba(124, 58, 237, 0.08)), var(--bg-glass);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px);
+    }
+
+    .demo-tabs {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .demo-tab {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      color: var(--text);
+      background: var(--bg-glass);
+      font-weight: 900;
+      text-align: left;
+      transition: 0.25s ease;
+    }
+
+    .demo-tab.active,
+    .demo-tab:hover {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--brand), var(--brand-3));
+      transform: translateX(4px);
+    }
+
+    .demo-screen {
+      display: none;
+      min-height: 430px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent),
+        var(--bg-soft);
+      animation: pageIn 0.38s ease both;
+    }
+
+    .demo-screen.active {
+      display: block;
+    }
+
+    .mock-window {
+      height: 100%;
+      border-radius: 24px;
+      background:
+        linear-gradient(90deg, rgba(36, 87, 197, 0.12) 0 16%, transparent 16%),
+        linear-gradient(180deg, rgba(124, 58, 237, 0.10), transparent),
+        var(--bg-glass);
+      box-shadow: inset 0 0 0 1px var(--line);
+      padding: 22px 22px 22px 21%;
+    }
+
+    .mock-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .mock-tile {
+      min-height: 96px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(36, 87, 197, 0.18), rgba(9, 166, 163, 0.10));
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    .kz-map {
+      position: relative;
+      min-height: 520px;
+      border-radius: 34px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 38% 42%, rgba(36, 87, 197, 0.16), transparent 18rem),
+        linear-gradient(135deg, rgba(124, 58, 237, 0.10), rgba(9, 166, 163, 0.08)),
+        var(--bg-glass);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .kz-map svg {
+      position: absolute;
+      inset: 7% 4%;
+      width: 92%;
+      height: 86%;
+      filter: drop-shadow(0 30px 42px rgba(36, 87, 197, 0.18));
+    }
+
+    .map-pin {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border: 4px solid #fff;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand-3));
+      box-shadow: 0 0 0 10px rgba(36, 87, 197, 0.15), var(--shadow-soft);
+      transform: translate(-50%, -50%);
+      animation: pinPulse 2.6s ease-in-out infinite;
+    }
+
+    @keyframes pinPulse {
+      50% {
+        box-shadow: 0 0 0 18px rgba(36, 87, 197, 0.03), var(--shadow-soft);
+      }
+    }
+
+    .map-pin::after {
+      content: attr(data-city) "\A" attr(data-docs) " құжат / " attr(data-users) " қолданушы";
+      white-space: pre;
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 14px);
+      min-width: 190px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--text);
+      background: var(--bg-glass);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 8px);
+      transition: 0.24s ease;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .map-pin:hover::after {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .pricing-grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .testimonial-slider {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonial-track {
+      display: flex;
+      transition: transform 0.45s cubic-bezier(0.2, 0.75, 0.2, 1);
+    }
+
+    .testimonial-card {
+      min-width: 33.333%;
+      padding: 10px;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-3));
+      font-weight: 950;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .slider-controls {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 14px;
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ripple {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+      transform: translate(-50%, -50%) scale(0);
+      animation: ripple 0.62s ease-out;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(18);
+      }
+    }
+
+    .activity-feed {
+      display: grid;
+      gap: 10px;
+    }
+
+    .activity-item {
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(36, 87, 197, 0.05);
+    }
+
     @media (max-width: 980px) {
       .nav-links {
         position: fixed;
@@ -1151,13 +1631,28 @@
       }
 
       .hero-grid,
+      .archive-showcase,
+      .product-demo,
       .grid-2,
       .grid-3,
       .grid-4,
+      .pricing-grid-4,
       .contact-grid,
       .auth-card,
       .footer-grid {
         grid-template-columns: 1fr;
+      }
+
+      .saas-visual {
+        min-height: 460px;
+      }
+
+      .hero-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .testimonial-card {
+        min-width: 100%;
       }
 
       .section-head,
@@ -1212,6 +1707,7 @@
   </style>
 </head>
 <body>
+  <div class="page-loader" id="pageLoader" aria-hidden="true"><div class="loader-orb"></div></div>
   <header class="topbar">
     <nav class="container nav" aria-label="Основная навигация">
       <a class="brand nav-link" href="#home" data-page="home" aria-label="Archive Access System">
@@ -1220,40 +1716,14 @@
       </a>
 
       <div class="nav-links" id="navLinks">
-        <div class="nav-item">
-          <button class="nav-action" type="button">Портал ▾</button>
-          <div class="mega-menu">
-            <div class="mega-panel">
-              <span class="badge">Единое окно архива</span>
-              <h3>Публичные сервисы, справки и цифровые фонды</h3>
-              <p>Доступ к документам, услугам и справочному центру для граждан, бизнеса и государственных организаций.</p>
-            </div>
-            <div class="mega-grid">
-              <a class="mega-link nav-link" href="#about-system" data-page="about-system"><span class="mega-icon">01</span><span><strong>О системе</strong><span>Архитектура, безопасность, возможности</span></span></a>
-              <a class="mega-link nav-link" href="#archive" data-page="archive"><span class="mega-icon">02</span><span><strong>Об архиве</strong><span>История, филиалы, карта</span></span></a>
-              <a class="mega-link nav-link" href="#services" data-page="services"><span class="mega-icon">03</span><span><strong>Услуги</strong><span>Справки, поиск, консультации</span></span></a>
-              <a class="mega-link nav-link" href="#help" data-page="help"><span class="mega-icon">04</span><span><strong>Справочный центр</strong><span>Инструкции и база знаний</span></span></a>
-            </div>
-          </div>
-        </div>
-        <a class="nav-link" href="#pricing" data-page="pricing">Тарифы</a>
-        <a class="nav-link" href="#news" data-page="news">Новости</a>
-        <a class="nav-link" href="#faq" data-page="faq">FAQ</a>
-        <a class="nav-link" href="#contacts" data-page="contacts">Контакты</a>
-        <div class="nav-item">
-          <button class="nav-action" type="button">Рабочие зоны ▾</button>
-          <div class="mega-menu">
-            <div class="mega-grid">
-              <a class="mega-link nav-link" href="#dashboard" data-page="dashboard"><span class="mega-icon">LC</span><span><strong>Личный кабинет</strong><span>Документы, запросы, аналитика</span></span></a>
-              <a class="mega-link nav-link" href="#admin" data-page="admin"><span class="mega-icon">AD</span><span><strong>Панель администратора</strong><span>Пользователи, роли, мониторинг</span></span></a>
-              <a class="mega-link nav-link" href="#login" data-page="login"><span class="mega-icon">2F</span><span><strong>Авторизация</strong><span>Вход, регистрация, 2FA</span></span></a>
-            </div>
-            <div class="mega-panel">
-              <h3>Enterprise workspace</h3>
-              <p>Горизонтальная навигация, KPI, таблицы, журналы аудита, уведомления и системные настройки.</p>
-            </div>
-          </div>
-        </div>
+        <a class="nav-link" href="#home" data-page="home">Басты бет</a>
+        <a class="nav-link" href="#archive" data-page="archive">Архив туралы</a>
+        <a class="nav-link" href="#services" data-page="services">Қызметтер</a>
+        <a class="nav-link" href="#pricing" data-page="pricing">Тарифтер</a>
+        <a class="nav-link" href="#dashboard" data-page="dashboard">Аналитика</a>
+        <a class="nav-link" href="#contacts" data-page="contacts">Байланыс</a>
+        <a class="nav-link" href="#login" data-page="login">Кіру</a>
+        <a class="nav-link" href="#register" data-page="register">Тіркелу</a>
       </div>
 
       <div class="nav-controls">
@@ -1273,53 +1743,151 @@
       <div class="hero">
         <div class="container hero-grid">
           <div class="reveal">
-            <span class="eyebrow">Государственный цифровой сервис нового поколения</span>
-            <h1>Archive Access System для безопасного доступа к архивным фондам</h1>
-            <p class="lead">Единый корпоративный портал уровня eGov, Microsoft Admin Center и Azure Portal: электронные услуги, AI-поиск, OCR, заявки, отчеты, аудит и управление архивной инфраструктурой.</p>
+            <span class="eyebrow">Premium SaaS archive platform</span>
+            <h1>Электрондық мұрағат басқару жүйесі</h1>
+            <p class="lead">Құжаттарды сақтау, іздеу және архивтік сұраныстарды автоматтандыруға арналған заманауи цифрлық платформа</p>
             <div class="hero-actions">
-              <a class="btn btn-primary nav-link" href="#login" data-page="login">Войти</a>
-              <a class="btn btn-secondary nav-link" href="#register" data-page="register">Регистрация</a>
-              <a class="btn btn-gold nav-link" href="#dashboard" data-page="dashboard">Подать запрос</a>
-              <a class="btn btn-secondary nav-link" href="#contacts" data-page="contacts">Связаться с нами</a>
+              <a class="btn btn-primary nav-link" href="#dashboard" data-page="dashboard">Жүйені бастау</a>
+              <a class="btn btn-secondary scroll-link" href="#demo">Демо көру</a>
+            </div>
+            <div class="hero-metrics">
+              <div class="hero-metric"><strong>99.9%</strong><span>security uptime</span></div>
+              <div class="hero-metric"><strong>AI + OCR</strong><span>smart search</span></div>
+              <div class="hero-metric"><strong>API Ready</strong><span>enterprise integration</span></div>
             </div>
           </div>
-          <aside class="archive-terminal reveal" aria-label="Демонстрация поиска документов">
-            <div class="terminal-header">
-              <strong>AI Document Search</strong>
-              <div class="dots"><span></span><span></span><span></span></div>
+          <aside class="saas-visual reveal parallax-item" aria-label="3D product illustration">
+            <div class="visual-orbit"></div>
+            <div class="visual-card main">
+              <div class="terminal-header"><strong>Archive Cloud Console</strong><div class="dots"><span></span><span></span><span></span></div></div>
+              <div class="folder-stack"><span class="folder-line"></span><span class="folder-line"></span><span class="folder-line"></span></div>
+              <div class="mini-bars"><span style="height:42%"></span><span style="height:76%"></span><span style="height:58%"></span><span style="height:92%"></span><span style="height:68%"></span></div>
             </div>
-            <div class="search-box">
-              <input value="Найти архивную справку по фамилии и периоду" aria-label="Поиск документов" />
-              <button class="btn btn-primary" type="button">Поиск</button>
-            </div>
-            <div class="doc-preview">
-              <div class="doc-row"><span class="icon-chip">OCR</span><span><strong>Фонд 18 / Опись 4 / Дело 229</strong><span>Распознано 96%, персональные данные защищены</span></span><span class="status">Готово</span></div>
-              <div class="doc-row"><span class="icon-chip">PDF</span><span><strong>Архивная справка №AAS-2026-1840</strong><span>Электронная подпись, экспорт PDF/Excel</span></span><span class="status">Подписано</span></div>
-              <div class="doc-row"><span class="icon-chip">API</span><span><strong>Интеграция с ведомственным контуром</strong><span>Логирование, кэширование, аудит безопасности</span></span><span class="status">Online</span></div>
-            </div>
+            <div class="visual-card server"><div class="cube"></div><strong>Secure Server</strong><p class="muted">Шифрланған сақтау, backup және audit logs.</p></div>
+            <div class="visual-card cloud"><span class="icon-chip">☁</span><strong>Digital folders</strong><p class="muted">Құжаттар, аналитика және сұраныстар бір ортада.</p></div>
           </aside>
         </div>
       </div>
 
-      <div class="section compact">
-        <div class="container grid grid-4">
-          <article class="card stat-card reveal"><span class="badge">Документы</span><div class="stat-value counter" data-target="2480000">0</div><p class="muted">оцифрованных единиц хранения</p></article>
-          <article class="card stat-card reveal"><span class="badge">Пользователи</span><div class="stat-value counter" data-target="184500">0</div><p class="muted">граждан и организаций</p></article>
-          <article class="card stat-card reveal"><span class="badge">Заявки</span><div class="stat-value counter" data-target="972300">0</div><p class="muted">обработанных обращений</p></article>
-          <article class="card stat-card reveal"><span class="badge">Фонды</span><div class="stat-value counter" data-target="1260">0</div><p class="muted">архивных фондов в реестре</p></article>
+      <div class="section premium-section">
+        <div class="container archive-showcase">
+          <div class="archive-photo reveal parallax-item" aria-label="Фото современного архива"></div>
+          <div class="reveal">
+            <span class="section-kicker">Архив туралы</span>
+            <h2 class="section-title">Архивтік жүйе дегеніміз не?</h2>
+            <p class="lead">Бұл құжаттарды қауіпсіз сақтауға, жылдам табуға, онлайн сұраныстарды өңдеуге және мемлекеттік деңгейдегі цифрлық архив инфрақұрылымын басқаруға арналған enterprise-платформа.</p>
+            <div class="grid grid-2">
+              <article class="card archive-benefit"><div class="card-illustration"></div><span class="icon-chip">🔒</span><h3>Қауіпсіз сақтау</h3><p class="muted">Рөлдік қолжетімділік, 2FA, шифрлау және тұрақты резервтік көшіру.</p></article>
+              <article class="card archive-benefit"><div class="card-illustration"></div><span class="icon-chip">⌕</span><h3>Жылдам іздеу</h3><p class="muted">Толықмәтінді іздеу, AI suggestion және OCR нәтижелері.</p></article>
+              <article class="card archive-benefit"><div class="card-illustration"></div><span class="icon-chip">◇</span><h3>Сандық архив</h3><p class="muted">Қорлар, тізімдемелер және электрондық көшірмелердің бірыңғай каталогы.</p></article>
+              <article class="card archive-benefit"><div class="card-illustration"></div><span class="icon-chip">↗</span><h3>Онлайн сұраныстар</h3><p class="muted">Өтініш беру, статус бақылау, PDF/Excel экспорт және электрондық қолтаңба.</p></article>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="section">
         <div class="container">
           <div class="section-head reveal">
-            <div>
-              <span class="section-kicker">Профессиональные модули</span>
-              <h2 class="section-title">Готовая цифровая платформа для реального использования</h2>
-            </div>
-            <a class="btn btn-secondary nav-link" href="#services" data-page="services">Все услуги</a>
+            <div><span class="section-kicker">Мүмкіндіктер</span><h2 class="section-title">Коммерциялық SaaS деңгейіндегі функциялар</h2></div>
           </div>
-          <div class="grid grid-4" id="modulesGrid"></div>
+          <div class="grid grid-4">
+            <article class="card capability-card reveal"><div class="card-illustration"></div><h3>Құжаттарды басқару</h3><p class="muted">Каталогтау, нұсқалар, метадеректер және lifecycle.</p><a class="btn btn-secondary nav-link" href="#services" data-page="services">Толығырақ</a></article>
+            <article class="card capability-card reveal"><div class="card-illustration"></div><h3>Архивтік сұраныстар</h3><p class="muted">SLA, маршруттау, статус және автоматты хабарламалар.</p><a class="btn btn-secondary nav-link" href="#services" data-page="services">Толығырақ</a></article>
+            <article class="card capability-card reveal"><div class="card-illustration"></div><h3>Аналитика</h3><p class="muted">KPI, region breakdown, funnel және SLA бақылауы.</p><a class="btn btn-secondary nav-link" href="#dashboard" data-page="dashboard">Толығырақ</a></article>
+            <article class="card capability-card reveal"><div class="card-illustration"></div><h3>Электрондық сақтау</h3><p class="muted">Бұлттық репозиторий, backup және integrity check.</p><a class="btn btn-secondary nav-link" href="#services" data-page="services">Толығырақ</a></article>
+            <article class="card capability-card reveal"><div class="card-illustration"></div><h3>Қауіпсіздік</h3><p class="muted">Security Center, permissions, sessions және risk alerts.</p><a class="btn btn-secondary nav-link" href="#dashboard" data-page="dashboard">Толығырақ</a></article>
+            <article class="card capability-card reveal"><div class="card-illustration"></div><h3>Рөлдерді басқару</h3><p class="muted">Admin, operator, researcher және organization roles.</p><a class="btn btn-secondary nav-link" href="#admin" data-page="admin">Толығырақ</a></article>
+            <article class="card capability-card reveal"><div class="card-illustration"></div><h3>Аудит журналы</h3><p class="muted">Әр әрекеттің trace, IP, device және compliance статусы.</p><a class="btn btn-secondary nav-link" href="#admin" data-page="admin">Толығырақ</a></article>
+            <article class="card capability-card reveal"><div class="card-illustration"></div><h3>Есептер генерациясы</h3><p class="muted">PDF/Excel есептері, scheduled reports және dashboard export.</p><a class="btn btn-secondary nav-link" href="#dashboard" data-page="dashboard">Толығырақ</a></article>
+          </div>
+        </div>
+      </div>
+
+      <div class="section premium-section" id="demo">
+        <div class="container">
+          <div class="section-head reveal"><div><span class="section-kicker">Interactive demo</span><h2 class="section-title">Өнім интерфейсін парақтау</h2></div></div>
+          <div class="product-demo reveal">
+            <div class="demo-tabs" id="demoTabs">
+              <button class="demo-tab active" type="button" data-demo="0">Dashboard</button>
+              <button class="demo-tab" type="button" data-demo="1">Documents</button>
+              <button class="demo-tab" type="button" data-demo="2">Requests</button>
+              <button class="demo-tab" type="button" data-demo="3">Analytics</button>
+            </div>
+            <div id="demoScreens">
+              <section class="demo-screen active" data-demo-screen="0"><div class="mock-window"><span class="badge">Dashboard</span><h3>Executive overview</h3><div class="mock-grid"><span class="mock-tile"></span><span class="mock-tile"></span><span class="mock-tile"></span></div><div class="chart"><span class="bar" style="height:70%"></span><span class="bar" style="height:44%"></span><span class="bar" style="height:86%"></span><span class="bar" style="height:62%"></span><span class="bar" style="height:94%"></span><span class="bar" style="height:78%"></span></div></div></section>
+              <section class="demo-screen" data-demo-screen="1"><div class="mock-window"><span class="badge">Documents</span><h3>Document management</h3><div class="doc-preview"><div class="doc-row"><span class="icon-chip">PDF</span><span><strong>Қор 12 / Іс 419</strong><span>OCR 98%, signed</span></span><span class="status">Ready</span></div><div class="doc-row"><span class="icon-chip">DOC</span><span><strong>Inventory registry</strong><span>Metadata verified</span></span><span class="status">Active</span></div></div></div></section>
+              <section class="demo-screen" data-demo-screen="2"><div class="mock-window"><span class="badge">Requests</span><h3>Archive request pipeline</h3><table class="data-table"><tbody><tr><td>REQ-2501</td><td><span class="status">Review</span></td><td>Астана</td></tr><tr><td>REQ-2502</td><td><span class="status">Signed</span></td><td>Алматы</td></tr><tr><td>REQ-2503</td><td><span class="status">New</span></td><td>Шымкент</td></tr></tbody></table></div></section>
+              <section class="demo-screen" data-demo-screen="3"><div class="mock-window"><span class="badge">Analytics</span><h3>Regional performance</h3><div class="grid grid-2"><div class="donut"></div><div class="chart"><span class="bar" style="height:42%"></span><span class="bar" style="height:91%"></span><span class="bar" style="height:74%"></span><span class="bar" style="height:57%"></span><span class="bar" style="height:83%"></span></div></div></div></section>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section compact">
+        <div class="container grid grid-4">
+          <article class="card stat-card reveal"><span class="badge">Құжат</span><div class="stat-value counter" data-target="250000" data-suffix="+ құжат">0</div><p class="muted">цифрлық архивте сақталған</p></article>
+          <article class="card stat-card reveal"><span class="badge">Сұраныс</span><div class="stat-value counter" data-target="10000" data-suffix="+ сұраныс">0</div><p class="muted">онлайн өңделген</p></article>
+          <article class="card stat-card reveal"><span class="badge">Бөлімше</span><div class="stat-value counter" data-target="50" data-suffix="+ архив бөлімшесі">0</div><p class="muted">Қазақстан бойынша</p></article>
+          <article class="card stat-card reveal"><span class="badge">Қауіпсіздік</span><div class="stat-value counter" data-target="99.9" data-suffix="% қауіпсіздік">0</div><p class="muted">enterprise деңгейінде</p></article>
+        </div>
+      </div>
+
+      <div class="section premium-section">
+        <div class="container">
+          <div class="section-head reveal"><div><span class="section-kicker">Карта архивов</span><h2 class="section-title">Қазақстан бойынша интерактивті карта</h2></div></div>
+          <div class="kz-map reveal">
+            <svg viewBox="0 0 900 520" role="img" aria-label="Карта Казахстана">
+              <path d="M105 254c38-88 137-139 248-132 56 4 86-56 154-50 62 5 83 71 144 79 76 10 117 51 135 111 19 62-30 110-97 113-63 2-83 65-153 78-74 14-111-48-178-27-92 28-173-11-222-66-35-39-51-72-31-106Z" fill="rgba(36,87,197,.18)" stroke="rgba(36,87,197,.48)" stroke-width="4"/>
+              <path d="M180 308c86-47 170-52 252-13 98 46 158-4 257 28M278 156c17 104 77 166 181 190M566 110c-42 90-38 179 12 266" fill="none" stroke="rgba(124,58,237,.24)" stroke-width="3"/>
+            </svg>
+            <button class="map-pin" style="left:53%;top:34%" data-city="Астана" data-docs="82 000" data-users="3 200" type="button"></button>
+            <button class="map-pin" style="left:43%;top:72%" data-city="Алматы" data-docs="68 500" data-users="2 900" type="button"></button>
+            <button class="map-pin" style="left:36%;top:76%" data-city="Шымкент" data-docs="41 200" data-users="1 800" type="button"></button>
+            <button class="map-pin" style="left:47%;top:50%" data-city="Қарағанды" data-docs="54 700" data-users="2 100" type="button"></button>
+            <button class="map-pin" style="left:23%;top:48%" data-city="Ақтөбе" data-docs="32 900" data-users="1 450" type="button"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="container">
+          <div class="section-head reveal"><div><span class="section-kicker">Тарифтер</span><h2 class="section-title">SaaS-style pricing</h2></div></div>
+          <div class="grid pricing-grid-4">
+            <article class="card pricing-card reveal"><span class="badge">Базалық</span><div class="price">0 ₸</div><p class="muted">Жеке пайдаланушылар үшін.</p><ul class="feature-list"><li>5 сұраныс</li><li>Негізгі іздеу</li><li>Email қолдау</li></ul><a class="btn btn-secondary nav-link" href="#register" data-page="register">Бастау</a></article>
+            <article class="card pricing-card featured reveal"><span class="badge">Стандарт</span><div class="price">12 900 ₸</div><p class="muted">Кәсіби зерттеушілерге.</p><ul class="feature-list"><li>AI және OCR</li><li>PDF/Excel экспорт</li><li>Priority support</li></ul><a class="btn btn-primary nav-link" href="#register" data-page="register">Бастау</a></article>
+            <article class="card pricing-card reveal"><span class="badge">Кәсіптік</span><div class="price">49 900 ₸</div><p class="muted">Компаниялар мен ұйымдарға.</p><ul class="feature-list"><li>Командалық roles</li><li>API access</li><li>Audit logs</li></ul><a class="btn btn-secondary nav-link" href="#register" data-page="register">Бастау</a></article>
+            <article class="card pricing-card reveal"><span class="badge">Мемлекеттік ұйымдар үшін</span><div class="price">Custom</div><p class="muted">Ведомстволық интеграциялар.</p><ul class="feature-list"><li>SSO/SLA</li><li>Dedicated support</li><li>Security Center</li></ul><a class="btn btn-secondary nav-link" href="#contacts" data-page="contacts">Бастау</a></article>
+          </div>
+        </div>
+      </div>
+
+      <div class="section premium-section">
+        <div class="container">
+          <div class="section-head reveal"><div><span class="section-kicker">Пікірлер</span><h2 class="section-title">Пайдаланушылар сенімі</h2></div></div>
+          <div class="testimonial-slider reveal">
+            <div class="testimonial-track" id="testimonialTrack">
+              <article class="testimonial-card"><div class="card"><div class="avatar">АН</div><h3>Айдана Нұрлан</h3><p class="muted">Архив бөлімінің басшысы</p><p>"Интерфейс Azure Portal сияқты түсінікті. Сұраныстарды өңдеу уақыты айтарлықтай қысқарды."</p></div></article>
+              <article class="testimonial-card"><div class="card"><div class="avatar">МК</div><h3>Марат Қасым</h3><p class="muted">IT administrator</p><p>"RBAC, аудит және backup модульдері коммерциялық өнім деңгейінде жасалған."</p></div></article>
+              <article class="testimonial-card"><div class="card"><div class="avatar">ЕС</div><h3>Елена Соколова</h3><p class="muted">Зерттеуші</p><p>"AI-іздеу бұрын табу қиын болған құжаттарды бірнеше секундта көрсетеді."</p></div></article>
+              <article class="testimonial-card"><div class="card"><div class="avatar">ТЖ</div><h3>Талғат Жақып</h3><p class="muted">Ведомство өкілі</p><p>"API интеграциясы мен есептер генерациясы мемлекеттік процестерге дайын."</p></div></article>
+            </div>
+            <div class="slider-controls"><button class="icon-button" id="prevTestimonial" type="button">‹</button><button class="icon-button" id="nextTestimonial" type="button">›</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="container">
+          <div class="section-head reveal"><div><span class="section-kicker">FAQ</span><h2 class="section-title">Жиі қойылатын сұрақтар</h2></div></div>
+          <div id="homeFaqList" class="reveal"></div>
+        </div>
+      </div>
+
+      <div class="section compact">
+        <div class="container contact-grid">
+          <div class="card reveal"><span class="section-kicker">Байланыс</span><h2>Командамен байланысу</h2><p class="muted">Телефон: +7 (7172) 00-00-00<br />Email: support@archive-access.gov.kz<br />Адрес: Астана, Архивный даңғылы, 12</p><div class="map-card" style="min-height:220px;border-radius:22px;"><span class="badge">Office map</span></div></div>
+          <div class="card reveal"><h3>Кері байланыс формасы</h3><form class="form-grid"><div class="form-row"><input class="form-control" placeholder="Атыңыз" /><input class="form-control" placeholder="Email" /></div><input class="form-control" placeholder="Тақырып" /><textarea class="form-control" placeholder="Хабарлама"></textarea><button class="btn btn-primary" type="button">Жіберу</button></form></div>
         </div>
       </div>
     </section>
@@ -1413,22 +1981,23 @@
       <div class="section">
         <div class="container">
           <div class="section-head">
-            <div><span class="section-kicker">Тарифы и услуги</span><h2 class="section-title">Прозрачные пакеты доступа</h2></div>
+            <div><span class="section-kicker">Тарифтер</span><h2 class="section-title">Қазіргі SaaS сервистері сияқты пакеттер</h2></div>
           </div>
-          <div class="grid grid-3">
-            <article class="card pricing-card"><span class="badge">Бесплатный</span><div class="price">0 ₸</div><p class="muted">Для гражданских запросов и базового поиска.</p><ul class="feature-list"><li>3 запроса в месяц</li><li>Базовый поиск</li><li>Email-уведомления</li></ul><a class="btn btn-secondary nav-link" href="#register" data-page="register">Начать</a></article>
-            <article class="card pricing-card featured"><span class="badge">Базовый</span><div class="price">9 900 ₸</div><p class="muted">Для специалистов, исследователей и малого бизнеса.</p><ul class="feature-list"><li>50 запросов в месяц</li><li>AI-поиск и OCR</li><li>Экспорт PDF/Excel</li></ul><a class="btn btn-primary nav-link" href="#register" data-page="register">Выбрать</a></article>
-            <article class="card pricing-card"><span class="badge">Корпоративный</span><div class="price">Индивидуально</div><p class="muted">Для государственных и крупных организаций.</p><ul class="feature-list"><li>Безлимитные заявки</li><li>API и SSO</li><li>Персональный SLA</li></ul><a class="btn btn-secondary nav-link" href="#contacts" data-page="contacts">Связаться</a></article>
+          <div class="grid pricing-grid-4">
+            <article class="card pricing-card"><span class="badge">Базалық</span><div class="price">0 ₸</div><p class="muted">Жеке пайдаланушылар және бастапқы сұраныстар.</p><ul class="feature-list"><li>5 сұраныс айына</li><li>Негізгі іздеу</li><li>Email хабарламалар</li></ul><a class="btn btn-secondary nav-link" href="#register" data-page="register">Бастау</a></article>
+            <article class="card pricing-card featured"><span class="badge">Стандарт</span><div class="price">12 900 ₸</div><p class="muted">Зерттеушілер мен архив мамандарына.</p><ul class="feature-list"><li>AI-поиск және OCR</li><li>PDF/Excel экспорт</li><li>Priority support</li></ul><a class="btn btn-primary nav-link" href="#register" data-page="register">Бастау</a></article>
+            <article class="card pricing-card"><span class="badge">Кәсіптік</span><div class="price">49 900 ₸</div><p class="muted">Командалар, компаниялар және филиалдар үшін.</p><ul class="feature-list"><li>Рөлдерді басқару</li><li>Audit logs</li><li>API access</li></ul><a class="btn btn-secondary nav-link" href="#register" data-page="register">Бастау</a></article>
+            <article class="card pricing-card"><span class="badge">Мемлекеттік ұйымдар үшін</span><div class="price">Custom</div><p class="muted">Ведомстволық контур және жоғары SLA.</p><ul class="feature-list"><li>SSO және dedicated API</li><li>Security Center</li><li>Персоналды SLA</li></ul><a class="btn btn-secondary nav-link" href="#contacts" data-page="contacts">Бастау</a></article>
           </div>
           <div class="section compact">
             <table class="compare-table" aria-label="Сравнение тарифов">
-              <thead><tr><th>Возможность</th><th>Бесплатный</th><th>Базовый</th><th>Корпоративный</th></tr></thead>
+              <thead><tr><th>Мүмкіндік</th><th>Базалық</th><th>Стандарт</th><th>Кәсіптік</th><th>Мемлекеттік</th></tr></thead>
               <tbody>
-                <tr><td>Полнотекстовый поиск</td><td>✓</td><td>✓</td><td>✓</td></tr>
-                <tr><td>AI-поиск документов</td><td>—</td><td>✓</td><td>✓</td></tr>
-                <tr><td>API-интеграция</td><td>—</td><td>—</td><td>✓</td></tr>
-                <tr><td>Электронная подпись</td><td>Ограниченно</td><td>✓</td><td>✓</td></tr>
-                <tr><td>Персональный SLA</td><td>—</td><td>24 часа</td><td>Настраиваемый</td></tr>
+                <tr><td>Толықмәтінді іздеу</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                <tr><td>AI-поиск документов</td><td>—</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                <tr><td>API-интеграция</td><td>—</td><td>—</td><td>✓</td><td>✓</td></tr>
+                <tr><td>Электрондық қолтаңба</td><td>Шектеулі</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                <tr><td>Персоналды SLA</td><td>—</td><td>24 сағат</td><td>12 сағат</td><td>Настраиваемый</td></tr>
               </tbody>
             </table>
           </div>
@@ -1589,15 +2158,15 @@
     ];
 
     const faqs = [
-      ["Заявки", "Как подать архивный запрос?", "Откройте личный кабинет, выберите тип услуги, заполните данные заявителя и прикрепите подтверждающие документы."],
-      ["Документы", "Можно ли получить справку онлайн?", "Да, справка формируется в электронном виде, подписывается ЭЦП и доступна для скачивания в PDF."],
-      ["Оплата", "Какие услуги бесплатные?", "Базовый поиск, часть гражданских запросов и получение публичной информации доступны бесплатно."],
-      ["Безопасность", "Как защищены персональные данные?", "Используются разграничение прав, 2FA, журнал аудита, шифрование каналов и проверка оснований доступа."],
-      ["Интеграции", "Есть ли API для организаций?", "Да, корпоративный тариф поддерживает API, SSO, лимиты, ключи доступа и мониторинг интеграций."]
+      ["Жүйе", "Жүйе қалай жұмыс істейді?", "Платформа құжаттарды қабылдайды, OCR арқылы мәтінді таниды, метадеректерді индекстейді және сұраныстарды SLA бойынша операторларға бағыттайды."],
+      ["Құжаттар", "Құжаттарды қалай жүктеуге болады?", "Личный кабинетте Documents бөліміне өтіп, файлдарды drag-and-drop арқылы жүктеп, санат, қор және сақтау мерзімін таңдаңыз."],
+      ["Қауіпсіздік", "Қауіпсіздік қалай қамтамасыз етіледі?", "2FA, рөлдік қолжетімділік, audit logs, session control, backup және шифрланған байланыс қолданылады."],
+      ["Сұраныстар", "Архивтік сұранысты қалай жіберуге болады?", "Requests бөлімінде қызмет түрін таңдаңыз, деректерді толтырыңыз, қажетті құжаттарды тіркеп, статусты dashboard арқылы бақылаңыз."],
+      ["Интеграциялар", "API құжаттамасы бар ма?", "Иә, API Documentation бөлімінде токендер, endpoint-тер, лимиттер және интеграциялық сценарийлер көрсетілген."]
     ];
 
     const cabinetTabsData = [
-      "Dashboard", "Документы", "Архивные запросы", "Аналитика", "Карта филиалов", "Уведомления", "История действий", "Отчеты", "Профиль", "Настройки"
+      "Dashboard", "Documents", "Requests", "Analytics", "Users", "Roles", "Audit Logs", "Notifications", "Reports", "Settings", "Profile", "Support Center", "Knowledge Base", "API Documentation", "Backups", "Security Center"
     ];
 
     const adminTabsData = [
@@ -1605,7 +2174,7 @@
     ];
 
     function showPage(pageId) {
-      const fallback = document.getElementById(pageId) ? pageId : "home";
+      const fallback = pages.some((page) => page.id === pageId) ? pageId : "home";
       pages.forEach((page) => page.classList.toggle("active", page.id === fallback));
       navLinks.forEach((link) => link.classList.toggle("active", link.dataset.page === fallback));
       navLinksBox.classList.remove("open");
@@ -1618,7 +2187,9 @@
     }
 
     function renderModules() {
-      document.getElementById("modulesGrid").innerHTML = modules.map(([icon, title, text]) => `
+      const target = document.getElementById("modulesGrid");
+      if (!target) return;
+      target.innerHTML = modules.map(([icon, title, text]) => `
         <article class="card module-card reveal">
           <span class="icon-chip">${icon}</span>
           <h3>${title}</h3>
@@ -1638,6 +2209,17 @@
           <div class="faq-answer">${a}</div>
         </article>
       `).join("") || `<div class="card"><strong>Ничего не найдено</strong><p class="muted">Попробуйте изменить поисковый запрос или категорию.</p></div>`;
+    }
+
+    function renderHomeFaq() {
+      const target = document.getElementById("homeFaqList");
+      if (!target) return;
+      target.innerHTML = faqs.slice(0, 4).map(([cat, q, a], index) => `
+        <article class="faq-item ${index === 0 ? "open" : ""}" data-cat="${cat}">
+          <button class="faq-question" type="button"><span>${q}</span><span>+</span></button>
+          <div class="faq-answer">${a}</div>
+        </article>
+      `).join("");
     }
 
     function authPage(type) {
@@ -1687,20 +2269,25 @@
     function workspacePanel(title, index, isAdmin = false) {
       const rows = isAdmin
         ? [["AAS-001", "Активно", "Высокий"], ["AAS-002", "На проверке", "Средний"], ["AAS-003", "Запланировано", "Низкий"]]
-        : [["REQ-2026-1840", "В обработке", "Справка"], ["DOC-7782", "Готово", "Документ"], ["NOT-443", "Новое", "Уведомление"]];
+        : [["REQ-2026-1840", "In progress", "Archive request"], ["DOC-7782", "Ready", "Document"], ["USR-443", "Active", "User activity"]];
+      const feed = [
+        ["PDF", "Соңғы құжат жүктелді", "Қор 18 / Іс 229"],
+        ["REQ", "Архивтік сұраныс тіркелді", "Астана филиалы"],
+        ["SEC", "Security Center alert resolved", "2FA policy updated"]
+      ];
 
       return `
         <div class="workspace-panel ${index === 0 ? "active" : ""}" data-panel="${index}">
           <div class="grid grid-4 section compact">
-            <article class="card kpi-card"><span class="badge">SLA</span><div class="stat-value">92%</div><div class="progress"><span style="width:92%"></span></div></article>
-            <article class="card kpi-card"><span class="badge">В работе</span><div class="stat-value">${isAdmin ? "1 284" : "12"}</div><p class="muted">активных процессов</p></article>
-            <article class="card kpi-card"><span class="badge">Уведомления</span><div class="stat-value">${isAdmin ? "47" : "8"}</div><p class="muted">новых событий</p></article>
-            <article class="card kpi-card"><span class="badge">Риск</span><div class="stat-value">${isAdmin ? "Low" : "OK"}</div><p class="muted">по результатам аудита</p></article>
+            <article class="card kpi-card"><span class="badge">SLA</span><div class="stat-value">97%</div><div class="progress"><span style="width:97%"></span></div></article>
+            <article class="card kpi-card"><span class="badge">Documents</span><div class="stat-value">${isAdmin ? "248K" : "1 284"}</div><p class="muted">indexed and OCR-ready</p></article>
+            <article class="card kpi-card"><span class="badge">Requests</span><div class="stat-value">${isAdmin ? "10.4K" : "42"}</div><p class="muted">active archive workflows</p></article>
+            <article class="card kpi-card"><span class="badge">Security</span><div class="stat-value">${isAdmin ? "Low" : "OK"}</div><p class="muted">risk score from audit logs</p></article>
           </div>
           <div class="grid grid-2">
             <div class="card">
               <h3>${title}</h3>
-              <p class="muted">Рабочий модуль с быстрыми действиями, фильтрами, статусами, KPI и экспортом данных.</p>
+              <p class="muted">Полноценный бизнес-модуль в стиле Azure/Stripe Dashboard: фильтры, роли, KPI, экспорт, последние документы, запросы и действия пользователей.</p>
               <table class="data-table">
                 <thead><tr><th>ID</th><th>Статус</th><th>Тип</th></tr></thead>
                 <tbody>${rows.map((row) => `<tr><td>${row[0]}</td><td><span class="status">${row[1]}</span></td><td>${row[2]}</td></tr>`).join("")}</tbody>
@@ -1710,6 +2297,11 @@
               <div class="chart" aria-label="Диаграмма активности">${[66, 82, 44, 73, 91, 58, 86, 69].map((height) => `<span class="bar" style="height:${height}%"></span>`).join("")}</div>
               <div class="card"><div class="donut"></div></div>
             </div>
+          </div>
+          <div class="grid grid-3 section compact">
+            <div class="card"><h3>Соңғы әрекеттер</h3><div class="activity-feed">${feed.map((item) => `<div class="activity-item"><span class="icon-chip">${item[0]}</span><span><strong>${item[1]}</strong><span class="muted">${item[2]}</span></span><span class="status">Live</span></div>`).join("")}</div></div>
+            <div class="card"><h3>Пайдаланушылар белсенділігі</h3><div class="chart" style="min-height:210px">${[42, 72, 64, 88, 58, 95].map((height) => `<span class="bar" style="height:${height}%"></span>`).join("")}</div></div>
+            <div class="card"><h3>Өңірлер статистикасы</h3><table class="data-table"><tbody><tr><td>Астана</td><td>82K құжат</td><td><span class="status">+18%</span></td></tr><tr><td>Алматы</td><td>68K құжат</td><td><span class="status">+12%</span></td></tr><tr><td>Шымкент</td><td>41K құжат</td><td><span class="status">+9%</span></td></tr></tbody></table></div>
           </div>
         </div>`;
     }
@@ -1735,6 +2327,8 @@
         if (counter.dataset.done) return;
         counter.dataset.done = "true";
         const target = Number(counter.dataset.target);
+        const suffix = counter.dataset.suffix || "";
+        const decimals = String(counter.dataset.target).includes(".") ? 1 : 0;
         let current = 0;
         const steps = 70;
         const increment = target / steps;
@@ -1744,7 +2338,8 @@
             current = target;
             clearInterval(timer);
           }
-          counter.textContent = Math.round(current).toLocaleString("ru-RU");
+          const value = decimals ? current.toFixed(decimals) : Math.round(current).toLocaleString("ru-RU");
+          counter.textContent = value + suffix;
         }, 18);
       });
     }
@@ -1756,8 +2351,31 @@
       });
     }
 
+    let testimonialIndex = 0;
+    function showDemo(index) {
+      document.querySelectorAll(".demo-tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.demo === String(index)));
+      document.querySelectorAll(".demo-screen").forEach((screen) => screen.classList.toggle("active", screen.dataset.demoScreen === String(index)));
+    }
+
+    function showTestimonial(direction = 0) {
+      const track = document.getElementById("testimonialTrack");
+      if (!track) return;
+      const cards = track.querySelectorAll(".testimonial-card").length;
+      const visible = window.innerWidth <= 980 ? 1 : 3;
+      testimonialIndex = Math.max(0, Math.min(testimonialIndex + direction, Math.max(0, cards - visible)));
+      track.style.transform = `translateX(-${testimonialIndex * (100 / visible)}%)`;
+    }
+
+    function parallaxScroll() {
+      const offset = window.scrollY * 0.035;
+      document.querySelectorAll(".parallax-item").forEach((item, index) => {
+        item.style.transform = `translate3d(0, ${index % 2 ? offset : -offset}px, 0)`;
+      });
+    }
+
     renderModules();
     renderFaq();
+    renderHomeFaq();
     ["login", "register", "recover", "two-factor", "email-confirm"].forEach(authPage);
     renderWorkspace("cabinetTabs", "cabinetPanels", cabinetTabsData);
     renderWorkspace("adminTabs", "adminPanels", adminTabsData, true);
@@ -1765,10 +2383,29 @@
     bindWorkspace("adminTabs");
 
     document.addEventListener("click", (event) => {
+      const button = event.target.closest(".btn");
+      if (button) {
+        const rect = button.getBoundingClientRect();
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+        ripple.style.left = `${event.clientX - rect.left}px`;
+        ripple.style.top = `${event.clientY - rect.top}px`;
+        button.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 650);
+      }
       const nav = event.target.closest(".nav-link[data-page]");
       if (nav) {
         event.preventDefault();
         showPage(nav.dataset.page);
+      }
+      const scrollLink = event.target.closest(".scroll-link");
+      if (scrollLink) {
+        event.preventDefault();
+        document.querySelector(scrollLink.getAttribute("href"))?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      const demoTab = event.target.closest(".demo-tab");
+      if (demoTab) {
+        showDemo(demoTab.dataset.demo);
       }
       const faqButton = event.target.closest(".faq-question");
       if (faqButton) {
@@ -1779,6 +2416,16 @@
         renderFaq(chip.dataset.category, document.getElementById("faqSearch").value);
       }
     });
+
+    document.getElementById("prevTestimonial")?.addEventListener("click", () => showTestimonial(-1));
+    document.getElementById("nextTestimonial")?.addEventListener("click", () => showTestimonial(1));
+    setInterval(() => {
+      const track = document.getElementById("testimonialTrack");
+      if (!track) return;
+      const maxIndex = Math.max(0, track.querySelectorAll(".testimonial-card").length - (window.innerWidth <= 980 ? 1 : 3));
+      testimonialIndex = testimonialIndex >= maxIndex ? 0 : testimonialIndex + 1;
+      showTestimonial(0);
+    }, 5200);
 
     document.getElementById("faqSearch").addEventListener("input", (event) => {
       const active = document.querySelector(".chip.active")?.dataset.category || "Все";
@@ -1801,9 +2448,16 @@
     }
 
     window.addEventListener("hashchange", () => showPage(location.hash.slice(1) || "home"));
-    window.addEventListener("scroll", revealVisible, { passive: true });
+    window.addEventListener("load", () => document.getElementById("pageLoader")?.classList.add("hidden"));
+    window.addEventListener("resize", () => showTestimonial(0));
+    window.addEventListener("scroll", () => {
+      revealVisible();
+      parallaxScroll();
+    }, { passive: true });
     showPage(location.hash.slice(1) || "home");
     revealVisible();
+    parallaxScroll();
+    setTimeout(() => document.getElementById("pageLoader")?.classList.add("hidden"), 700);
   </script>
 </body>
 </html>
