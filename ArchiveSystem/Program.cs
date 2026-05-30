@@ -12,8 +12,19 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
 
+var useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
+
 builder.Services.AddDbContext<ArchiveDbContext>(options =>
-    options.UseNpgsql(connectionString));
+{
+    if (useInMemoryDatabase)
+    {
+        options.UseInMemoryDatabase("ArchiveAccessSystemPreview");
+    }
+    else
+    {
+        options.UseNpgsql(connectionString);
+    }
+});
 
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
