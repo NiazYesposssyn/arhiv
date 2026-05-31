@@ -1,0 +1,36 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Roles";
+}
+
+<div class="feature-grid">
+    <div class="glass-card card-rich">
+        <div class="card-icon"><i class="bi bi-shield-fill-check"></i></div>
+        <h4>Администратор</h4>
+        <p class="text-muted">Полный доступ: пользователи, роли, настройки, безопасность, резервные копии и аудит.</p>
+    </div>
+    <div class="glass-card card-rich">
+        <div class="card-icon"><i class="bi bi-archive"></i></div>
+        <h4>Архивариус</h4>
+        <p class="text-muted">Управление документами, заявками, комментариями, экспортом и отчетами.</p>
+    </div>
+    <div class="glass-card card-rich">
+        <div class="card-icon"><i class="bi bi-person"></i></div>
+        <h4>Пользователь</h4>
+        <p class="text-muted">Создание заявок, просмотр истории, получение уведомлений и работа с профилем.</p>
+    </div>
+</div>
+
+<section class="table-panel mt-4">
+    <h3>Матрица доступа</h3>
+    <div class="table-responsive">
+        <table class="premium-table">
+            <thead><tr><th>Раздел</th><th>Администратор</th><th>Архивариус</th><th>Пользователь</th></tr></thead>
+            <tbody>
+                <tr><td>Documents</td><td>Full</td><td>Full</td><td>Read</td></tr>
+                <tr><td>Requests</td><td>Full</td><td>Process</td><td>Create</td></tr>
+                <tr><td>Security Center</td><td>Full</td><td>Read</td><td>-</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>

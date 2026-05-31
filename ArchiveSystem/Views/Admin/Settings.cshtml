@@ -1,0 +1,16 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Settings";
+}
+
+<section class="form-panel">
+    <span class="eyebrow">Configuration</span>
+    <h3 class="mt-2">Жүйе баптаулары</h3>
+    <div class="row g-3 mt-1">
+        <div class="col-md-6"><label class="form-label">Ұйым атауы</label><input class="form-control" value="Archive Access System" /></div>
+        <div class="col-md-6"><label class="form-label">Default region</label><select class="form-select"><option>Астана</option><option>Алматы</option></select></div>
+        <div class="col-md-6"><label class="form-label">Retention policy</label><select class="form-select"><option>5 years</option><option>10 years</option><option>Permanent</option></select></div>
+        <div class="col-md-6"><label class="form-label">Theme</label><select class="form-select"><option>System</option><option>Light</option><option>Dark</option></select></div>
+        <div class="col-12"><button class="btn btn-premium" data-toast="Баптаулар сақталды">Save settings</button></div>
+    </div>
+</section>

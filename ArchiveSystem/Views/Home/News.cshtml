@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Новости";
+    var news = new[] {
+        new { Title = "Запущен новый модуль онлайн-заявок", Date = "31.05.2026", Text = "Пользователи могут создавать обращения и отслеживать статусы в личном кабинете." },
+        new { Title = "Обновлена политика резервного копирования", Date = "24.05.2026", Text = "Добавлены hourly backups для enterprise-тарифов и расширенный журнал восстановления." },
+        new { Title = "Интерактивная аналитика по регионам", Date = "18.05.2026", Text = "Dashboard показывает активность Астаны, Алматы, Шымкента, Қарағанды и Ақтөбе." }
+    };
+}
+
+<section class="page-hero">
+    <div class="container-page">
+        <span class="eyebrow"><i class="bi bi-newspaper"></i> Updates</span>
+        <h1 class="page-title mt-3">Новости</h1>
+        <p class="page-description">Отдельная страница новостей платформы и архивной сети.</p>
+    </div>
+</section>
+
+<section class="section-shell pt-0">
+    <div class="container-page">
+        <div class="row g-4">
+            @foreach (var item in news)
+            {
+                <div class="col-lg-4">
+                    <article class="glass-card card-rich h-100">
+                        <span class="badge-soft">@item.Date</span>
+                        <h4 class="mt-3">@item.Title</h4>
+                        <p class="text-muted mb-0">@item.Text</p>
+                    </article>
+                </div>
+            }
+        </div>
+    </div>
+</section>

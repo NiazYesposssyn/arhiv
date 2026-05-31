@@ -1,0 +1,40 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Analytics";
+}
+
+<div class="metric-grid">
+    <div class="metric-card"><span class="eyebrow">Астана</span><div class="metric-value" data-counter="420">0</div><p class="text-muted mb-0">сұраныс</p></div>
+    <div class="metric-card"><span class="eyebrow">Алматы</span><div class="metric-value" data-counter="560">0</div><p class="text-muted mb-0">сұраныс</p></div>
+    <div class="metric-card"><span class="eyebrow">Шымкент</span><div class="metric-value" data-counter="310">0</div><p class="text-muted mb-0">сұраныс</p></div>
+    <div class="metric-card"><span class="eyebrow">Қарағанды / Ақтөбе</span><div class="metric-value" data-counter="520">0</div><p class="text-muted mb-0">сұраныс</p></div>
+</div>
+
+<div class="panel-grid">
+    <section class="table-panel">
+        <h3>Региондар бойынша статистика</h3>
+        <canvas id="regionChart" height="160"></canvas>
+    </section>
+    <section class="table-panel">
+        <h3>Қазақстан интерактивті картасы</h3>
+        <div class="kz-map mt-3">
+            <span class="city-pin" style="left:56%;top:30%"><span>Астана</span></span>
+            <span class="city-pin" style="left:42%;top:70%"><span>Алматы</span></span>
+            <span class="city-pin" style="left:38%;top:76%"><span>Шымкент</span></span>
+            <span class="city-pin" style="left:50%;top:45%"><span>Қарағанды</span></span>
+            <span class="city-pin" style="left:24%;top:55%"><span>Ақтөбе</span></span>
+        </div>
+    </section>
+</div>
+
+<section class="table-panel mt-4">
+    <h3>Heatmap және трендтер</h3>
+    <div class="row g-3 mt-1">
+        <div class="col-md-2 col-6"><div class="metric-card shadow-none text-center">Mon<br><strong>72%</strong></div></div>
+        <div class="col-md-2 col-6"><div class="metric-card shadow-none text-center">Tue<br><strong>84%</strong></div></div>
+        <div class="col-md-2 col-6"><div class="metric-card shadow-none text-center">Wed<br><strong>63%</strong></div></div>
+        <div class="col-md-2 col-6"><div class="metric-card shadow-none text-center">Thu<br><strong>91%</strong></div></div>
+        <div class="col-md-2 col-6"><div class="metric-card shadow-none text-center">Fri<br><strong>78%</strong></div></div>
+        <div class="col-md-2 col-6"><div class="metric-card shadow-none text-center">Sat<br><strong>42%</strong></div></div>
+    </div>
+</section>

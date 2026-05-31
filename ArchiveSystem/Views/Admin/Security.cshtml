@@ -1,0 +1,32 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Security Center";
+}
+
+<div class="feature-grid">
+    <div class="glass-card card-rich">
+        <div class="card-icon"><i class="bi bi-key"></i></div>
+        <h4>JWT Authentication</h4>
+        <p class="text-muted">Bearer tokens for REST API, issuer/audience validation, 8-hour lifetime and signing key configuration.</p>
+    </div>
+    <div class="glass-card card-rich">
+        <div class="card-icon"><i class="bi bi-phone"></i></div>
+        <h4>Two-factor authentication</h4>
+        <p class="text-muted">2FA status is tracked for users and surfaced in profile/security dashboards.</p>
+    </div>
+    <div class="glass-card card-rich">
+        <div class="card-icon"><i class="bi bi-activity"></i></div>
+        <h4>Audit and logging</h4>
+        <p class="text-muted">Every important action is designed to be logged with actor, entity, time and IP address.</p>
+    </div>
+</div>
+
+<section class="table-panel mt-4">
+    <h3>Security posture</h3>
+    <ul class="check-list mt-3">
+        <li><i class="bi bi-check-circle-fill"></i> Role policies: Администратор, Архивариус, Пользователь</li>
+        <li><i class="bi bi-check-circle-fill"></i> Cookie authentication for MVC console</li>
+        <li><i class="bi bi-check-circle-fill"></i> JWT authentication for REST API</li>
+        <li><i class="bi bi-check-circle-fill"></i> Backup and restore workflow prepared</li>
+    </ul>
+</section>

@@ -1,0 +1,21 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Audit Logs";
+}
+
+<section class="table-panel">
+    <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Журнал аудита</h3>
+        <button class="btn btn-soft">Export</button>
+    </div>
+    <div class="table-responsive">
+        <table class="premium-table">
+            <thead><tr><th>Уақыт</th><th>Actor</th><th>Action</th><th>Entity</th><th>IP</th></tr></thead>
+            <tbody>
+                <tr><td>2026-05-31 02:20</td><td>admin@archive.kz</td><td>DocumentUploaded</td><td>AAS-20260531-01</td><td>10.0.0.12</td></tr>
+                <tr><td>2026-05-31 02:18</td><td>operator@archive.kz</td><td>RequestCommented</td><td>AAS-RQ-2451</td><td>10.0.0.18</td></tr>
+                <tr><td>2026-05-31 02:11</td><td>system</td><td>BackupCompleted</td><td>backup-hourly</td><td>127.0.0.1</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>

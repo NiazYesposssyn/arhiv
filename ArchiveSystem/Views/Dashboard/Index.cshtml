@@ -1,0 +1,50 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="metric-grid">
+    <div class="metric-card"><span class="eyebrow">Documents</span><div class="metric-value" data-counter="24890">0</div><p class="text-muted mb-0">сақталған құжат</p></div>
+    <div class="metric-card"><span class="eyebrow">Requests</span><div class="metric-value" data-counter="842">0</div><p class="text-muted mb-0">өңделіп жатқан өтінім</p></div>
+    <div class="metric-card"><span class="eyebrow">Users</span><div class="metric-value" data-counter="316">0</div><p class="text-muted mb-0">белсенді пайдаланушы</p></div>
+    <div class="metric-card"><span class="eyebrow">Security</span><div class="metric-value">99.9%</div><p class="text-muted mb-0">platform uptime</p></div>
+</div>
+
+<div class="panel-grid">
+    <section class="table-panel">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Статистика құжаттар</h3>
+            <span class="badge-soft">Live</span>
+        </div>
+        <canvas id="documentsChart" height="150"></canvas>
+    </section>
+    <section class="table-panel">
+        <h3>Соңғы сұраныстар</h3>
+        <canvas id="requestsChart" height="190"></canvas>
+    </section>
+</div>
+
+<div class="panel-grid">
+    <section class="table-panel">
+        <h3>Соңғы құжаттар</h3>
+        <div class="table-responsive">
+            <table class="premium-table">
+                <thead><tr><th>Нөмір</th><th>Атауы</th><th>Формат</th><th>Статус</th></tr></thead>
+                <tbody>
+                    <tr><td>AAS-20260531-01</td><td>Қор сақтау актісі</td><td>PDF</td><td><span class="badge-soft">Active</span></td></tr>
+                    <tr><td>AAS-20260531-02</td><td>Региональный отчет</td><td>XLSX</td><td><span class="badge-soft">Archived</span></td></tr>
+                    <tr><td>AAS-20260531-03</td><td>Скан личного дела</td><td>JPG</td><td><span class="badge-soft">Restricted</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="table-panel">
+        <h3>Соңғы әрекеттер</h3>
+        <ul class="check-list">
+            <li><i class="bi bi-check-circle-fill"></i> admin@archive.kz жүктеді: PDF құжат</li>
+            <li><i class="bi bi-check-circle-fill"></i> operator@archive.kz өтінімге комментарий қосты</li>
+            <li><i class="bi bi-check-circle-fill"></i> Backup job сәтті аяқталды</li>
+            <li><i class="bi bi-check-circle-fill"></i> Жаңа пайдаланушы тіркелді</li>
+        </ul>
+    </section>
+</div>

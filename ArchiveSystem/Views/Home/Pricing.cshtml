@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Тарифы";
+    var plans = new[] {
+        new { Name = "Базалық", Price = "0 ₸", Featured = false, Items = new[] { "100 құжат", "Негізгі іздеу", "Email қолдау", "1 пайдаланушы" } },
+        new { Name = "Стандарт", Price = "49 000 ₸", Featured = true, Items = new[] { "10 000 құжат", "Заявки и статусы", "Графики Chart.js", "5 пайдаланушы" } },
+        new { Name = "Кәсіптік", Price = "149 000 ₸", Featured = false, Items = new[] { "Шексіз құжат", "API интеграция", "2FA және аудит", "25 пайдаланушы" } },
+        new { Name = "Мемлекеттік ұйымдарға арналған", Price = "Custom", Featured = false, Items = new[] { "SLA", "Жеке контур", "Backup policy", "RBAC кеңейтілген" } }
+    };
+}
+
+<section class="page-hero">
+    <div class="container-page">
+        <span class="eyebrow"><i class="bi bi-credit-card"></i> Pricing</span>
+        <h1 class="page-title mt-3">Тарифтер</h1>
+        <p class="page-description">Красивые ценовые блоки и сравнение функций для частных пользователей, бизнеса и государственных организаций.</p>
+    </div>
+</section>
+
+<section class="section-shell pt-0">
+    <div class="container-page">
+        <div class="row g-4">
+            @foreach (var plan in plans)
+            {
+                <div class="col-md-6 col-xl-3">
+                    <div class="pricing-card @(plan.Featured ? "featured" : "")">
+                        <span class="eyebrow">Plan</span>
+                        <h3 class="mt-2">@plan.Name</h3>
+                        <div class="price">@plan.Price</div>
+                        <ul class="check-list">
+                            @foreach (var item in plan.Items)
+                            {
+                                <li><i class="bi bi-check-circle-fill"></i> @item</li>
+                            }
+                        </ul>
+                        <a class="btn btn-premium w-100 mt-4" asp-controller="Auth" asp-action="Register">Таңдау</a>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="table-panel mt-4">
+            <h3>Сравнение функций</h3>
+            <div class="table-responsive">
+                <table class="premium-table">
+                    <thead><tr><th>Функция</th><th>Базалық</th><th>Стандарт</th><th>Кәсіптік</th><th>Мемлекеттік</th></tr></thead>
+                    <tbody>
+                        <tr><td>Documents</td><td>100</td><td>10k</td><td>Unlimited</td><td>Unlimited</td></tr>
+                        <tr><td>JWT API</td><td>-</td><td>Read</td><td>Full</td><td>Full + SLA</td></tr>
+                        <tr><td>Audit logs</td><td>-</td><td>30 days</td><td>1 year</td><td>Custom</td></tr>
+                        <tr><td>Backups</td><td>Manual</td><td>Daily</td><td>Hourly</td><td>Dedicated policy</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
