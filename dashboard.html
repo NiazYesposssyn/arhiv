@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard - Archive Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site-static.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" data-admin-sidebar></aside>
+    <main class="admin-main">
+      <header class="admin-top"><div><span class="eyebrow">Archive Access System</span><h1>Dashboard</h1></div><button class="theme-toggle" data-theme-toggle>◐</button></header>
+      <div class="admin-content">
+        <section class="grid-4">
+          <div class="metric"><span class="eyebrow">Documents</span><strong>24 890</strong><p class="muted">сақталған құжат</p></div>
+          <div class="metric"><span class="eyebrow">Requests</span><strong>842</strong><p class="muted">өңделіп жатқан өтінім</p></div>
+          <div class="metric"><span class="eyebrow">Users</span><strong>316</strong><p class="muted">белсенді пайдаланушы</p></div>
+          <div class="metric"><span class="eyebrow">Security</span><strong>99.9%</strong><p class="muted">uptime</p></div>
+        </section>
+        <section class="grid-2" style="margin-top:24px">
+          <div class="panel"><h2>Статистика құжаттар</h2><canvas id="documentsChart"></canvas></div>
+          <div class="panel"><h2>Соңғы сұраныстар</h2><canvas id="requestsChart"></canvas></div>
+        </section>
+        <section class="panel" style="margin-top:24px"><h2>Соңғы әрекеттер</h2><ul class="check-list"><li>PDF құжат жүктелді</li><li>Өтінімге комментарий қосылды</li><li>Backup job аяқталды</li></ul></section>
+      </div>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="assets/app-static.js"></script>
+</body>
+</html>

@@ -1,6 +1,36 @@
 # Archive Access System
 
-Premium ASP.NET Core MVC web system for archive document management, online requests, analytics, security and REST API integrations.
+Premium archive web system for document management, online requests, analytics, security and REST API integrations.
+
+The repository contains two versions:
+
+1. Static HTML version in the repository root.
+2. ASP.NET Core MVC version in `ArchiveSystem/`.
+
+## Quick start for HTML version
+
+Run this from the repository root:
+
+```bash
+python3 -m http.server 8080
+```
+
+Open:
+
+```text
+http://localhost:8080
+```
+
+Main HTML files:
+
+- `index.html`
+- `archive.html`
+- `services.html`
+- `pricing.html`
+- `dashboard.html`
+- `documents.html`
+- `requests.html`
+- `analytics.html`
 
 ## Stack
 
@@ -46,7 +76,7 @@ Authenticated console:
 - Backups
 - Security Center
 
-## Development
+## ASP.NET Core development
 
 Configure PostgreSQL in `ArchiveSystem/appsettings.json`, then run:
 
