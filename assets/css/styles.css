@@ -598,6 +598,94 @@ tr:last-child td {
   border-bottom: 0;
 }
 
+.table-note {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 310px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.catalog-main {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+
+.filter-panel {
+  position: sticky;
+  top: calc(var(--nav-height) + 22px);
+}
+
+.filter-panel h3 {
+  margin-bottom: 20px;
+}
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.row-actions button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  background: var(--surface);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.empty-state {
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  padding: 36px 16px;
+  text-align: center;
+}
+
+.pipeline {
+  display: grid;
+  gap: 14px;
+}
+
+.pipeline-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.pipeline-step span {
+  display: grid;
+  grid-row: span 2;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  font-weight: 900;
+}
+
+.pipeline-step small {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 .auth-layout {
   display: grid;
   grid-template-columns: minmax(320px, 0.9fr) minmax(360px, 1fr);
@@ -979,8 +1067,13 @@ tr:last-child td {
 
   .hero,
   .auth-layout,
-  .page-hero-card {
+  .page-hero-card,
+  .catalog-layout {
     grid-template-columns: 1fr;
+  }
+
+  .filter-panel {
+    position: static;
   }
 
   .hero-art {
@@ -1002,7 +1095,7 @@ tr:last-child td {
     width: min(100% - 28px, var(--container));
   }
 
-  .brand div:last-child {
+  .brand span:last-child {
     display: none;
   }
 

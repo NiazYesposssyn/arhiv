@@ -1,5 +1,245 @@
 <!DOCTYPE html>
 <html lang="kk">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Құжаттар — Archive Access System</title><link rel="stylesheet" href="../assets/css/styles.css"></head>
-<body class="app-layout"><header class="topbar"><div class="container nav"><a class="brand" href="dashboard.html"><span class="brand-mark">A</span><span>Archive Access<small>Documents</small></span></a><nav class="nav-menu" data-nav-menu><a class="nav-link" href="dashboard.html">Басты бет</a><a class="nav-link" href="documents.html">Құжаттар</a><a class="nav-link" href="requests.html">Сұраныстар</a><a class="nav-link" href="analytics.html">Аналитика</a><a class="nav-link" href="reports.html">Есептер</a><a class="nav-link" href="users.html">Пайдаланушылар</a><a class="nav-link" href="audit.html">Аудит</a><a class="nav-link" href="notifications.html">Хабарламалар</a><a class="nav-link" href="support.html">Көмек</a></nav><div class="nav-actions"><button class="theme-toggle" type="button" data-theme-toggle>◐</button><a class="btn btn-ghost" href="profile.html">Профиль</a><button class="menu-toggle" type="button" data-menu-toggle>☰</button></div></div></header>
-<main class="page-shell workbench"><section class="container"><div class="workspace-header reveal"><div><span class="eyebrow">Құжаттар</span><h1>Құжаттарды басқару</h1><p class="lead">Бұл бет тек құжаттарға арналған: импорт, OCR, метадеректер, категориялар және экспорт.</p></div><a class="btn btn-primary" href="#">Құжат жүктеу</a></div><div class="grid grid-3"><article class="card reveal"><div class="icon">⬆</div><h3>Импорт</h3><p class="muted">PDF, TIFF, JPEG және скан-көшірмелерді пакетпен жүктеу.</p></article><article class="card reveal"><div class="icon">🔎</div><h3>AI/OCR іздеу</h3><p class="muted">Танылған мәтін мен метадеректер бойынша іздеу.</p></article><article class="card reveal"><div class="icon">✍</div><h3>Электрондық қолтаңба</h3><p class="muted">Дайын анықтамалар мен құжаттарды ЭЦҚ арқылы бекіту.</p></article></div></section><section class="container section"><div class="table-wrap reveal"><table><thead><tr><th>Құжат</th><th>Қор</th><th>Мәртебе</th><th>Әрекет</th></tr></thead><tbody><tr><td>Туу туралы жазба, 1986</td><td>F-248</td><td><span class="badge green">Индекстелді</span></td><td>PDF экспорт</td></tr><tr><td>Еңбек өтілі анықтамасы</td><td>F-014</td><td><span class="badge orange">OCR</span></td><td>Тексеру</td></tr><tr><td>Мекенжай тізілімі</td><td>F-530</td><td><span class="badge">Жаңа</span></td><td>Метадерек</td></tr></tbody></table></div></section></main><script src="../assets/js/main.js"></script></body></html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Құжаттар — Archive Access System</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body class="app-layout">
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="dashboard.html">
+        <span class="brand-mark">A</span>
+        <span>Archive Access<small>Documents</small></span>
+      </a>
+      <nav class="nav-menu" data-nav-menu>
+        <a class="nav-link" href="dashboard.html">Басты бет</a>
+        <a class="nav-link" href="documents.html">Құжаттар</a>
+        <a class="nav-link" href="requests.html">Сұраныстар</a>
+        <a class="nav-link" href="analytics.html">Аналитика</a>
+        <a class="nav-link" href="reports.html">Есептер</a>
+        <a class="nav-link" href="users.html">Пайдаланушылар</a>
+        <a class="nav-link" href="audit.html">Аудит</a>
+        <a class="nav-link" href="notifications.html">Хабарламалар</a>
+        <a class="nav-link" href="support.html">Көмек</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="theme-toggle" type="button" data-theme-toggle>◐</button>
+        <a class="btn btn-ghost" href="profile.html">Профиль</a>
+        <button class="menu-toggle" type="button" data-menu-toggle>☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell workbench">
+    <section class="container">
+      <div class="workspace-header reveal">
+        <div>
+          <span class="eyebrow">Құжаттар</span>
+          <h1>Құжаттарды басқару</h1>
+          <p class="lead">Импорт, OCR, метадеректер, санаттар, іздеу және архивтік анықтамаға экспорт бір жұмыс кеңістігінде.</p>
+        </div>
+        <a class="btn btn-primary" href="#upload-panel">Құжат жүктеу</a>
+      </div>
+
+      <div class="grid grid-4">
+        <article class="card kpi reveal">
+          <div><span class="muted">Барлық құжат</span><div class="kpi-value" data-counter="250000" data-suffix="+">0</div></div>
+          <div class="icon">📚</div>
+        </article>
+        <article class="card kpi reveal">
+          <div><span class="muted">Индекстелді</span><div class="kpi-value" data-counter="184000" data-suffix="+">0</div></div>
+          <div class="icon">✅</div>
+        </article>
+        <article class="card kpi reveal">
+          <div><span class="muted">OCR кезегі</span><div class="kpi-value" data-counter="1280" data-suffix="">0</div></div>
+          <div class="icon">🔎</div>
+        </article>
+        <article class="card kpi reveal">
+          <div><span class="muted">Орташа сапа</span><div class="kpi-value" data-counter="97" data-suffix="%">0</div></div>
+          <div class="icon">🛡</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section" data-documents-catalog>
+      <div class="section-header reveal">
+        <div>
+          <span class="eyebrow">Каталог</span>
+          <h2>Архив құжаттары</h2>
+          <p>Қор, филиал, формат және мәртебе бойынша жылдам сүзу. Іздеу атау, тұлға, ұйым немесе OCR мәтіні арқылы жұмыс істейді.</p>
+        </div>
+        <span class="badge" data-documents-count>6 құжат табылды</span>
+      </div>
+
+      <div class="catalog-layout">
+        <aside class="card filter-panel reveal" aria-label="Құжаттарды сүзу">
+          <h3>Сүзгілер</h3>
+          <div class="form">
+            <div class="field">
+              <label for="document-search">Іздеу</label>
+              <input id="document-search" type="search" data-document-search placeholder="Мысалы: еңбек, туу, F-248">
+            </div>
+            <div class="field">
+              <label for="document-status">Мәртебе</label>
+              <select id="document-status" data-document-status>
+                <option value="">Барлығы</option>
+                <option value="indexed">Индекстелді</option>
+                <option value="ocr">OCR тексеру</option>
+                <option value="new">Жаңа</option>
+                <option value="signed">ЭЦҚ дайын</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="document-branch">Филиал</label>
+              <select id="document-branch" data-document-branch>
+                <option value="">Барлық филиал</option>
+                <option value="astana">Астана</option>
+                <option value="almaty">Алматы</option>
+                <option value="shymkent">Шымкент</option>
+                <option value="karaganda">Қарағанды</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="document-type">Формат</label>
+              <select id="document-type" data-document-type>
+                <option value="">Барлық формат</option>
+                <option value="pdf">PDF</option>
+                <option value="scan">Скан</option>
+                <option value="registry">Тізілім</option>
+              </select>
+            </div>
+            <button class="btn btn-ghost" type="button" data-document-reset>Сүзгіні тазарту</button>
+          </div>
+        </aside>
+
+        <div class="catalog-main">
+          <div class="grid grid-3">
+            <article class="card reveal">
+              <div class="icon">⬆</div>
+              <h3>Импорт</h3>
+              <p class="muted">PDF, TIFF, JPEG және скан-көшірмелерді пакетпен жүктеу, дубльдерді автоматты анықтау.</p>
+            </article>
+            <article class="card reveal">
+              <div class="icon">🔎</div>
+              <h3>AI/OCR іздеу</h3>
+              <p class="muted">Танылған мәтін, қор, мерзім, тұлға және ұйым бойынша толық мәтінді іздеу.</p>
+            </article>
+            <article class="card reveal">
+              <div class="icon">✍</div>
+              <h3>Электрондық қолтаңба</h3>
+              <p class="muted">Дайын анықтамалар мен құжат көшірмелерін ЭЦҚ арқылы бекіту және экспорттау.</p>
+            </article>
+          </div>
+
+          <div class="table-wrap reveal">
+            <table data-documents-table>
+              <thead>
+                <tr>
+                  <th>Құжат</th>
+                  <th>Қор</th>
+                  <th>Филиал</th>
+                  <th>Мәртебе</th>
+                  <th>Әрекет</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-document-row data-status="indexed" data-branch="astana" data-type="pdf" data-search="туу туралы жазба 1986 f-248 азаматтық хал актісі астана pdf">
+                  <td><strong>Туу туралы жазба, 1986</strong><span class="table-note">Азаматтық хал актісі, PDF көшірме</span></td>
+                  <td>F-248 / 12 / 88</td>
+                  <td>Астана</td>
+                  <td><span class="badge green">Индекстелді</span></td>
+                  <td><div class="row-actions"><button type="button">Көру</button><button type="button">PDF</button></div></td>
+                </tr>
+                <tr data-document-row data-status="ocr" data-branch="almaty" data-type="scan" data-search="еңбек өтілі анықтамасы f-014 қызметкер алматы ocr scan">
+                  <td><strong>Еңбек өтілі анықтамасы</strong><span class="table-note">Кадрлық құжаттар, OCR сапасын тексеру</span></td>
+                  <td>F-014 / 04 / 221</td>
+                  <td>Алматы</td>
+                  <td><span class="badge orange">OCR тексеру</span></td>
+                  <td><div class="row-actions"><button type="button">Тексеру</button><button type="button">Тағайындау</button></div></td>
+                </tr>
+                <tr data-document-row data-status="new" data-branch="shymkent" data-type="registry" data-search="мекенжай тізілімі f-530 тұрғындар шымкент registry жаңа">
+                  <td><strong>Мекенжай тізілімі</strong><span class="table-note">Қалалық тіркеу журналы, метадерек қажет</span></td>
+                  <td>F-530 / 02 / 019</td>
+                  <td>Шымкент</td>
+                  <td><span class="badge">Жаңа</span></td>
+                  <td><div class="row-actions"><button type="button">Метадерек</button><button type="button">OCR</button></div></td>
+                </tr>
+                <tr data-document-row data-status="signed" data-branch="karaganda" data-type="pdf" data-search="соғыс ардагері марапат қағазы f-091 қарағанды эцқ pdf">
+                  <td><strong>Марапат қағазы, 1945</strong><span class="table-note">Әскери архив, ЭЦҚ қойылған анықтама</span></td>
+                  <td>F-091 / 17 / 044</td>
+                  <td>Қарағанды</td>
+                  <td><span class="badge green">ЭЦҚ дайын</span></td>
+                  <td><div class="row-actions"><button type="button">Жүктеу</button><button type="button">Жіберу</button></div></td>
+                </tr>
+                <tr data-document-row data-status="indexed" data-branch="almaty" data-type="registry" data-search="университет түлектері тізімі f-322 алматы registry индекстелді">
+                  <td><strong>Университет түлектері тізімі</strong><span class="table-note">Білім беру құжаттары, іздеу индексі дайын</span></td>
+                  <td>F-322 / 09 / 112</td>
+                  <td>Алматы</td>
+                  <td><span class="badge green">Индекстелді</span></td>
+                  <td><div class="row-actions"><button type="button">Көру</button><button type="button">Сұраныс</button></div></td>
+                </tr>
+                <tr data-document-row data-status="ocr" data-branch="astana" data-type="scan" data-search="жер телімі құжаты f-775 астана scan ocr құқық">
+                  <td><strong>Жер телімі құжаты</strong><span class="table-note">Жылжымайтын мүлік, скан сапасы орташа</span></td>
+                  <td>F-775 / 01 / 305</td>
+                  <td>Астана</td>
+                  <td><span class="badge orange">OCR тексеру</span></td>
+                  <td><div class="row-actions"><button type="button">Тексеру</button><button type="button">Қайта тану</button></div></td>
+                </tr>
+                <tr data-documents-empty hidden>
+                  <td colspan="5">
+                    <div class="empty-state">
+                      <strong>Құжат табылмады</strong>
+                      <span class="muted">Іздеу мәтінін немесе сүзгілерді өзгертіп көріңіз.</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section">
+      <div class="grid grid-2">
+        <form class="card form reveal" id="upload-panel">
+          <span class="eyebrow">Импорт</span>
+          <h2>Жаңа құжат пакеті</h2>
+          <div class="field">
+            <label for="package-title">Пакет атауы</label>
+            <input id="package-title" placeholder="Мысалы: Алматы филиалы, 1986 жыл">
+          </div>
+          <div class="field">
+            <label for="package-fund">Қор және тізімдеме</label>
+            <input id="package-fund" placeholder="F-248 / 12">
+          </div>
+          <div class="field">
+            <label for="package-priority">Басымдық</label>
+            <select id="package-priority">
+              <option>Стандарт</option>
+              <option>Жоғары — архивтік сұранысқа байланысты</option>
+              <option>Төмен — жоспарлы цифрландыру</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" type="button">Импортты жоспарлау</button>
+        </form>
+
+        <article class="card reveal">
+          <span class="eyebrow">Процесс</span>
+          <h2>Цифрландыру құбыры</h2>
+          <div class="pipeline">
+            <div class="pipeline-step"><span>1</span><strong>Скан қабылдау</strong><small>Файл форматы мен өлшемін тексеру</small></div>
+            <div class="pipeline-step"><span>2</span><strong>OCR және сапа</strong><small>Мәтін тану, confidence score, дубльдер</small></div>
+            <div class="pipeline-step"><span>3</span><strong>Метадерек</strong><small>Қор, іс, мерзім, тұлға және ұйым</small></div>
+            <div class="pipeline-step"><span>4</span><strong>Экспорт</strong><small>PDF анықтама, ЭЦҚ және аудит ізі</small></div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

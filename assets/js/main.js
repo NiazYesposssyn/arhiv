@@ -81,6 +81,57 @@
     });
   });
 
+  document.querySelectorAll("[data-documents-catalog]").forEach((catalog) => {
+    const searchInput = catalog.querySelector("[data-document-search]");
+    const statusSelect = catalog.querySelector("[data-document-status]");
+    const branchSelect = catalog.querySelector("[data-document-branch]");
+    const typeSelect = catalog.querySelector("[data-document-type]");
+    const countBadge = catalog.querySelector("[data-documents-count]");
+    const emptyRow = catalog.querySelector("[data-documents-empty]");
+    const rows = Array.from(catalog.querySelectorAll("[data-document-row]"));
+
+    const getValue = (control) => (control?.value || "").trim().toLowerCase();
+
+    const updateCatalog = () => {
+      const term = getValue(searchInput);
+      const status = getValue(statusSelect);
+      const branch = getValue(branchSelect);
+      const type = getValue(typeSelect);
+      let visibleCount = 0;
+
+      rows.forEach((row) => {
+        const matchesSearch = !term || (row.dataset.search || row.textContent).toLowerCase().includes(term);
+        const matchesStatus = !status || row.dataset.status === status;
+        const matchesBranch = !branch || row.dataset.branch === branch;
+        const matchesType = !type || row.dataset.type === type;
+        const isVisible = matchesSearch && matchesStatus && matchesBranch && matchesType;
+
+        row.hidden = !isVisible;
+        if (isVisible) visibleCount += 1;
+      });
+
+      if (emptyRow) emptyRow.hidden = visibleCount !== 0;
+      if (countBadge) {
+        countBadge.textContent = `${visibleCount} құжат табылды`;
+      }
+    };
+
+    [searchInput, statusSelect, branchSelect, typeSelect].forEach((control) => {
+      control?.addEventListener("input", updateCatalog);
+      control?.addEventListener("change", updateCatalog);
+    });
+
+    catalog.querySelector("[data-document-reset]")?.addEventListener("click", () => {
+      [searchInput, statusSelect, branchSelect, typeSelect].forEach((control) => {
+        if (control) control.value = "";
+      });
+      updateCatalog();
+      searchInput?.focus();
+    });
+
+    updateCatalog();
+  });
+
   document.querySelectorAll("[data-tabs]").forEach((tabs) => {
     const buttons = tabs.querySelectorAll(".tab-button");
     const panels = tabs.querySelectorAll(".tab-panel");
