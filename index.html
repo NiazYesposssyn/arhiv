@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Электронный архивный портал с услугами, поиском документов, заявками и проверкой статуса обращения.">
+  <title>Архивный ЦОН | Электронный архив</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="#home" aria-label="Архивный ЦОН">
+        <span class="brand__mark">A</span>
+        <span>
+          <strong>Архивный ЦОН</strong>
+          <small>единый архивный портал</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav" aria-label="Главная навигация">
+        <a href="#services">Услуги</a>
+        <a href="#catalog">Каталог</a>
+        <a href="#request">Заявка</a>
+        <a href="#status">Статус</a>
+        <a href="#map">Карта</a>
+        <a href="#assistant">ИИ</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero__grid">
+        <div class="hero__content">
+          <p class="eyebrow">Государственный сервис нового поколения</p>
+          <h1>Онлайн-доступ к архивным документам без очередей</h1>
+          <p class="hero__lead">
+            Найдите архивное дело, подайте заявку на справку, загрузите документы и отслеживайте статус обращения в одном кабинете.
+          </p>
+          <div class="hero__actions">
+            <a class="button button--primary" href="#request">Подать заявку</a>
+            <a class="button button--secondary" href="#catalog">Открыть каталог</a>
+            <a class="button button--secondary" href="#assistant">Спросить ИИ</a>
+          </div>
+          <div class="hero__trust" aria-label="Преимущества портала">
+            <span>24/7 онлайн</span>
+            <span>ЭЦП-ready</span>
+            <span>Без бумажных очередей</span>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Быстрый поиск по архиву">
+          <div class="hero-card__header">
+            <span class="status-dot"></span>
+            <span>Архивная база активна</span>
+          </div>
+          <h2>Быстрый поиск</h2>
+          <form class="quick-search" data-search-form>
+            <label for="heroSearch">Введите ИИН, номер дела или ключевое слово</label>
+            <div class="search-row">
+              <input id="heroSearch" name="query" type="search" placeholder="Например: трудовой стаж" autocomplete="off">
+              <button class="button button--primary" type="submit">Найти</button>
+            </div>
+          </form>
+          <div class="hero-card__meta">
+            <div>
+              <strong>1 284 600</strong>
+              <span>оцифрованных записей</span>
+            </div>
+            <div>
+              <strong>15 мин</strong>
+              <span>средняя подача заявки</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Статистика архива">
+      <div class="container stats__grid">
+        <article>
+          <strong>42</strong>
+          <span>архивных фонда</span>
+        </article>
+        <article>
+          <strong>8 900+</strong>
+          <span>заявок обработано</span>
+        </article>
+        <article>
+          <strong>96%</strong>
+          <span>услуг доступны онлайн</span>
+        </article>
+        <article>
+          <strong>4.9/5</strong>
+          <span>оценка пользователей</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section__heading">
+          <p class="eyebrow">Популярные услуги</p>
+          <h2>Все необходимые архивные сервисы в одном месте</h2>
+          <p>Портал оформлен как современный центр обслуживания: понятные услуги, цифровые заявления и прозрачный статус обработки.</p>
+        </div>
+
+        <div class="service-grid">
+          <article class="service-card">
+            <span class="service-card__icon">01</span>
+            <h3>Архивная справка</h3>
+            <p>Получение подтверждения стажа, заработной платы, обучения или проживания.</p>
+            <a href="#request">Заказать услугу</a>
+          </article>
+          <article class="service-card">
+            <span class="service-card__icon">02</span>
+            <h3>Копия документа</h3>
+            <p>Запрос заверенной электронной или бумажной копии из архивного фонда.</p>
+            <a href="#request">Оформить запрос</a>
+          </article>
+          <article class="service-card">
+            <span class="service-card__icon">03</span>
+            <h3>Поиск дела</h3>
+            <p>Подбор архивного дела по номеру, дате, организации или персональным данным.</p>
+            <a href="#catalog">Перейти к поиску</a>
+          </article>
+          <article class="service-card">
+            <span class="service-card__icon">04</span>
+            <h3>Консультация</h3>
+            <p>Помощь специалиста по заполнению заявки и выбору правильного типа справки.</p>
+            <a href="#contacts">Связаться</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--muted" id="catalog">
+      <div class="container">
+        <div class="section__heading section__heading--row">
+          <div>
+            <p class="eyebrow">Каталог документов</p>
+            <h2>Поиск по электронному архиву</h2>
+          </div>
+          <p>Фильтруйте фонды по типу документа и быстро находите нужную услугу.</p>
+        </div>
+
+        <div class="catalog-panel">
+          <div class="catalog-panel__filters" role="search">
+            <input class="input" id="catalogSearch" type="search" placeholder="Поиск: справка, приказ, дело..." autocomplete="off">
+            <select class="input" id="categoryFilter" aria-label="Фильтр по категории">
+              <option value="all">Все категории</option>
+              <option value="personal">Личные документы</option>
+              <option value="work">Трудовой архив</option>
+              <option value="property">Имущество</option>
+              <option value="education">Образование</option>
+            </select>
+          </div>
+          <div class="archive-list" id="archiveList" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container process">
+        <div class="section__heading">
+          <p class="eyebrow">Как это работает</p>
+          <h2>Подача заявки за четыре шага</h2>
+        </div>
+        <div class="process__steps">
+          <article>
+            <span>1</span>
+            <h3>Выберите услугу</h3>
+            <p>Откройте каталог или популярные услуги и выберите нужный тип справки.</p>
+          </article>
+          <article>
+            <span>2</span>
+            <h3>Заполните форму</h3>
+            <p>Укажите контактные данные, период поиска и приложите подтверждающие файлы.</p>
+          </article>
+          <article>
+            <span>3</span>
+            <h3>Отправьте запрос</h3>
+            <p>Система сформирует номер обращения для проверки статуса.</p>
+          </article>
+          <article>
+            <span>4</span>
+            <h3>Получите результат</h3>
+            <p>Готовый ответ можно получить онлайн или в ближайшем центре обслуживания.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--split" id="request">
+      <div class="container split-grid">
+        <div>
+          <p class="eyebrow">Электронная заявка</p>
+          <h2>Оформите запрос в архив</h2>
+          <p>
+            Форма имитирует полноценную подачу обращения: проверяет обязательные поля, формирует номер заявки и показывает дальнейшие шаги.
+          </p>
+          <div class="notice">
+            <strong>Важно:</strong> для реального запуска нужно подключить сервер, базу данных и авторизацию через ЭЦП/EGOV. Сейчас это готовый фронтенд-макет.
+          </div>
+        </div>
+
+        <form class="form-card" id="requestForm">
+          <div class="form-grid">
+            <label>
+              ФИО заявителя
+              <input class="input" name="name" type="text" placeholder="Иванов Иван Иванович" required>
+            </label>
+            <label>
+              ИИН
+              <input class="input" name="iin" type="text" inputmode="numeric" maxlength="12" placeholder="12 цифр" required>
+            </label>
+            <label>
+              Телефон
+              <input class="input" name="phone" type="tel" placeholder="+7 777 000 00 00" required>
+            </label>
+            <label>
+              Тип услуги
+              <select class="input" name="service" required>
+                <option value="">Выберите услугу</option>
+                <option>Архивная справка</option>
+                <option>Копия документа</option>
+                <option>Поиск архивного дела</option>
+                <option>Консультация специалиста</option>
+              </select>
+            </label>
+            <label>
+              Период поиска
+              <input class="input" name="period" type="text" placeholder="Например: 1998-2004" required>
+            </label>
+            <label>
+              Способ получения
+              <select class="input" name="delivery" required>
+                <option>Электронно</option>
+                <option>В отделении ЦОН</option>
+                <option>Почтой</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            Описание запроса
+            <textarea class="input" name="message" rows="4" placeholder="Опишите, какой документ нужно найти" required></textarea>
+          </label>
+          <button class="button button--primary button--wide" type="submit">Отправить заявку</button>
+          <p class="form-result" id="requestResult" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section section--muted" id="status">
+      <div class="container status-grid">
+        <div class="status-card">
+          <p class="eyebrow">Проверка обращения</p>
+          <h2>Узнайте статус заявки</h2>
+          <form class="status-form" id="statusForm">
+            <label for="statusNumber">Номер обращения</label>
+            <div class="search-row">
+              <input class="input" id="statusNumber" type="text" placeholder="ARC-2026-123456" required>
+              <button class="button button--primary" type="submit">Проверить</button>
+            </div>
+          </form>
+          <div class="timeline" id="statusTimeline" aria-live="polite">
+            <div class="timeline__item timeline__item--active">
+              <span></span>
+              <div>
+                <strong>Заявка зарегистрирована</strong>
+                <p>Введите номер обращения, чтобы увидеть подробный статус.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="office-card" id="contacts">
+          <h2>Контакты центра</h2>
+          <ul>
+            <li><strong>Адрес:</strong> г. Астана, пр. Архивный, 10</li>
+            <li><strong>Телефон:</strong> 1414 / +7 7172 00 00 00</li>
+            <li><strong>Email:</strong> info@archive-con.kz</li>
+            <li><strong>График:</strong> Пн-Пт, 09:00-18:00</li>
+          </ul>
+          <a class="button button--secondary button--wide" href="#request">Записаться онлайн</a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="map">
+      <div class="container">
+        <div class="section__heading section__heading--row">
+          <div>
+            <p class="eyebrow">Карта Казахстана</p>
+            <h2>ЦОНы и сервисные точки по городам</h2>
+          </div>
+          <p>Интерактивную карту можно двигать, приближать и открывать точки. Для проверки актуального графика у каждой точки есть быстрый переход в 2ГИС.</p>
+        </div>
+
+        <div class="map-layout">
+          <div class="map-panel">
+            <div class="map-toolbar">
+              <label>
+                Город
+                <select class="input" id="citySelect" aria-label="Выберите город на карте">
+                  <option value="all">Весь Казахстан</option>
+                </select>
+              </label>
+              <button class="button button--secondary" id="showAllOffices" type="button">Показать все</button>
+            </div>
+            <div id="kazakhstanMap" class="kazakhstan-map" role="img" aria-label="Интерактивная карта Казахстана с точками ЦОН"></div>
+          </div>
+
+          <aside class="map-sidebar">
+            <div>
+              <p class="eyebrow">Точки на карте</p>
+              <h3>Адреса ЦОН</h3>
+              <p>Выберите город или нажмите на карточку, чтобы приблизить карту к нужному отделению.</p>
+            </div>
+            <div class="office-list" id="officeList" aria-live="polite"></div>
+            <p class="map-note">Данные собраны по открытым справочникам 2ГИС и gov4c. Перед визитом уточняйте график в 2ГИС или по номеру 1414.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container faq">
+        <div class="section__heading">
+          <p class="eyebrow">Вопросы</p>
+          <h2>Часто задаваемые вопросы</h2>
+        </div>
+        <div class="accordion" id="faqList">
+          <button class="accordion__item" type="button">
+            <span>Можно ли получить архивную справку онлайн?</span>
+            <p>Да, заявка оформляется через сайт, а результат можно получить в электронном формате после обработки специалистом.</p>
+          </button>
+          <button class="accordion__item" type="button">
+            <span>Какие документы нужны для запроса?</span>
+            <p>Обычно нужны ИИН, контактные данные, описание периода поиска и документы, подтверждающие право на получение информации.</p>
+          </button>
+          <button class="accordion__item" type="button">
+            <span>Сколько обрабатывается обращение?</span>
+            <p>Срок зависит от сложности поиска. В демо-интерфейсе показан типовой процесс обработки обращения.</p>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© 2026 Архивный ЦОН. Учебный сайт-проект электронного архива.</p>
+      <div>
+        <a href="#services">Услуги</a>
+        <a href="#request">Заявка</a>
+        <a href="#map">Карта</a>
+        <a href="#assistant">ИИ ассистент</a>
+        <a href="#contacts">Контакты</a>
+      </div>
+    </div>
+  </footer>
+
+  <section class="assistant-widget" id="assistant" aria-label="ИИ ассистент по архивным услугам">
+    <button class="assistant-toggle" type="button" aria-expanded="true" aria-controls="assistantPanel">
+      <span>ИИ</span>
+      <strong>Ассистент</strong>
+    </button>
+
+    <div class="assistant-panel" id="assistantPanel">
+      <div class="assistant-panel__header">
+        <div>
+          <p class="eyebrow">AI help</p>
+          <h2>ИИ-ассистент архива</h2>
+        </div>
+        <button class="assistant-close" type="button" aria-label="Свернуть ассистента">×</button>
+      </div>
+
+      <div class="assistant-messages" id="assistantMessages" aria-live="polite">
+        <div class="assistant-message assistant-message--bot">
+          Здравствуйте! Я помогу выбрать услугу, найти ЦОН на карте, объяснить заявку и проверить статус обращения.
+        </div>
+      </div>
+
+      <div class="assistant-suggestions" aria-label="Быстрые вопросы">
+        <button type="button" data-ai-prompt="Какие документы нужны для архивной справки?">Документы для справки</button>
+        <button type="button" data-ai-prompt="Как найти ближайший ЦОН на карте?">Найти ЦОН</button>
+        <button type="button" data-ai-prompt="Как проверить статус заявки?">Статус заявки</button>
+      </div>
+
+      <form class="assistant-form" id="assistantForm">
+        <input class="input" id="assistantInput" type="text" placeholder="Напишите вопрос..." autocomplete="off" required>
+        <button class="button button--primary" type="submit">Отправить</button>
+      </form>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
