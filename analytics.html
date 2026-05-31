@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analytics - Archive Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site-static.css">
+</head>
+<body>
+  <div class="admin-layout"><aside class="admin-sidebar" data-admin-sidebar></aside><main class="admin-main">
+    <header class="admin-top"><div><span class="eyebrow">Regional insights</span><h1>Analytics</h1></div><button class="theme-toggle" data-theme-toggle>◐</button></header>
+    <div class="admin-content">
+      <section class="grid-4"><div class="metric"><span class="eyebrow">Астана</span><strong>420</strong></div><div class="metric"><span class="eyebrow">Алматы</span><strong>560</strong></div><div class="metric"><span class="eyebrow">Шымкент</span><strong>310</strong></div><div class="metric"><span class="eyebrow">Қарағанды / Ақтөбе</span><strong>520</strong></div></section>
+      <section class="grid-2" style="margin-top:24px"><div class="panel"><h2>Региондар бойынша статистика</h2><canvas id="regionChart"></canvas></div><div class="panel"><h2>Қазақстан картасы</h2><div class="kz-map"><i class="city-pin" style="--x:56%;--y:30%"><span>Астана</span></i><i class="city-pin" style="--x:42%;--y:70%"><span>Алматы</span></i><i class="city-pin" style="--x:38%;--y:76%"><span>Шымкент</span></i><i class="city-pin" style="--x:50%;--y:45%"><span>Қарағанды</span></i><i class="city-pin" style="--x:24%;--y:55%"><span>Ақтөбе</span></i></div></div></section>
+    </div>
+  </main></div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="assets/app-static.js"></script>
+</body>
+</html>

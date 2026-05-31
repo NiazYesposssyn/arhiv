@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Requests - Archive Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site-static.css">
+</head>
+<body>
+  <div class="admin-layout"><aside class="admin-sidebar" data-admin-sidebar></aside><main class="admin-main">
+    <header class="admin-top"><div><span class="eyebrow">Request workflow</span><h1>Requests</h1></div><button class="theme-toggle" data-theme-toggle>◐</button></header>
+    <div class="admin-content">
+      <section class="grid-2"><form class="panel"><h2>Жаңа өтінім жасау</h2><div class="form-grid"><input placeholder="Сұраныс тақырыбы"><input placeholder="Өтініш беруші"><input type="email" placeholder="Email"><select><option>Астана</option><option>Алматы</option><option>Қарағанды</option></select></div><button class="btn btn-primary" type="button" data-toast="Өтінім тіркелді">Өтінім тіркеу</button></form><div class="panel"><h2>Статус</h2><ul class="check-list"><li>New - қабылданды</li><li>InReview - тексерілуде</li><li>Processing - орындалуда</li><li>Completed - аяқталды</li></ul></div></section>
+      <section class="panel" style="margin-top:24px"><h2>Өтінімдер тарихы</h2><div class="table-wrap"><table><tr><th>Нөмір</th><th>Тақырып</th><th>Статус</th><th>Комментарий</th></tr><tr><td>AAS-RQ-2451</td><td>Архивтік анықтама алу</td><td><span class="badge">Processing</span></td><td>Қосымша құжат сұралды</td></tr><tr><td>AAS-RQ-2448</td><td>Құжат көшірмесі</td><td><span class="badge">Completed</span></td><td>Жауап жіберілді</td></tr></table></div></section>
+    </div>
+  </main></div>
+  <script src="assets/app-static.js"></script>
+</body>
+</html>

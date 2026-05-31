@@ -1,0 +1,19 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "API Documentation";
+}
+
+<section class="table-panel">
+    <span class="eyebrow">REST API + JWT</span>
+    <h3 class="mt-2">Интеграция құжаттамасы</h3>
+    <p class="text-muted">Получите Bearer token через <code>POST /api/auth/token</code>, затем используйте защищенные endpoints.</p>
+    <div class="row g-3">
+        <div class="col-lg-4"><div class="glass-card card-rich shadow-none"><h5>POST /api/auth/token</h5><p class="text-muted mb-0">JWT token алу.</p></div></div>
+        <div class="col-lg-4"><div class="glass-card card-rich shadow-none"><h5>GET /api/documents</h5><p class="text-muted mb-0">Құжаттарды search, region, status арқылы фильтрлеу.</p></div></div>
+        <div class="col-lg-4"><div class="glass-card card-rich shadow-none"><h5>POST /api/requests</h5><p class="text-muted mb-0">Жаңа архивтік сұраныс жасау.</p></div></div>
+    </div>
+    <pre class="glass-card card-rich mt-4 mb-0"><code>{
+  "email": "admin@archive.kz",
+  "password": "archive-demo"
+}</code></pre>
+</section>

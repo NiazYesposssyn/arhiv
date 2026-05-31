@@ -1,0 +1,54 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Documents";
+}
+
+<div class="panel-grid">
+    <section class="form-panel">
+        <span class="eyebrow">Upload center</span>
+        <h3 class="mt-2">Құжаттарды жүктеу</h3>
+        <form asp-controller="Documents" asp-action="Upload" method="post" enctype="multipart/form-data" class="mt-3">
+            <label class="dropzone mb-3">
+                <span><i class="bi bi-cloud-arrow-up fs-1 d-block text-center mb-2"></i>Drag and drop PDF, DOCX, XLSX, JPG, PNG</span>
+                <input class="d-none" type="file" name="file" accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png" />
+            </label>
+            <div class="row g-3">
+                <div class="col-md-6"><input class="form-control" name="title" placeholder="Құжат атауы" required /></div>
+                <div class="col-md-6">
+                    <select class="form-select" name="category"><option>Архивтік анықтама</option><option>Қор құжаты</option><option>Есеп</option></select>
+                </div>
+                <div class="col-md-6"><select class="form-select" name="region"><option>Астана</option><option>Алматы</option><option>Шымкент</option><option>Қарағанды</option><option>Ақтөбе</option></select></div>
+                <div class="col-md-6"><button class="btn btn-premium w-100" type="submit">Жүктеу және нөмір беру</button></div>
+            </div>
+        </form>
+    </section>
+
+    <section class="table-panel">
+        <h3>Алдын ала қарау</h3>
+        <div class="glass-card card-rich shadow-none">
+            <div class="doc-row"><span><i class="bi bi-file-earmark-pdf me-2"></i>AAS-20260531-01.pdf</span><span class="badge-soft">Preview</span></div>
+            <div class="doc-row mt-2"><span><i class="bi bi-download me-2"></i>Скачать</span><span>2.8 MB</span></div>
+            <div class="doc-row mt-2"><span><i class="bi bi-archive me-2"></i>Архивировать</span><span>Ready</span></div>
+        </div>
+    </section>
+</div>
+
+<section class="table-panel mt-4">
+    <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Құжаттар тізімі</h3>
+        <div class="d-flex flex-wrap gap-2">
+            <input class="form-control" placeholder="Іздеу" style="max-width:220px" />
+            <select class="form-select" style="max-width:180px"><option>Барлық статус</option><option>Active</option><option>Archived</option><option>Restricted</option></select>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="premium-table">
+            <thead><tr><th>Нөмір</th><th>Атауы</th><th>Формат</th><th>Регион</th><th>Тарих</th><th>Әрекет</th></tr></thead>
+            <tbody>
+                <tr><td>AAS-20260531-01</td><td>Архивтік анықтама</td><td>PDF</td><td>Астана</td><td>3 өзгеріс</td><td><button class="btn btn-soft btn-sm">Preview</button></td></tr>
+                <tr><td>AAS-20260530-14</td><td>Кадрлық іс</td><td>DOCX</td><td>Алматы</td><td>8 өзгеріс</td><td><button class="btn btn-soft btn-sm">Download</button></td></tr>
+                <tr><td>AAS-20260529-08</td><td>Филиал есебі</td><td>XLSX</td><td>Шымкент</td><td>1 өзгеріс</td><td><button class="btn btn-soft btn-sm">Archive</button></td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>

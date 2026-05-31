@@ -1,0 +1,29 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Profile";
+    var displayName = User.Identity?.Name ?? "Demo User";
+    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "admin@archive.kz";
+    var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "Администратор";
+}
+
+<div class="panel-grid">
+    <section class="form-panel">
+        <span class="eyebrow">User profile</span>
+        <h3 class="mt-2">@displayName</h3>
+        <div class="row g-3 mt-1">
+            <div class="col-md-6"><label class="form-label">Аты</label><input class="form-control" value="@displayName" /></div>
+            <div class="col-md-6"><label class="form-label">Email</label><input class="form-control" value="@email" /></div>
+            <div class="col-md-6"><label class="form-label">Role</label><input class="form-control" value="@role" /></div>
+            <div class="col-md-6"><label class="form-label">Language</label><select class="form-select"><option>Қазақша</option><option>Русский</option><option>English</option></select></div>
+            <div class="col-12"><button class="btn btn-premium" data-toast="Профиль жаңартылды">Update profile</button></div>
+        </div>
+    </section>
+    <section class="table-panel">
+        <h3>Session security</h3>
+        <ul class="check-list mt-3">
+            <li><i class="bi bi-check-circle-fill"></i> Cookie session active</li>
+            <li><i class="bi bi-check-circle-fill"></i> JWT preview generated after login</li>
+            <li><i class="bi bi-check-circle-fill"></i> Two-factor authentication enabled</li>
+        </ul>
+    </section>
+</div>

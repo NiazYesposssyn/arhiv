@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Услуги";
+    var services = new[] {
+        new { Title = "Архивтік анықтамалар", Icon = "bi-patch-check", Image = "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80", Text = "Официальные справки по архивным данным с отслеживанием статуса." },
+        new { Title = "Құжаттарды сақтау", Icon = "bi-archive", Image = "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=900&q=80", Text = "Безопасное хранение PDF, DOCX, XLSX, JPG и PNG с историей изменений." },
+        new { Title = "Онлайн сұраныстар", Icon = "bi-chat-square-text", Image = "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80", Text = "Заявки граждан и организаций через удобную цифровую форму." },
+        new { Title = "Құжаттарды іздеу", Icon = "bi-search-heart", Image = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80", Text = "Умный поиск, фильтрация, сортировка и экспорт найденных данных." },
+        new { Title = "Кеңес беру", Icon = "bi-headset", Image = "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80", Text = "Поддержка пользователей, консультации и маршрутизация обращений." },
+        new { Title = "Электрондық қызметтер", Icon = "bi-globe2", Image = "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80", Text = "API, уведомления, отчеты, резервные копии и интеграции." }
+    };
+}
+
+<section class="page-hero">
+    <div class="container-page">
+        <span class="eyebrow"><i class="bi bi-briefcase"></i> Services</span>
+        <h1 class="page-title mt-3">Қызметтер</h1>
+        <p class="page-description">Каждая услуга оформлена отдельной карточкой с фото, иконкой, описанием и действием пользователя.</p>
+    </div>
+</section>
+
+<section class="section-shell pt-0">
+    <div class="container-page">
+        <div class="feature-grid">
+            @foreach (var service in services)
+            {
+                <article class="service-card card-rich">
+                    <img class="rich-img" src="@service.Image" alt="@service.Title" />
+                    <div class="card-icon"><i class="bi @service.Icon"></i></div>
+                    <h4>@service.Title</h4>
+                    <p class="text-muted">@service.Text</p>
+                    <a class="btn btn-ghost" asp-controller="Home" asp-action="HelpCenter">Толығырақ</a>
+                </article>
+            }
+        </div>
+    </div>
+</section>

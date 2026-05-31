@@ -1,0 +1,47 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Requests";
+}
+
+<div class="panel-grid">
+    <section class="form-panel">
+        <span class="eyebrow">Request workflow</span>
+        <h3 class="mt-2">Жаңа өтінім жасау</h3>
+        <form asp-controller="Requests" asp-action="Create" method="post" class="row g-3 mt-1">
+            <div class="col-12"><input class="form-control" name="subject" placeholder="Сұраныс тақырыбы" required /></div>
+            <div class="col-md-6"><input class="form-control" name="applicantName" placeholder="Өтініш беруші" required /></div>
+            <div class="col-md-6"><input class="form-control" name="applicantEmail" type="email" placeholder="Email" required /></div>
+            <div class="col-md-6"><select class="form-select" name="region"><option>Астана</option><option>Алматы</option><option>Шымкент</option><option>Қарағанды</option><option>Ақтөбе</option></select></div>
+            <div class="col-md-6"><button class="btn btn-premium w-100" type="submit">Өтінім тіркеу</button></div>
+        </form>
+    </section>
+    <section class="table-panel">
+        <h3>Статус воронкасы</h3>
+        <ul class="check-list mt-3">
+            <li><i class="bi bi-circle-fill text-info"></i> New - қабылданды</li>
+            <li><i class="bi bi-circle-fill text-primary"></i> InReview - тексерілуде</li>
+            <li><i class="bi bi-circle-fill text-warning"></i> Processing - орындалуда</li>
+            <li><i class="bi bi-circle-fill text-success"></i> Completed - аяқталды</li>
+        </ul>
+    </section>
+</div>
+
+<section class="table-panel mt-4">
+    <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Өтінімдер тарихы</h3>
+        <div class="d-flex flex-wrap gap-2">
+            <input class="form-control" placeholder="Іздеу" style="max-width:220px" />
+            <button class="btn btn-soft">Export CSV</button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="premium-table">
+            <thead><tr><th>Нөмір</th><th>Тақырып</th><th>Статус</th><th>Комментарий</th><th>Регион</th></tr></thead>
+            <tbody>
+                <tr><td>AAS-RQ-2451</td><td>Архивтік анықтама алу</td><td><span class="badge-soft">Processing</span></td><td>Қосымша құжат сұралды</td><td>Астана</td></tr>
+                <tr><td>AAS-RQ-2448</td><td>Құжат көшірмесі</td><td><span class="badge-soft">Completed</span></td><td>Жауап жіберілді</td><td>Алматы</td></tr>
+                <tr><td>AAS-RQ-2442</td><td>Іздеу сұранысы</td><td><span class="badge-soft">InReview</span></td><td>Архивариусқа берілді</td><td>Қарағанды</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>

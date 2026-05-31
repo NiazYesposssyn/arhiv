@@ -1,0 +1,28 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Reports";
+}
+
+<section class="form-panel">
+    <span class="eyebrow">Reports</span>
+    <h3 class="mt-2">Есеп генерациясы</h3>
+    <div class="row g-3 mt-1">
+        <div class="col-md-4"><select class="form-select"><option>Құжаттар есебі</option><option>Өтінімдер есебі</option><option>Аудит есебі</option></select></div>
+        <div class="col-md-3"><input class="form-control" type="date" /></div>
+        <div class="col-md-3"><input class="form-control" type="date" /></div>
+        <div class="col-md-2"><button class="btn btn-premium w-100" data-toast="Есеп дайындалды">Generate</button></div>
+    </div>
+</section>
+
+<section class="table-panel mt-4">
+    <h3>Соңғы есептер</h3>
+    <div class="table-responsive">
+        <table class="premium-table">
+            <thead><tr><th>Атауы</th><th>Формат</th><th>Кезең</th><th>Статус</th></tr></thead>
+            <tbody>
+                <tr><td>Monthly archive activity</td><td>PDF</td><td>May 2026</td><td><span class="badge-soft">Ready</span></td></tr>
+                <tr><td>Regional request analytics</td><td>XLSX</td><td>Q2 2026</td><td><span class="badge-soft">Ready</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>

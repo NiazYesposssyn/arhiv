@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documents - Archive Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site-static.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" data-admin-sidebar></aside>
+    <main class="admin-main">
+      <header class="admin-top"><div><span class="eyebrow">Upload center</span><h1>Documents</h1></div><button class="theme-toggle" data-theme-toggle>◐</button></header>
+      <div class="admin-content">
+        <section class="grid-2">
+          <form class="panel">
+            <h2>Құжаттарды жүктеу</h2>
+            <label class="dropzone">Drag and drop PDF, DOCX, XLSX, JPG, PNG<input type="file" hidden></label>
+            <div class="form-grid" style="margin-top:16px"><input placeholder="Құжат атауы"><select><option>Архивтік анықтама</option><option>Қор құжаты</option></select><select><option>Астана</option><option>Алматы</option><option>Шымкент</option></select><button class="btn btn-primary" type="button" data-toast="Құжат нөмірі жасалды">Жүктеу</button></div>
+          </form>
+          <div class="panel"><h2>Preview</h2><div class="doc-row"><span>AAS-20260531-01.pdf</span><span class="badge">Preview</span></div><div class="doc-row"><span>Download</span><span>2.8 MB</span></div><div class="doc-row"><span>Archive</span><span>Ready</span></div></div>
+        </section>
+        <section class="panel" style="margin-top:24px"><h2>Құжаттар тізімі</h2><div class="table-wrap"><table><tr><th>Нөмір</th><th>Атауы</th><th>Формат</th><th>Регион</th><th>Әрекет</th></tr><tr><td>AAS-20260531-01</td><td>Архивтік анықтама</td><td>PDF</td><td>Астана</td><td><span class="badge">Active</span></td></tr><tr><td>AAS-20260530-14</td><td>Кадрлық іс</td><td>DOCX</td><td>Алматы</td><td><span class="badge">Archived</span></td></tr></table></div></section>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app-static.js"></script>
+</body>
+</html>

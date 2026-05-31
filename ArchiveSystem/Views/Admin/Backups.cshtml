@@ -1,0 +1,27 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Backups";
+}
+
+<div class="metric-grid">
+    <div class="metric-card"><span class="eyebrow">Last backup</span><div class="metric-value">02:00</div><p class="text-muted mb-0">UTC</p></div>
+    <div class="metric-card"><span class="eyebrow">Storage</span><div class="metric-value">84%</div><p class="text-muted mb-0">healthy</p></div>
+    <div class="metric-card"><span class="eyebrow">RPO</span><div class="metric-value">1h</div><p class="text-muted mb-0">enterprise</p></div>
+    <div class="metric-card"><span class="eyebrow">Restore</span><div class="metric-value">Ready</div><p class="text-muted mb-0">verified</p></div>
+</div>
+
+<section class="table-panel mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Резервтік көшіру</h3>
+        <button class="btn btn-premium" data-toast="Backup job басталды">Run backup</button>
+    </div>
+    <div class="table-responsive">
+        <table class="premium-table">
+            <thead><tr><th>Name</th><th>Status</th><th>Started</th><th>Finished</th></tr></thead>
+            <tbody>
+                <tr><td>backup-hourly</td><td><span class="badge-soft">Completed</span></td><td>01:00</td><td>01:04</td></tr>
+                <tr><td>backup-daily</td><td><span class="badge-soft">Scheduled</span></td><td>23:00</td><td>-</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Об архиве";
+}
+
+<section class="page-hero">
+    <div class="container-page">
+        <span class="eyebrow"><i class="bi bi-building"></i> National archive network</span>
+        <h1 class="page-title mt-3">Архив туралы</h1>
+        <p class="page-description">История, миссия, структура, филиалы и карта архивов Казахстана в цифровой системе нового поколения.</p>
+    </div>
+</section>
+
+<section class="section-shell pt-0">
+    <div class="container-page">
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="glass-card card-rich h-100">
+                    <img class="rich-img" src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80" alt="Archive shelves" />
+                    <h2>История и миссия</h2>
+                    <p class="text-muted">Архив сохраняет документальное наследие, обеспечивает доступ к историческим данным и переводит услуги в удобный онлайн-формат. Миссия системы — сделать архивные процессы прозрачными, быстрыми и безопасными.</p>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="map-card card-rich h-100 d-flex flex-column justify-content-end">
+                    <h3>Карта архивов</h3>
+                    <p class="mb-0">Филиалы: Астана, Алматы, Шымкент, Қарағанды, Ақтөбе. Единая сеть обрабатывает региональные запросы и хранит цифровые фонды.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-grid mt-4">
+            @{
+                var cards = new[] {
+                    new { Title = "Қауіпсіз сақтау", Icon = "bi-shield-check", Image = "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=900&q=80", Text = "Защищенные хранилища, резервное копирование и контроль доступа." },
+                    new { Title = "Сандық архив", Icon = "bi-cloud-arrow-up", Image = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80", Text = "Оцифровка фондов, метаданные, версии и быстрый предпросмотр." },
+                    new { Title = "Онлайн сұраныстар", Icon = "bi-send-check", Image = "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=900&q=80", Text = "Подача заявок, статусы, комментарии администратора и уведомления." },
+                    new { Title = "Жылдам іздеу", Icon = "bi-lightning-charge", Image = "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80", Text = "Поиск по номеру, региону, типу, дате и категории документа." }
+                };
+            }
+            @foreach (var card in cards)
+            {
+                <div class="archive-card card-rich">
+                    <img class="rich-img" src="@card.Image" alt="@card.Title" />
+                    <div class="card-icon"><i class="bi @card.Icon"></i></div>
+                    <h4>@card.Title</h4>
+                    <p class="text-muted mb-0">@card.Text</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
