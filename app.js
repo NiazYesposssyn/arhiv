@@ -359,7 +359,11 @@ function addMessage(author, text) {
   const chatBox = document.getElementById("chatBox");
   const message = document.createElement("div");
   message.className = `message ${author === "Вы" ? "user" : "bot"}`;
-  message.innerHTML = `<strong>${author}</strong><p>${text}</p>`;
+  const authorLabel = document.createElement("strong");
+  const messageText = document.createElement("p");
+  authorLabel.textContent = author;
+  messageText.textContent = text;
+  message.append(authorLabel, messageText);
   chatBox.append(message);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
