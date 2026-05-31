@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Электронный архивный портал с услугами, поиском документов, заявками и проверкой статуса обращения.">
   <title>Архивный ЦОН | Электронный архив</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -29,6 +30,8 @@
         <a href="#catalog">Каталог</a>
         <a href="#request">Заявка</a>
         <a href="#status">Статус</a>
+        <a href="#map">Карта</a>
+        <a href="#assistant">ИИ</a>
         <a href="#contacts">Контакты</a>
       </nav>
     </div>
@@ -46,6 +49,7 @@
           <div class="hero__actions">
             <a class="button button--primary" href="#request">Подать заявку</a>
             <a class="button button--secondary" href="#catalog">Открыть каталог</a>
+            <a class="button button--secondary" href="#assistant">Спросить ИИ</a>
           </div>
           <div class="hero__trust" aria-label="Преимущества портала">
             <span>24/7 онлайн</span>
@@ -292,6 +296,43 @@
       </div>
     </section>
 
+    <section class="section" id="map">
+      <div class="container">
+        <div class="section__heading section__heading--row">
+          <div>
+            <p class="eyebrow">Карта Казахстана</p>
+            <h2>ЦОНы и сервисные точки по городам</h2>
+          </div>
+          <p>Интерактивную карту можно двигать, приближать и открывать точки. Для проверки актуального графика у каждой точки есть быстрый переход в 2ГИС.</p>
+        </div>
+
+        <div class="map-layout">
+          <div class="map-panel">
+            <div class="map-toolbar">
+              <label>
+                Город
+                <select class="input" id="citySelect" aria-label="Выберите город на карте">
+                  <option value="all">Весь Казахстан</option>
+                </select>
+              </label>
+              <button class="button button--secondary" id="showAllOffices" type="button">Показать все</button>
+            </div>
+            <div id="kazakhstanMap" class="kazakhstan-map" role="img" aria-label="Интерактивная карта Казахстана с точками ЦОН"></div>
+          </div>
+
+          <aside class="map-sidebar">
+            <div>
+              <p class="eyebrow">Точки на карте</p>
+              <h3>Адреса ЦОН</h3>
+              <p>Выберите город или нажмите на карточку, чтобы приблизить карту к нужному отделению.</p>
+            </div>
+            <div class="office-list" id="officeList" aria-live="polite"></div>
+            <p class="map-note">Данные собраны по открытым справочникам 2ГИС и gov4c. Перед визитом уточняйте график в 2ГИС или по номеру 1414.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <div class="container faq">
         <div class="section__heading">
@@ -322,11 +363,48 @@
       <div>
         <a href="#services">Услуги</a>
         <a href="#request">Заявка</a>
+        <a href="#map">Карта</a>
+        <a href="#assistant">ИИ ассистент</a>
         <a href="#contacts">Контакты</a>
       </div>
     </div>
   </footer>
 
+  <section class="assistant-widget" id="assistant" aria-label="ИИ ассистент по архивным услугам">
+    <button class="assistant-toggle" type="button" aria-expanded="true" aria-controls="assistantPanel">
+      <span>ИИ</span>
+      <strong>Ассистент</strong>
+    </button>
+
+    <div class="assistant-panel" id="assistantPanel">
+      <div class="assistant-panel__header">
+        <div>
+          <p class="eyebrow">AI help</p>
+          <h2>ИИ-ассистент архива</h2>
+        </div>
+        <button class="assistant-close" type="button" aria-label="Свернуть ассистента">×</button>
+      </div>
+
+      <div class="assistant-messages" id="assistantMessages" aria-live="polite">
+        <div class="assistant-message assistant-message--bot">
+          Здравствуйте! Я помогу выбрать услугу, найти ЦОН на карте, объяснить заявку и проверить статус обращения.
+        </div>
+      </div>
+
+      <div class="assistant-suggestions" aria-label="Быстрые вопросы">
+        <button type="button" data-ai-prompt="Какие документы нужны для архивной справки?">Документы для справки</button>
+        <button type="button" data-ai-prompt="Как найти ближайший ЦОН на карте?">Найти ЦОН</button>
+        <button type="button" data-ai-prompt="Как проверить статус заявки?">Статус заявки</button>
+      </div>
+
+      <form class="assistant-form" id="assistantForm">
+        <input class="input" id="assistantInput" type="text" placeholder="Напишите вопрос..." autocomplete="off" required>
+        <button class="button button--primary" type="submit">Отправить</button>
+      </form>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
