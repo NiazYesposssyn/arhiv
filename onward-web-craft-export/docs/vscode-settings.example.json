@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.tanstack": true,
+    "**/bun.lock": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/src/routeTree.gen.ts": true,
+    "**/components/ui": true
+  }
+}
