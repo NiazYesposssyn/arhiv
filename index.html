@@ -7,7 +7,7 @@
   <title>QazArchive | Архивный портал Казахстана</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -36,11 +36,11 @@
 
     <section id="top" class="hero">
       <div class="hero-copy">
-        <span class="eyebrow">Архивы Казахстана в одном цифровом пространстве</span>
-        <h1>Современный портал для поиска документов, справок и архивных услуг</h1>
+        <span class="eyebrow">Цифровое архивное хранилище Казахстана</span>
+        <h1>Не просто сайт, а аккуратный архивный центр с доступом к документам</h1>
         <p>
-          QazArchive помогает быстро найти архивные фонды, отправить запрос, скачать шаблоны документов,
-          увидеть архивные точки на карте Казахстана и получить подсказку от AI-ассистента.
+          QazArchive выглядит как закрытый кабинет архива: вход по аккаунту, понятные разделы,
+          карта архивных точек, PDF-заявления, справочная база и AI-помощник без лишнего хаоса.
         </p>
         <div class="hero-actions">
           <button class="primary-btn big" type="button" data-auth-open="register">Создать аккаунт</button>
@@ -62,35 +62,51 @@
         </div>
       </div>
 
-      <div class="hero-panel" aria-label="Демонстрация кабинета">
-        <div class="panel-top">
-          <span></span><span></span><span></span>
+      <div class="hero-panel vault-panel" aria-label="Демонстрация цифрового хранилища">
+        <div class="vault-orbit" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
-        <div class="document-card floating-card">
-          <span class="doc-icon">PDF</span>
+        <div class="vault-door">
+          <span class="vault-ring"></span>
+          <strong>QAZ</strong>
+          <small>ARCHIVE ACCESS</small>
+        </div>
+        <div class="registry-card registry-main">
+          <span class="doc-icon">№</span>
           <div>
-            <strong>Запрос о трудовом стаже</strong>
-            <small>Статус: готов к отправке</small>
+            <strong>Реестр обращения</strong>
+            <small>Заявка, карта, PDF, AI — в одном маршруте</small>
           </div>
         </div>
-        <div class="archive-window">
-          <div class="window-row active">
-            <span>01</span>
-            <p>Национальный архив РК</p>
-          </div>
-          <div class="window-row">
-            <span>02</span>
-            <p>Центральный госархив РК</p>
-          </div>
-          <div class="window-row">
-            <span>03</span>
-            <p>Региональные архивы</p>
-          </div>
+        <div class="registry-stack">
+          <div><span>01</span><p>Проверка личности</p></div>
+          <div><span>02</span><p>Выбор архивной услуги</p></div>
+          <div><span>03</span><p>Получение шаблона PDF</p></div>
         </div>
-        <div class="assistant-bubble">
-          <span>AI</span>
-          <p>Подскажу, какой документ нужен для запроса.</p>
+        <div class="seal-card">
+          <strong>19 регионов</strong>
+          <span>архивная карта Казахстана</span>
         </div>
+      </div>
+    </section>
+
+    <section class="archive-strip" aria-label="Ключевые особенности дизайна">
+      <div>
+        <span>01</span>
+        <strong>Лендинг без перегруза</strong>
+        <p>Большой заголовок, короткое описание и четкий вход.</p>
+      </div>
+      <div>
+        <span>02</span>
+        <strong>Кабинет как рабочий центр</strong>
+        <p>После авторизации открывается отдельное пространство с меню.</p>
+      </div>
+      <div>
+        <span>03</span>
+        <strong>Архивная эстетика</strong>
+        <p>Темное стекло, золото, реестры, печати и аккуратные панели.</p>
       </div>
     </section>
 
@@ -153,6 +169,11 @@
           <small id="userEmail">archive@mail.kz</small>
         </div>
       </div>
+      <div class="vault-status">
+        <span>Статус доступа</span>
+        <strong>Внутренний архив открыт</strong>
+        <p>Сессия активна. Можно работать с услугами, картой и документами.</p>
+      </div>
       <button class="sidebar-close" type="button" id="closeSidebar" aria-label="Закрыть меню">Закрыть</button>
     </aside>
 
@@ -188,6 +209,29 @@
             </div>
             <p id="searchResult">Введите запрос, чтобы получить подсказку.</p>
           </div>
+        </div>
+
+        <div class="command-board" aria-label="Панель состояния архива">
+          <article>
+            <span>Открыто</span>
+            <strong>6 сервисов</strong>
+            <p>Справки, заявки, каталог, карта, контакты и AI.</p>
+          </article>
+          <article>
+            <span>PDF</span>
+            <strong>Шаблон заявления</strong>
+            <p>Генерируется прямо на сайте без сторонних файлов.</p>
+          </article>
+          <article>
+            <span>Карта</span>
+            <strong>Казахстан</strong>
+            <p>Города и реальные архивные учреждения в Астане и Алматы.</p>
+          </article>
+          <article>
+            <span>AI</span>
+            <strong>QazAI</strong>
+            <p>Отвечает на вопросы по архивным услугам и документам.</p>
+          </article>
         </div>
 
         <div class="timeline">
