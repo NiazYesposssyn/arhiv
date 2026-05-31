@@ -23,91 +23,149 @@ const logoutButton = document.getElementById("logoutButton");
 const sidebar = document.querySelector(".portal-sidebar");
 
 let authMode = "login";
+let archiveMap;
+const archiveMarkers = {};
 
 const cityData = {
   "Астана": {
     summary: "Национальный архив Республики Казахстан - один из ключевых архивных центров страны.",
     archive: "Национальный архив Республики Казахстан",
     services: "справки, читальный зал, научно-справочный аппарат",
-    status: "реальное архивное учреждение"
+    status: "реальное архивное учреждение",
+    lat: 51.1282,
+    lng: 71.4304,
+    zoom: 13,
+    twoGis: "https://2gis.kz/astana/search/%D0%9D%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%80%D1%85%D0%B8%D0%B2%20%D0%A0%D0%9A"
   },
   "Алматы": {
     summary: "Центральный государственный архив Республики Казахстан работает с историческими фондами и документами национального значения.",
     archive: "Центральный государственный архив Республики Казахстан",
     services: "исторические фонды, генеалогические запросы, копии документов",
-    status: "реальное архивное учреждение"
+    status: "реальное архивное учреждение",
+    lat: 43.2389,
+    lng: 76.8897,
+    zoom: 13,
+    twoGis: "https://2gis.kz/almaty/search/%D0%A6%D0%B5%D0%BD%D1%82%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D0%B3%D0%BE%D1%81%D1%83%D0%B4%D0%B0%D1%80%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%80%D1%85%D0%B8%D0%B2%20%D0%A0%D0%9A"
   },
   "Шымкент": {
     summary: "Крупный город юга Казахстана с региональными архивными услугами и историческими фондами.",
     archive: "Региональный архивный пункт",
     services: "социально-правовые справки, консультации, прием заявлений",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 42.3417,
+    lng: 69.5901,
+    zoom: 11,
+    twoGis: "https://2gis.kz/shymkent/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Караганда": {
     summary: "Промышленный регион, где часто запрашивают сведения о стаже, предприятиях и учебных заведениях.",
     archive: "Региональный архивный пункт",
     services: "стаж, зарплата, история предприятий",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 49.8068,
+    lng: 73.0851,
+    zoom: 11,
+    twoGis: "https://2gis.kz/karaganda/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Актобе": {
     summary: "Западный региональный центр с большим количеством запросов по работе, учебе и переселению.",
     archive: "Региональный архивный пункт",
     services: "справки, поиск фондов, запись на прием",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 50.2839,
+    lng: 57.1660,
+    zoom: 11,
+    twoGis: "https://2gis.kz/aktobe/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Уральск": {
     summary: "Исторический город западного Казахстана с материалами по дореволюционному и советскому периодам.",
     archive: "Региональный архивный пункт",
     services: "исторические документы, справки, копии",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 51.2278,
+    lng: 51.3865,
+    zoom: 11,
+    twoGis: "https://2gis.kz/uralsk/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Костанай": {
     summary: "Северный город с востребованными запросами по трудовым документам и истории организаций.",
     archive: "Региональный архивный пункт",
     services: "стаж, учеба, фонды организаций",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 53.2198,
+    lng: 63.6354,
+    zoom: 11,
+    twoGis: "https://2gis.kz/kostanay/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Павлодар": {
     summary: "Региональный центр на северо-востоке страны с промышленными и социальными архивными запросами.",
     archive: "Региональный архивный пункт",
     services: "социально-правовые справки, читальный зал",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 52.2873,
+    lng: 76.9674,
+    zoom: 11,
+    twoGis: "https://2gis.kz/pavlodar/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Семей": {
     summary: "Исторический центр востока Казахстана, важный для культурных и семейных исследований.",
     archive: "Региональный архивный пункт",
     services: "генеалогия, исторические справки, фотодокументы",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 50.4111,
+    lng: 80.2275,
+    zoom: 11,
+    twoGis: "https://2gis.kz/semey/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Усть-Каменогорск": {
     summary: "Восточный региональный центр с фондами предприятий, учебных заведений и государственных органов.",
     archive: "Региональный архивный пункт",
     services: "копии документов, стаж, история учреждений",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 49.9481,
+    lng: 82.6275,
+    zoom: 11,
+    twoGis: "https://2gis.kz/ust-kamenogorsk/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Кызылорда": {
     summary: "Город с важными материалами по истории региона, организациям и переселению.",
     archive: "Региональный архивный пункт",
     services: "исторические фонды, справки, прием заявок",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 44.8488,
+    lng: 65.4823,
+    zoom: 11,
+    twoGis: "https://2gis.kz/kyzylorda/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Талдыкорган": {
     summary: "Региональный центр Жетысу с запросами по учебе, работе и семейной истории.",
     archive: "Региональный архивный пункт",
     services: "учеба, работа, генеалогия",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 45.0177,
+    lng: 78.3804,
+    zoom: 11,
+    twoGis: "https://2gis.kz/taldykorgan/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Тараз": {
     summary: "Один из древнейших городов Казахстана, подходящий для исторических и краеведческих запросов.",
     archive: "Региональный архивный пункт",
     services: "краеведение, исторические справки, консультации",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 42.8984,
+    lng: 71.3979,
+    zoom: 11,
+    twoGis: "https://2gis.kz/taraz/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   },
   "Актау": {
     summary: "Прикаспийский город, где востребованы запросы по предприятиям, трудовой истории и миграции.",
     archive: "Региональный архивный пункт",
     services: "стаж, предприятия, справки",
-    status: "демонстрационная точка"
+    status: "демонстрационная точка",
+    lat: 43.6532,
+    lng: 51.1975,
+    zoom: 11,
+    twoGis: "https://2gis.kz/aktau/search/%D0%B0%D1%80%D1%85%D0%B8%D0%B2"
   }
 };
 
@@ -159,6 +217,9 @@ function showPortal(user) {
   landing.classList.add("hidden");
   portal.classList.remove("hidden");
   closeAuth();
+  if (archiveMap) {
+    setTimeout(() => archiveMap.invalidateSize(), 120);
+  }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -210,6 +271,9 @@ function activateSection(sectionId) {
     link.classList.toggle("active", link.dataset.section === sectionId);
   });
   sidebar.classList.remove("open");
+  if (sectionId === "map" && archiveMap) {
+    setTimeout(() => archiveMap.invalidateSize(), 120);
+  }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -218,7 +282,8 @@ function updateMap(city) {
     summary: "Город отмечен как важный центр Казахстана. Для реального проекта сюда можно подключить официальный архив.",
     archive: "Городской или региональный архив",
     services: "консультации, прием заявлений, поиск фондов",
-    status: "информационная точка"
+    status: "информационная точка",
+    twoGis: `https://2gis.kz/search/${encodeURIComponent(`${city} архив`)}`
   };
   const mapCard = document.getElementById("mapCard");
 
@@ -231,14 +296,19 @@ function updateMap(city) {
       <li><strong>Услуги:</strong> ${data.services}</li>
       <li><strong>Статус:</strong> ${data.status}</li>
     </ul>
+    <a class="map-link" href="${data.twoGis}" target="_blank" rel="noreferrer">Открыть в 2GIS</a>
   `;
 
-  document.querySelectorAll(".city-point").forEach((point) => {
-    point.classList.toggle("active", point.dataset.city === city);
-  });
   document.querySelectorAll(".city-cloud button").forEach((button) => {
     button.classList.toggle("active", button.dataset.city === city);
   });
+
+  if (archiveMap && data.lat && data.lng) {
+    archiveMap.flyTo([data.lat, data.lng], data.zoom || 11, { duration: 0.8 });
+    if (archiveMarkers[city]) {
+      archiveMarkers[city].openPopup();
+    }
+  }
 }
 
 function buildCityCloud() {
@@ -253,6 +323,38 @@ function buildCityCloud() {
     cityCloud.append(button);
   });
   updateMap("Астана");
+}
+
+function initArchiveMap() {
+  const mapElement = document.getElementById("archiveMap");
+  if (!mapElement) return;
+
+  if (typeof L === "undefined") {
+    mapElement.innerHTML = '<div class="map-fallback">Карта не загрузилась. Проверьте интернет и обновите страницу.</div>';
+    return;
+  }
+
+  archiveMap = L.map(mapElement, {
+    zoomControl: true,
+    scrollWheelZoom: true
+  }).setView([48.0196, 66.9237], 5);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(archiveMap);
+
+  Object.entries(cityData).forEach(([city, data]) => {
+    if (!data.lat || !data.lng) return;
+    const marker = L.marker([data.lat, data.lng]).addTo(archiveMap);
+    marker.bindPopup(`
+      <strong>${city}</strong><br>
+      ${data.archive}<br>
+      <a href="${data.twoGis}" target="_blank" rel="noreferrer">Открыть в 2GIS</a>
+    `);
+    marker.on("click", () => updateMap(city));
+    archiveMarkers[city] = marker;
+  });
 }
 
 function generatePdf() {
@@ -465,6 +567,7 @@ function restoreSession() {
   if (user) showPortal(user);
 }
 
+initArchiveMap();
 buildCityCloud();
 initForms();
 initEvents();

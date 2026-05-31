@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -62,32 +63,46 @@
         </div>
       </div>
 
-      <div class="hero-panel vault-panel" aria-label="Демонстрация цифрового хранилища">
-        <div class="vault-orbit" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
+      <div class="hero-panel clean-preview" aria-label="Демонстрация кабинета архива">
+        <div class="preview-header-card">
+          <span>QazArchive</span>
+          <strong>Архивный кабинет</strong>
+          <small>Чистый интерфейс без перегруза</small>
         </div>
-        <div class="vault-door">
-          <span class="vault-ring"></span>
-          <strong>QAZ</strong>
-          <small>ARCHIVE ACCESS</small>
+        <div class="preview-search-card">
+          <span>Поиск</span>
+          <p>Справка о трудовом стаже</p>
         </div>
-        <div class="registry-card registry-main">
-          <span class="doc-icon">№</span>
+        <div class="preview-route">
+          <article>
+            <span>01</span>
+            <strong>Вход</strong>
+            <p>Аккаунт пользователя</p>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>Услуга</strong>
+            <p>Выбор типа запроса</p>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>Карта</strong>
+            <p>Архив рядом с городом</p>
+          </article>
+        </div>
+        <div class="preview-bottom">
           <div>
-            <strong>Реестр обращения</strong>
-            <small>Заявка, карта, PDF, AI — в одном маршруте</small>
+            <strong>2</strong>
+            <span>реальные архивные точки</span>
           </div>
-        </div>
-        <div class="registry-stack">
-          <div><span>01</span><p>Проверка личности</p></div>
-          <div><span>02</span><p>Выбор архивной услуги</p></div>
-          <div><span>03</span><p>Получение шаблона PDF</p></div>
-        </div>
-        <div class="seal-card">
-          <strong>19 регионов</strong>
-          <span>архивная карта Казахстана</span>
+          <div>
+            <strong>PDF</strong>
+            <span>шаблон заявления</span>
+          </div>
+          <div>
+            <strong>AI</strong>
+            <span>быстрый помощник</span>
+          </div>
         </div>
       </div>
     </section>
@@ -401,31 +416,17 @@
       <section class="portal-section" id="map" data-section-panel>
         <div class="section-title">
           <span class="eyebrow">География архивов</span>
-          <h2>Карта Казахстана и архивные точки</h2>
-          <p>Нажмите на город, чтобы увидеть информацию. На карте отмечены крупные города Казахстана и реальные архивные учреждения.</p>
+          <h2>Интерактивная карта архивов</h2>
+          <p>Карта работает как обычный онлайн-картографический сервис: можно приближать, двигать карту, нажимать на маркеры и открывать место в 2GIS.</p>
         </div>
         <div class="map-layout">
-          <div class="kazakhstan-map" aria-label="Схематическая карта Казахстана">
-            <svg viewBox="0 0 900 500" role="img" aria-labelledby="mapTitle mapDesc">
-              <title id="mapTitle">Карта Казахстана</title>
-              <desc id="mapDesc">Схематическая интерактивная карта с городами и архивными точками.</desc>
-              <path class="country-shape" d="M74 236L122 166L228 132L314 91L450 108L563 72L690 118L811 170L846 270L776 361L628 407L486 380L350 429L218 382L109 326Z"></path>
-              <path class="country-line" d="M228 132L268 225L350 429M450 108L442 240L486 380M690 118L632 244L628 407M122 166L248 272L109 326"></path>
-            </svg>
-            <button class="city-point archive-point active" style="--x:58%;--y:34%;" data-city="Астана" aria-label="Астана"></button>
-            <button class="city-point archive-point" style="--x:47%;--y:71%;" data-city="Алматы" aria-label="Алматы"></button>
-            <button class="city-point" style="--x:39%;--y:75%;" data-city="Тараз" aria-label="Тараз"></button>
-            <button class="city-point" style="--x:31%;--y:70%;" data-city="Шымкент" aria-label="Шымкент"></button>
-            <button class="city-point" style="--x:50%;--y:47%;" data-city="Караганда" aria-label="Караганда"></button>
-            <button class="city-point" style="--x:22%;--y:44%;" data-city="Актобе" aria-label="Актобе"></button>
-            <button class="city-point" style="--x:13%;--y:49%;" data-city="Уральск" aria-label="Уральск"></button>
-            <button class="city-point" style="--x:16%;--y:33%;" data-city="Костанай" aria-label="Костанай"></button>
-            <button class="city-point" style="--x:49%;--y:21%;" data-city="Павлодар" aria-label="Павлодар"></button>
-            <button class="city-point" style="--x:67%;--y:35%;" data-city="Семей" aria-label="Семей"></button>
-            <button class="city-point" style="--x:74%;--y:48%;" data-city="Усть-Каменогорск" aria-label="Усть-Каменогорск"></button>
-            <button class="city-point" style="--x:30%;--y:53%;" data-city="Кызылорда" aria-label="Кызылорда"></button>
-            <button class="city-point" style="--x:61%;--y:73%;" data-city="Талдыкорган" aria-label="Талдыкорган"></button>
-            <button class="city-point" style="--x:9%;--y:66%;" data-city="Актау" aria-label="Актау"></button>
+          <div class="real-map-shell">
+            <div id="archiveMap" class="archive-map" aria-label="Интерактивная карта архивов Казахстана"></div>
+            <div class="map-toolbar" aria-label="Подсказка по карте">
+              <span>+ / - масштаб</span>
+              <span>маркер = архивная точка</span>
+              <span>ссылка на 2GIS в карточке</span>
+            </div>
           </div>
           <aside class="map-card" id="mapCard">
             <span class="eyebrow">Выбранный город</span>
@@ -436,6 +437,7 @@
               <li><strong>Услуги:</strong> справки, читальный зал, научно-справочный аппарат</li>
               <li><strong>Статус:</strong> реальное архивное учреждение</li>
             </ul>
+            <a class="map-link" id="mapExternalLink" href="https://2gis.kz/astana/search/%D0%9D%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%80%D1%85%D0%B8%D0%B2%20%D0%A0%D0%9A" target="_blank" rel="noreferrer">Открыть в 2GIS</a>
           </aside>
         </div>
         <div class="city-cloud" id="cityCloud" aria-label="Список городов Казахстана"></div>
@@ -532,6 +534,7 @@
     </section>
   </template>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
