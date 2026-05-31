@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Государственный цифровой архив: поиск документов, справки, филиалы, запись на прием и онлайн-сервисы.">
+    <title>Цифровой архив | Государственные архивные услуги</title>
+    <style>
+        :root {
+            --blue-900: #083d77;
+            --blue-800: #0b4f95;
+            --blue-700: #0d63b7;
+            --blue-100: #eaf4ff;
+            --cyan: #1fb6d1;
+            --green: #14a76c;
+            --orange: #f59e0b;
+            --red: #e5484d;
+            --ink: #102033;
+            --muted: #64748b;
+            --line: #dbe5ef;
+            --bg: #f4f8fc;
+            --white: #ffffff;
+            --shadow: 0 18px 45px rgba(8, 61, 119, 0.12);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            color: var(--ink);
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            line-height: 1.55;
+        }
+
+        body.high-contrast {
+            --blue-900: #000000;
+            --blue-800: #111111;
+            --blue-700: #222222;
+            --blue-100: #f2f2f2;
+            --cyan: #ffd400;
+            --green: #008000;
+            --orange: #ff8c00;
+            --ink: #000000;
+            --muted: #222222;
+            --line: #000000;
+            --bg: #ffffff;
+            --white: #ffffff;
+            --shadow: none;
+        }
+
+        body.large-font {
+            font-size: 18px;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        .container {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .topbar {
+            color: var(--white);
+            background: var(--blue-900);
+            font-size: 14px;
+        }
+
+        .topbar__inner,
+        .header__inner,
+        .nav__inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .topbar__inner {
+            min-height: 42px;
+        }
+
+        .topbar__links,
+        .header__actions,
+        .nav__links,
+        .footer__links,
+        .socials {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .topbar a,
+        .topbar button {
+            color: var(--white);
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+        }
+
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .header__inner {
+            min-height: 90px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand__mark {
+            display: grid;
+            width: 58px;
+            height: 58px;
+            place-items: center;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--blue-700), var(--cyan));
+            border-radius: 50% 50% 50% 12px;
+            box-shadow: 0 10px 24px rgba(13, 99, 183, 0.24);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .brand__title {
+            margin: 0;
+            color: var(--blue-900);
+            font-size: 23px;
+            line-height: 1.1;
+        }
+
+        .brand__subtitle {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 11px 18px;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn--primary {
+            color: var(--white);
+            background: linear-gradient(135deg, var(--blue-700), var(--cyan));
+            box-shadow: 0 12px 24px rgba(13, 99, 183, 0.2);
+        }
+
+        .btn--outline {
+            color: var(--blue-800);
+            background: var(--white);
+            border-color: var(--line);
+        }
+
+        .btn--light {
+            color: var(--blue-900);
+            background: var(--white);
+        }
+
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            color: var(--white);
+            background: var(--blue-800);
+            box-shadow: 0 10px 24px rgba(8, 61, 119, 0.18);
+        }
+
+        .nav__inner {
+            min-height: 58px;
+        }
+
+        .nav__links a {
+            padding: 17px 6px;
+            border-bottom: 3px solid transparent;
+            font-weight: 700;
+        }
+
+        .nav__links a:hover,
+        .nav__links a:focus {
+            border-bottom-color: var(--cyan);
+        }
+
+        .menu-toggle {
+            display: none;
+            color: var(--white);
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: var(--radius-sm);
+            padding: 9px 12px;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            color: var(--white);
+            background:
+                radial-gradient(circle at top right, rgba(31, 182, 209, 0.45), transparent 34%),
+                linear-gradient(130deg, rgba(8, 61, 119, 0.98), rgba(13, 99, 183, 0.94)),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='560' viewBox='0 0 900 560'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.12'%3E%3Cpath d='M30 80h190v120H30zM260 80h190v120H260zM490 80h190v120H490zM100 250h190v120H100zM330 250h190v120H330zM560 250h190v120H560z'/%3E%3Cpath d='M80 120h90M310 120h90M540 120h90M150 290h90M380 290h90M610 290h90'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero__inner {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 36px;
+            align-items: center;
+            min-height: 520px;
+            padding: 70px 0;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 18px;
+            padding: 7px 12px;
+            color: var(--blue-900);
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .hero h2 {
+            margin: 0 0 20px;
+            font-size: clamp(34px, 5vw, 58px);
+            line-height: 1.05;
+        }
+
+        .hero p {
+            max-width: 660px;
+            margin: 0 0 28px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+        }
+
+        .hero__actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-panel {
+            padding: 28px;
+            color: var(--ink);
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+        }
+
+        .search-panel h3 {
+            margin: 0 0 14px;
+            color: var(--blue-900);
+            font-size: 24px;
+        }
+
+        .search-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .field {
+            display: grid;
+            gap: 7px;
+        }
+
+        .field label {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 13px 14px;
+            color: var(--ink);
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(31, 182, 209, 0.16);
+        }
+
+        .section {
+            padding: 76px 0;
+        }
+
+        .section--white {
+            background: var(--white);
+        }
+
+        .section__head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .section__kicker {
+            margin: 0 0 8px;
+            color: var(--blue-700);
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .section h2 {
+            margin: 0;
+            color: var(--blue-900);
+            font-size: clamp(28px, 4vw, 42px);
+            line-height: 1.15;
+        }
+
+        .section__lead {
+            max-width: 660px;
+            margin: 10px 0 0;
+            color: var(--muted);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: -44px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .stat-card,
+        .card,
+        .branch,
+        .notice,
+        .timeline__item,
+        .contact-card {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 30px rgba(8, 61, 119, 0.07);
+        }
+
+        .stat-card {
+            padding: 24px;
+        }
+
+        .stat-card strong {
+            display: block;
+            color: var(--blue-800);
+            font-size: 34px;
+            line-height: 1;
+        }
+
+        .stat-card span {
+            display: block;
+            margin-top: 8px;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            min-height: 245px;
+            padding: 24px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+
+        .card__icon {
+            display: grid;
+            width: 52px;
+            height: 52px;
+            place-items: center;
+            margin-bottom: 18px;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--blue-700), var(--cyan));
+            border-radius: 15px;
+            font-size: 23px;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            color: var(--blue-900);
+            font-size: 21px;
+        }
+
+        .card p {
+            margin: 0 0 18px;
+            color: var(--muted);
+            flex: 1;
+        }
+
+        .card a {
+            color: var(--blue-700);
+            font-weight: 800;
+        }
+
+        .catalog-toolbar {
+            display: grid;
+            grid-template-columns: 1.2fr 0.9fr 0.9fr;
+            gap: 12px;
+            margin-bottom: 22px;
+            padding: 18px;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+        }
+
+        .archive-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .archive-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 16px;
+            align-items: center;
+            padding: 18px;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+        }
+
+        .archive-item__code {
+            min-width: 84px;
+            padding: 10px;
+            color: var(--blue-800);
+            background: var(--blue-100);
+            border-radius: var(--radius-sm);
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .archive-item h3 {
+            margin: 0 0 6px;
+            color: var(--blue-900);
+            font-size: 20px;
+        }
+
+        .archive-item p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 9px;
+        }
+
+        .tag {
+            display: inline-flex;
+            padding: 5px 9px;
+            color: var(--blue-800);
+            background: var(--blue-100);
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            counter-reset: steps;
+        }
+
+        .timeline__item {
+            position: relative;
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .timeline__item::before {
+            counter-increment: steps;
+            content: "0" counter(steps);
+            display: inline-grid;
+            width: 46px;
+            height: 46px;
+            place-items: center;
+            margin-bottom: 18px;
+            color: var(--white);
+            background: var(--blue-700);
+            border-radius: 50%;
+            font-weight: 800;
+        }
+
+        .timeline__item h3 {
+            margin: 0 0 9px;
+            color: var(--blue-900);
+        }
+
+        .timeline__item p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .branches-layout {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .notice {
+            padding: 24px;
+            background: linear-gradient(180deg, var(--white), var(--blue-100));
+        }
+
+        .notice h3 {
+            margin: 0 0 12px;
+            color: var(--blue-900);
+        }
+
+        .notice ul {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--muted);
+        }
+
+        .branch-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .branch {
+            overflow: hidden;
+        }
+
+        .branch summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 18px 20px;
+            color: var(--blue-900);
+            cursor: pointer;
+            font-weight: 800;
+            list-style: none;
+        }
+
+        .branch summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .branch summary::after {
+            content: "+";
+            display: grid;
+            width: 28px;
+            height: 28px;
+            place-items: center;
+            color: var(--white);
+            background: var(--blue-700);
+            border-radius: 50%;
+            flex: 0 0 auto;
+        }
+
+        .branch[open] summary::after {
+            content: "-";
+        }
+
+        .branch__body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            padding: 0 20px 20px;
+            color: var(--muted);
+        }
+
+        .branch__body strong {
+            color: var(--ink);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .news {
+            overflow: hidden;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+        }
+
+        .news__image {
+            min-height: 150px;
+            background:
+                linear-gradient(135deg, rgba(13, 99, 183, 0.9), rgba(31, 182, 209, 0.82)),
+                repeating-linear-gradient(45deg, transparent 0 12px, rgba(255, 255, 255, 0.22) 12px 13px);
+        }
+
+        .news__body {
+            padding: 20px;
+        }
+
+        .news time {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .news h3 {
+            margin: 8px 0 8px;
+            color: var(--blue-900);
+        }
+
+        .news p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 22px;
+        }
+
+        .contact-card {
+            padding: 26px;
+        }
+
+        .contact-card h3 {
+            margin: 0 0 14px;
+            color: var(--blue-900);
+        }
+
+        .contact-list {
+            display: grid;
+            gap: 12px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .contact-list li {
+            padding: 14px;
+            background: var(--blue-100);
+            border-radius: var(--radius-sm);
+        }
+
+        .feedback-form {
+            display: grid;
+            gap: 12px;
+        }
+
+        .footer {
+            color: rgba(255, 255, 255, 0.86);
+            background: #062e58;
+        }
+
+        .footer__top {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 0.8fr 0.9fr;
+            gap: 28px;
+            padding: 48px 0;
+        }
+
+        .footer h3,
+        .footer h4 {
+            margin: 0 0 14px;
+            color: var(--white);
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        .footer ul {
+            display: grid;
+            gap: 9px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer__bottom {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 18px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 14px;
+        }
+
+        .toast {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 50;
+            max-width: 360px;
+            padding: 15px 18px;
+            color: var(--white);
+            background: var(--blue-900);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow);
+            transform: translateY(140%);
+            transition: transform 0.25s ease;
+        }
+
+        .toast.is-visible {
+            transform: translateY(0);
+        }
+
+        .empty-state {
+            display: none;
+            padding: 28px;
+            color: var(--muted);
+            background: var(--white);
+            border: 1px dashed var(--line);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .empty-state.is-visible {
+            display: block;
+        }
+
+        @media (max-width: 980px) {
+            .hero__inner,
+            .branches-layout,
+            .contact-layout,
+            .footer__top {
+                grid-template-columns: 1fr;
+            }
+
+            .stats,
+            .cards-grid,
+            .timeline,
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .catalog-toolbar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .topbar__inner,
+            .header__inner,
+            .section__head,
+            .footer__bottom {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .header__actions {
+                width: 100%;
+            }
+
+            .header__actions .btn {
+                flex: 1;
+            }
+
+            .menu-toggle {
+                display: inline-flex;
+            }
+
+            .nav__inner {
+                align-items: stretch;
+                flex-direction: column;
+                padding: 10px 0;
+            }
+
+            .nav__links {
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+            }
+
+            .nav__links.is-open {
+                display: flex;
+            }
+
+            .nav__links a {
+                padding: 12px 0;
+            }
+
+            .hero__inner {
+                min-height: auto;
+                padding: 48px 0;
+            }
+
+            .stats,
+            .cards-grid,
+            .timeline,
+            .news-grid,
+            .branch__body {
+                grid-template-columns: 1fr;
+            }
+
+            .archive-item {
+                grid-template-columns: 1fr;
+            }
+
+            .archive-item .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="container topbar__inner">
+            <div>Единый архивный портал Республики Казахстан</div>
+            <div class="topbar__links">
+                <a href="#contacts">1414</a>
+                <button type="button" id="fontToggle">Крупный шрифт</button>
+                <button type="button" id="contrastToggle">Контраст</button>
+                <a href="#services">Рус</a>
+                <a href="#services">Қаз</a>
+            </div>
+        </div>
+    </div>
+
+    <header class="header" id="home">
+        <div class="container header__inner">
+            <a class="brand" href="#home" aria-label="На главную">
+                <span class="brand__mark">EA</span>
+                <span>
+                    <h1 class="brand__title">E-Archive</h1>
+                    <p class="brand__subtitle">Центр архивных документов и справок</p>
+                </span>
+            </a>
+            <div class="header__actions">
+                <a class="btn btn--outline" href="#catalog">Найти документ</a>
+                <a class="btn btn--primary" href="#contacts">Записаться на прием</a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav" aria-label="Основная навигация">
+        <div class="container nav__inner">
+            <button class="menu-toggle" type="button" id="menuToggle" aria-expanded="false" aria-controls="mainMenu">Меню</button>
+            <div class="nav__links" id="mainMenu">
+                <a href="#services">Услуги</a>
+                <a href="#catalog">Каталог</a>
+                <a href="#process">Как получить</a>
+                <a href="#branches">Филиалы</a>
+                <a href="#news">Новости</a>
+                <a href="#contacts">Контакты</a>
+            </div>
+            <a class="btn btn--light" href="#contacts">Задать вопрос</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container hero__inner">
+                <div>
+                    <p class="eyebrow">Государственные архивные сервисы онлайн</p>
+                    <h2>Архивные документы, справки и фонды в одном цифровом окне</h2>
+                    <p>Подавайте заявки на архивные справки, ищите фонды по регионам, бронируйте посещение читального зала и получайте консультации без очередей.</p>
+                    <div class="hero__actions">
+                        <a class="btn btn--light" href="#catalog">Перейти к поиску</a>
+                        <a class="btn btn--outline" href="#services">Все услуги</a>
+                    </div>
+                </div>
+                <aside class="search-panel" aria-label="Быстрый поиск">
+                    <h3>Быстрый поиск по архиву</h3>
+                    <div class="search-grid">
+                        <div class="field">
+                            <label for="heroSearch">ФИО, номер дела или ключевые слова</label>
+                            <input id="heroSearch" type="search" placeholder="Например: трудовой стаж, фонд 217">
+                        </div>
+                        <div class="field">
+                            <label for="heroRegion">Регион</label>
+                            <select id="heroRegion">
+                                <option value="">Все регионы</option>
+                                <option>Астана</option>
+                                <option>Алматы</option>
+                                <option>Шымкент</option>
+                                <option>Карагандинская область</option>
+                                <option>Туркестанская область</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="heroType">Тип документа</label>
+                            <select id="heroType">
+                                <option value="">Любой тип</option>
+                                <option>Личное дело</option>
+                                <option>Метрическая запись</option>
+                                <option>Фотодокумент</option>
+                                <option>Приказ</option>
+                            </select>
+                        </div>
+                        <button class="btn btn--primary" type="button" id="heroSearchButton">Найти в каталоге</button>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <div class="container stats" aria-label="Показатели архива">
+            <div class="stat-card">
+                <strong>2.4 млн</strong>
+                <span>оцифрованных документов</span>
+            </div>
+            <div class="stat-card">
+                <strong>18</strong>
+                <span>региональных филиалов</span>
+            </div>
+            <div class="stat-card">
+                <strong>24/7</strong>
+                <span>подача онлайн-заявок</span>
+            </div>
+            <div class="stat-card">
+                <strong>5 мин</strong>
+                <span>проверка статуса заявки</span>
+            </div>
+        </div>
+
+        <section class="section section--white" id="services">
+            <div class="container">
+                <div class="section__head">
+                    <div>
+                        <p class="section__kicker">Популярные услуги</p>
+                        <h2>Все важное для работы с архивом</h2>
+                        <p class="section__lead">Раздел построен как витрина ЦОНа: выберите нужную услугу, подготовьте документы и отправьте заявку онлайн.</p>
+                    </div>
+                    <a class="btn btn--outline" href="#contacts">Консультация</a>
+                </div>
+                <div class="cards-grid">
+                    <article class="card">
+                        <div class="card__icon">01</div>
+                        <h3>Архивная справка</h3>
+                        <p>Получение сведений о трудовом стаже, заработной плате, учебе, награждениях и иных подтверждающих документах.</p>
+                        <a href="#process">Как оформить</a>
+                    </article>
+                    <article class="card">
+                        <div class="card__icon">02</div>
+                        <h3>Поиск фонда</h3>
+                        <p>Поиск описей, дел и электронных копий по номеру фонда, периоду, теме или региональному архиву.</p>
+                        <a href="#catalog">Открыть каталог</a>
+                    </article>
+                    <article class="card">
+                        <div class="card__icon">03</div>
+                        <h3>Читальный зал</h3>
+                        <p>Бронирование места, заказ дел к выдаче и получение пропуска для работы с оригиналами документов.</p>
+                        <a href="#contacts">Записаться</a>
+                    </article>
+                    <article class="card">
+                        <div class="card__icon">04</div>
+                        <h3>Генеалогический запрос</h3>
+                        <p>Поиск метрических записей, сведений о рождении, браке, переселении и семейной истории.</p>
+                        <a href="#catalog">Найти записи</a>
+                    </article>
+                    <article class="card">
+                        <div class="card__icon">05</div>
+                        <h3>Копии документов</h3>
+                        <p>Заказ цифровой копии архивного дела, заверенной выписки или скана с доставкой в личный кабинет.</p>
+                        <a href="#process">Условия выдачи</a>
+                    </article>
+                    <article class="card">
+                        <div class="card__icon">06</div>
+                        <h3>Статус обращения</h3>
+                        <p>Проверка текущего этапа обработки заявления по ИИН, номеру заявки или SMS-коду.</p>
+                        <a href="#contacts">Проверить</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="catalog">
+            <div class="container">
+                <div class="section__head">
+                    <div>
+                        <p class="section__kicker">Электронный каталог</p>
+                        <h2>Поиск по архивным фондам</h2>
+                        <p class="section__lead">Фильтры работают прямо на странице и помогают показать, как будет выглядеть готовый пользовательский сценарий.</p>
+                    </div>
+                </div>
+                <div class="catalog-toolbar" aria-label="Фильтры каталога">
+                    <div class="field">
+                        <label for="catalogSearch">Поиск</label>
+                        <input id="catalogSearch" type="search" placeholder="Введите тему, фонд, город или документ">
+                    </div>
+                    <div class="field">
+                        <label for="catalogRegion">Регион</label>
+                        <select id="catalogRegion">
+                            <option value="">Все регионы</option>
+                            <option value="Астана">Астана</option>
+                            <option value="Алматы">Алматы</option>
+                            <option value="Шымкент">Шымкент</option>
+                            <option value="Карагандинская область">Карагандинская область</option>
+                            <option value="Туркестанская область">Туркестанская область</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="catalogType">Тип</label>
+                        <select id="catalogType">
+                            <option value="">Все типы</option>
+                            <option value="Личное дело">Личное дело</option>
+                            <option value="Метрическая запись">Метрическая запись</option>
+                            <option value="Фотодокумент">Фотодокумент</option>
+                            <option value="Приказ">Приказ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="archive-list" id="archiveList">
+                    <article class="archive-item" data-region="Астана" data-type="Личное дело" data-search="трудовой стаж личное дело фонд 102 астана">
+                        <div class="archive-item__code">Ф-102</div>
+                        <div>
+                            <h3>Личные дела работников государственных учреждений</h3>
+                            <p>Период: 1965-1998. Содержит сведения о трудовом стаже, назначениях и приказах.</p>
+                            <div class="tag-row"><span class="tag">Астана</span><span class="tag">Личное дело</span><span class="tag">Есть цифровые копии</span></div>
+                        </div>
+                        <button class="btn btn--outline request-button" type="button">Заказать</button>
+                    </article>
+                    <article class="archive-item" data-region="Алматы" data-type="Фотодокумент" data-search="фотодокументы алматы городская хроника фонд 214">
+                        <div class="archive-item__code">Ф-214</div>
+                        <div>
+                            <h3>Фотохроника города Алматы</h3>
+                            <p>Период: 1930-1989. Исторические снимки улиц, зданий, предприятий и культурных событий.</p>
+                            <div class="tag-row"><span class="tag">Алматы</span><span class="tag">Фотодокумент</span><span class="tag">Просмотр онлайн</span></div>
+                        </div>
+                        <button class="btn btn--outline request-button" type="button">Заказать</button>
+                    </article>
+                    <article class="archive-item" data-region="Шымкент" data-type="Метрическая запись" data-search="метрические записи шымкент рождение брак фонд 77">
+                        <div class="archive-item__code">Ф-077</div>
+                        <div>
+                            <h3>Метрические записи Южного региона</h3>
+                            <p>Период: 1894-1925. Записи о рождении, браке и семейном составе по населенным пунктам.</p>
+                            <div class="tag-row"><span class="tag">Шымкент</span><span class="tag">Метрическая запись</span><span class="tag">Генеалогия</span></div>
+                        </div>
+                        <button class="btn btn--outline request-button" type="button">Заказать</button>
+                    </article>
+                    <article class="archive-item" data-region="Карагандинская область" data-type="Приказ" data-search="приказы промышленные предприятия караганда фонд 388">
+                        <div class="archive-item__code">Ф-388</div>
+                        <div>
+                            <h3>Приказы промышленных предприятий</h3>
+                            <p>Период: 1942-2001. Документы по кадровым решениям, награждениям и производственным событиям.</p>
+                            <div class="tag-row"><span class="tag">Карагандинская область</span><span class="tag">Приказ</span><span class="tag">Справки о работе</span></div>
+                        </div>
+                        <button class="btn btn--outline request-button" type="button">Заказать</button>
+                    </article>
+                    <article class="archive-item" data-region="Туркестанская область" data-type="Метрическая запись" data-search="туркестан семья переселение метрические книги фонд 58">
+                        <div class="archive-item__code">Ф-058</div>
+                        <div>
+                            <h3>Семейные и переселенческие документы</h3>
+                            <p>Период: 1880-1936. Документы о переселении, хозяйственных книгах и семейном составе.</p>
+                            <div class="tag-row"><span class="tag">Туркестанская область</span><span class="tag">Метрическая запись</span><span class="tag">Архивная выписка</span></div>
+                        </div>
+                        <button class="btn btn--outline request-button" type="button">Заказать</button>
+                    </article>
+                </div>
+                <div class="empty-state" id="emptyState">По выбранным фильтрам ничего не найдено. Попробуйте изменить регион, тип документа или поисковый запрос.</div>
+            </div>
+        </section>
+
+        <section class="section section--white" id="process">
+            <div class="container">
+                <div class="section__head">
+                    <div>
+                        <p class="section__kicker">Порядок получения</p>
+                        <h2>Как оформить архивную услугу</h2>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <article class="timeline__item">
+                        <h3>Выберите услугу</h3>
+                        <p>Найдите нужный тип справки, фонд или документ через каталог и карточки услуг.</p>
+                    </article>
+                    <article class="timeline__item">
+                        <h3>Заполните заявку</h3>
+                        <p>Укажите данные заявителя, период поиска, регион и удобный способ получения ответа.</p>
+                    </article>
+                    <article class="timeline__item">
+                        <h3>Отслеживайте статус</h3>
+                        <p>Получайте уведомления о принятии, проверке, поиске в фондах и готовности результата.</p>
+                    </article>
+                    <article class="timeline__item">
+                        <h3>Получите результат</h3>
+                        <p>Скачайте электронную справку или заберите заверенную копию в выбранном филиале.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="branches">
+            <div class="container">
+                <div class="section__head">
+                    <div>
+                        <p class="section__kicker">Адреса и график</p>
+                        <h2>Филиалы архивного центра</h2>
+                        <p class="section__lead">Раздел оформлен в формате списка филиалов, как на сайтах государственных услуг: регион раскрывается кликом.</p>
+                    </div>
+                </div>
+                <div class="branches-layout">
+                    <aside class="notice">
+                        <h3>Перед посещением</h3>
+                        <ul>
+                            <li>Проверьте готовность документов по номеру заявки.</li>
+                            <li>Возьмите удостоверение личности или доверенность.</li>
+                            <li>Для читального зала заранее закажите дела из каталога.</li>
+                            <li>Среднее время консультации: 15 минут.</li>
+                        </ul>
+                    </aside>
+                    <div class="branch-list">
+                        <details class="branch" open>
+                            <summary>Филиал по городу Астана</summary>
+                            <div class="branch__body">
+                                <div><strong>Адрес:</strong><br>пр. Кабанбай Батыра, 42, блок B</div>
+                                <div><strong>График:</strong><br>Пн-Пт 09:00-18:00, перерыв 13:00-14:00</div>
+                                <div><strong>Телефон:</strong><br>+7 7172 55 14 14</div>
+                                <div><strong>Услуги:</strong><br>справки, читальный зал, копии документов</div>
+                            </div>
+                        </details>
+                        <details class="branch">
+                            <summary>Филиал по городу Алматы</summary>
+                            <div class="branch__body">
+                                <div><strong>Адрес:</strong><br>ул. Толе би, 87</div>
+                                <div><strong>График:</strong><br>Пн-Пт 09:00-18:00</div>
+                                <div><strong>Телефон:</strong><br>+7 727 255 14 14</div>
+                                <div><strong>Услуги:</strong><br>фотодокументы, генеалогия, справки</div>
+                            </div>
+                        </details>
+                        <details class="branch">
+                            <summary>Филиал по городу Шымкент</summary>
+                            <div class="branch__body">
+                                <div><strong>Адрес:</strong><br>ул. Байтурсынова, 12</div>
+                                <div><strong>График:</strong><br>Пн-Сб 09:00-17:00</div>
+                                <div><strong>Телефон:</strong><br>+7 7252 55 14 14</div>
+                                <div><strong>Услуги:</strong><br>метрические записи, копии, консультации</div>
+                            </div>
+                        </details>
+                        <details class="branch">
+                            <summary>Филиал по Карагандинской области</summary>
+                            <div class="branch__body">
+                                <div><strong>Адрес:</strong><br>г. Караганда, пр. Бухар Жырау, 31</div>
+                                <div><strong>График:</strong><br>Пн-Пт 09:00-18:00</div>
+                                <div><strong>Телефон:</strong><br>+7 7212 55 14 14</div>
+                                <div><strong>Услуги:</strong><br>кадровые документы, архивные справки</div>
+                            </div>
+                        </details>
+                        <details class="branch">
+                            <summary>Филиал по Туркестанской области</summary>
+                            <div class="branch__body">
+                                <div><strong>Адрес:</strong><br>г. Туркестан, ул. Ерубаева, 5</div>
+                                <div><strong>График:</strong><br>Пн-Пт 09:00-18:00</div>
+                                <div><strong>Телефон:</strong><br>+7 7253 55 14 14</div>
+                                <div><strong>Услуги:</strong><br>семейные документы, выписки, копии</div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--white" id="news">
+            <div class="container">
+                <div class="section__head">
+                    <div>
+                        <p class="section__kicker">Новости</p>
+                        <h2>Объявления архивного центра</h2>
+                    </div>
+                    <a class="btn btn--outline" href="#contacts">Подписаться</a>
+                </div>
+                <div class="news-grid">
+                    <article class="news">
+                        <div class="news__image" aria-hidden="true"></div>
+                        <div class="news__body">
+                            <time datetime="2026-05-31">31 мая 2026</time>
+                            <h3>Открыт онлайн-заказ цифровых копий</h3>
+                            <p>Теперь пользователи могут выбирать формат копии и получать ссылку на скачивание в личном кабинете.</p>
+                        </div>
+                    </article>
+                    <article class="news">
+                        <div class="news__image" aria-hidden="true"></div>
+                        <div class="news__body">
+                            <time datetime="2026-05-25">25 мая 2026</time>
+                            <h3>Расширен каталог метрических записей</h3>
+                            <p>В поиск добавлены новые фонды по южным регионам и семейным переселенческим документам.</p>
+                        </div>
+                    </article>
+                    <article class="news">
+                        <div class="news__image" aria-hidden="true"></div>
+                        <div class="news__body">
+                            <time datetime="2026-05-18">18 мая 2026</time>
+                            <h3>Обновлен график читальных залов</h3>
+                            <p>Читальные залы в Астане и Алматы принимают посетителей по предварительной записи.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="contacts">
+            <div class="container">
+                <div class="section__head">
+                    <div>
+                        <p class="section__kicker">Обратная связь</p>
+                        <h2>Контакты и заявка на консультацию</h2>
+                        <p class="section__lead">Форма демонстрационная: при отправке показывается уведомление, без передачи данных на сервер.</p>
+                    </div>
+                </div>
+                <div class="contact-layout">
+                    <aside class="contact-card">
+                        <h3>Единый контакт-центр</h3>
+                        <ul class="contact-list">
+                            <li><strong>Телефон:</strong><br>1414 или +7 7172 55 14 14</li>
+                            <li><strong>Email:</strong><br>info@e-archive.kz</li>
+                            <li><strong>Адрес центрального офиса:</strong><br>Астана, пр. Кабанбай Батыра, 42</li>
+                            <li><strong>Прием граждан:</strong><br>Пн-Пт 09:00-18:00</li>
+                        </ul>
+                    </aside>
+                    <form class="contact-card feedback-form" id="feedbackForm">
+                        <div class="field">
+                            <label for="name">Ваше имя</label>
+                            <input id="name" name="name" type="text" placeholder="Введите имя" required>
+                        </div>
+                        <div class="field">
+                            <label for="phone">Телефон или email</label>
+                            <input id="phone" name="phone" type="text" placeholder="+7 ... или email" required>
+                        </div>
+                        <div class="field">
+                            <label for="topic">Тема обращения</label>
+                            <select id="topic" name="topic">
+                                <option>Архивная справка</option>
+                                <option>Поиск фонда</option>
+                                <option>Запись в читальный зал</option>
+                                <option>Проверка статуса</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="message">Сообщение</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Опишите, какой документ или справка нужны"></textarea>
+                        </div>
+                        <button class="btn btn--primary" type="submit">Отправить заявку</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__top">
+            <div>
+                <h3>E-Archive</h3>
+                <p>Демонстрационный полноценный сайт архивного центра с государственным стилем, каталогом, филиалами и онлайн-сервисами.</p>
+            </div>
+            <div>
+                <h4>Разделы</h4>
+                <ul>
+                    <li><a href="#services">Услуги</a></li>
+                    <li><a href="#catalog">Каталог</a></li>
+                    <li><a href="#branches">Филиалы</a></li>
+                    <li><a href="#contacts">Контакты</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Сервисы</h4>
+                <ul>
+                    <li><a href="#catalog">Поиск документов</a></li>
+                    <li><a href="#process">Порядок получения</a></li>
+                    <li><a href="#contacts">Запись на прием</a></li>
+                    <li><a href="#contacts">Статус заявки</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Социальные сети</h4>
+                <div class="socials">
+                    <a href="#home">Instagram</a>
+                    <a href="#home">Facebook</a>
+                    <a href="#home">Telegram</a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer__bottom">
+            <span>© 2026 E-Archive. Все права защищены.</span>
+            <span>Обновлено: 31.05.2026</span>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        const menuToggle = document.querySelector("#menuToggle");
+        const mainMenu = document.querySelector("#mainMenu");
+        const fontToggle = document.querySelector("#fontToggle");
+        const contrastToggle = document.querySelector("#contrastToggle");
+        const heroSearch = document.querySelector("#heroSearch");
+        const heroRegion = document.querySelector("#heroRegion");
+        const heroType = document.querySelector("#heroType");
+        const heroSearchButton = document.querySelector("#heroSearchButton");
+        const catalogSearch = document.querySelector("#catalogSearch");
+        const catalogRegion = document.querySelector("#catalogRegion");
+        const catalogType = document.querySelector("#catalogType");
+        const archiveItems = Array.from(document.querySelectorAll(".archive-item"));
+        const emptyState = document.querySelector("#emptyState");
+        const toast = document.querySelector("#toast");
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add("is-visible");
+            window.clearTimeout(showToast.timer);
+            showToast.timer = window.setTimeout(() => {
+                toast.classList.remove("is-visible");
+            }, 3200);
+        }
+
+        function filterCatalog() {
+            const query = catalogSearch.value.trim().toLowerCase();
+            const region = catalogRegion.value;
+            const type = catalogType.value;
+            let visibleCount = 0;
+
+            archiveItems.forEach((item) => {
+                const matchesQuery = !query || item.dataset.search.toLowerCase().includes(query);
+                const matchesRegion = !region || item.dataset.region === region;
+                const matchesType = !type || item.dataset.type === type;
+                const isVisible = matchesQuery && matchesRegion && matchesType;
+
+                item.style.display = isVisible ? "grid" : "none";
+                if (isVisible) {
+                    visibleCount += 1;
+                }
+            });
+
+            emptyState.classList.toggle("is-visible", visibleCount === 0);
+        }
+
+        menuToggle.addEventListener("click", () => {
+            const isOpen = mainMenu.classList.toggle("is-open");
+            menuToggle.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        fontToggle.addEventListener("click", () => {
+            document.body.classList.toggle("large-font");
+        });
+
+        contrastToggle.addEventListener("click", () => {
+            document.body.classList.toggle("high-contrast");
+        });
+
+        [catalogSearch, catalogRegion, catalogType].forEach((field) => {
+            field.addEventListener("input", filterCatalog);
+        });
+
+        heroSearchButton.addEventListener("click", () => {
+            catalogSearch.value = heroSearch.value;
+            catalogRegion.value = heroRegion.value;
+            catalogType.value = heroType.value;
+            filterCatalog();
+            document.querySelector("#catalog").scrollIntoView({ behavior: "smooth" });
+        });
+
+        document.querySelectorAll(".request-button").forEach((button) => {
+            button.addEventListener("click", () => {
+                showToast("Заявка добавлена в черновик. Заполните контактные данные в форме ниже.");
+                document.querySelector("#contacts").scrollIntoView({ behavior: "smooth" });
+            });
+        });
+
+        document.querySelector("#feedbackForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            event.currentTarget.reset();
+            showToast("Спасибо! Демонстрационная заявка принята.");
+        });
+    </script>
+</body>
+</html>
