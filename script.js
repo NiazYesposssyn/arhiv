@@ -407,7 +407,8 @@ function fitMapToOffices(offices) {
   }
 
   const bounds = offices.map((office) => office.coords);
-  kazakhstanMap.fitBounds(bounds, { padding: [42, 42], maxZoom: offices.length === 1 ? 14 : 6 });
+  const maxZoom = citySelect.value === "all" ? 6 : 13;
+  kazakhstanMap.fitBounds(bounds, { padding: [42, 42], maxZoom });
 }
 
 function renderOfficeList(offices) {
