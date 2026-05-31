@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="QazArchive - современный архивный портал Казахстана с услугами, картой архивов, документами и AI-ассистентом.">
+  <title>QazArchive | Архивный портал Казахстана</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="aurora aurora-one"></div>
+  <div class="aurora aurora-two"></div>
+
+  <main id="landing" class="landing">
+    <header class="landing-header">
+      <a class="brand" href="#top" aria-label="QazArchive">
+        <span class="brand-mark">QA</span>
+        <span>
+          <strong>QazArchive</strong>
+          <small>Digital archive portal</small>
+        </span>
+      </a>
+      <nav class="landing-nav" aria-label="Главная навигация">
+        <a href="#about">О проекте</a>
+        <a href="#preview">Возможности</a>
+        <a href="#security">Безопасность</a>
+      </nav>
+      <div class="header-actions">
+        <button class="ghost-btn" type="button" data-auth-open="login">Войти</button>
+        <button class="primary-btn" type="button" data-auth-open="register">Регистрация</button>
+      </div>
+    </header>
+
+    <section id="top" class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Цифровое архивное хранилище Казахстана</span>
+        <h1>Не просто сайт, а аккуратный архивный центр с доступом к документам</h1>
+        <p>
+          QazArchive выглядит как закрытый кабинет архива: вход по аккаунту, понятные разделы,
+          карта архивных точек, PDF-заявления, справочная база и AI-помощник без лишнего хаоса.
+        </p>
+        <div class="hero-actions">
+          <button class="primary-btn big" type="button" data-auth-open="register">Создать аккаунт</button>
+          <button class="glass-btn big" type="button" data-auth-open="login">Уже есть аккаунт</button>
+        </div>
+        <div class="hero-stats" aria-label="Ключевые показатели">
+          <div>
+            <strong>19</strong>
+            <span>регионов</span>
+          </div>
+          <div>
+            <strong>24/7</strong>
+            <span>онлайн-доступ</span>
+          </div>
+          <div>
+            <strong>AI</strong>
+            <span>помощник</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-panel clean-preview" aria-label="Демонстрация кабинета архива">
+        <div class="preview-header-card">
+          <span>QazArchive</span>
+          <strong>Архивный кабинет</strong>
+          <small>Чистый интерфейс без перегруза</small>
+        </div>
+        <div class="preview-search-card">
+          <span>Поиск</span>
+          <p>Справка о трудовом стаже</p>
+        </div>
+        <div class="preview-route">
+          <article>
+            <span>01</span>
+            <strong>Вход</strong>
+            <p>Аккаунт пользователя</p>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>Услуга</strong>
+            <p>Выбор типа запроса</p>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>Карта</strong>
+            <p>Архив рядом с городом</p>
+          </article>
+        </div>
+        <div class="preview-bottom">
+          <div>
+            <strong>2</strong>
+            <span>реальные архивные точки</span>
+          </div>
+          <div>
+            <strong>PDF</strong>
+            <span>шаблон заявления</span>
+          </div>
+          <div>
+            <strong>AI</strong>
+            <span>быстрый помощник</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="archive-strip" aria-label="Ключевые особенности дизайна">
+      <div>
+        <span>01</span>
+        <strong>Лендинг без перегруза</strong>
+        <p>Большой заголовок, короткое описание и четкий вход.</p>
+      </div>
+      <div>
+        <span>02</span>
+        <strong>Кабинет как рабочий центр</strong>
+        <p>После авторизации открывается отдельное пространство с меню.</p>
+      </div>
+      <div>
+        <span>03</span>
+        <strong>Архивная эстетика</strong>
+        <p>Темное стекло, золото, реестры, печати и аккуратные панели.</p>
+      </div>
+    </section>
+
+    <section id="about" class="info-grid">
+      <article>
+        <span class="card-number">01</span>
+        <h2>Понятная структура</h2>
+        <p>После входа открывается кабинет с верхним меню: введение, услуги, справки, карта, контакты и AI-помощник.</p>
+      </article>
+      <article>
+        <span class="card-number">02</span>
+        <h2>Архивные сервисы</h2>
+        <p>На сайте есть заявки на справки, цифровой каталог, запись на прием, шаблоны PDF и быстрый поиск.</p>
+      </article>
+      <article>
+        <span class="card-number">03</span>
+        <h2>Карта Казахстана</h2>
+        <p>Интерактивная карта показывает крупные города и реальные архивные учреждения в Астане и Алматы.</p>
+      </article>
+    </section>
+
+    <section id="preview" class="preview-section">
+      <div>
+        <span class="eyebrow">Внутри портала</span>
+        <h2>Все нужные архивные функции собраны в одном месте</h2>
+      </div>
+      <div class="preview-list">
+        <span>Регистрация и вход</span>
+        <span>Заявки на архивные справки</span>
+        <span>Скачивание PDF</span>
+        <span>Карта архивов</span>
+        <span>Контакты</span>
+        <span>AI-консультант</span>
+      </div>
+    </section>
+
+    <section id="security" class="security-banner">
+      <div>
+        <span class="eyebrow">Безопасность данных</span>
+        <h2>Демонстрационный проект хранит учетные данные только в браузере пользователя</h2>
+        <p>Для учебного проекта вход работает через localStorage. Для реального запуска потребуется серверная авторизация и база данных.</p>
+      </div>
+      <button class="primary-btn" type="button" data-auth-open="register">Начать работу</button>
+    </section>
+  </main>
+
+  <section id="portal" class="portal hidden" aria-live="polite">
+    <aside class="portal-sidebar">
+      <a class="brand portal-brand" href="#intro">
+        <span class="brand-mark">QA</span>
+        <span>
+          <strong>QazArchive</strong>
+          <small>Личный кабинет</small>
+        </span>
+      </a>
+      <div class="user-card">
+        <div class="avatar" id="userAvatar">A</div>
+        <div>
+          <strong id="userName">Пользователь</strong>
+          <small id="userEmail">archive@mail.kz</small>
+        </div>
+      </div>
+      <div class="vault-status">
+        <span>Статус доступа</span>
+        <strong>Внутренний архив открыт</strong>
+        <p>Сессия активна. Можно работать с услугами, картой и документами.</p>
+      </div>
+      <button class="sidebar-close" type="button" id="closeSidebar" aria-label="Закрыть меню">Закрыть</button>
+    </aside>
+
+    <div class="portal-main">
+      <header class="portal-header">
+        <button class="menu-toggle" type="button" id="openSidebar" aria-label="Открыть меню">☰</button>
+        <nav class="portal-nav" aria-label="Меню кабинета">
+          <button class="nav-link active" type="button" data-section="intro">Введение</button>
+          <button class="nav-link" type="button" data-section="services">Услуги</button>
+          <button class="nav-link" type="button" data-section="documents">Справки и PDF</button>
+          <button class="nav-link" type="button" data-section="map">Карта</button>
+          <button class="nav-link" type="button" data-section="contacts">Контакты</button>
+          <button class="nav-link" type="button" data-section="assistant">AI-ассистент</button>
+        </nav>
+        <button class="logout-btn" type="button" id="logoutButton">Выйти</button>
+      </header>
+
+      <section class="portal-section active" id="intro" data-section-panel>
+        <div class="section-hero">
+          <div>
+            <span class="eyebrow">Добро пожаловать</span>
+            <h2>Архив - это память страны, документы людей и история городов</h2>
+            <p>
+              В этом разделе объясняется, как устроен архивный портал: вы можете выбрать услугу, подготовить запрос,
+              скачать шаблон PDF, найти архив на карте и задать вопрос помощнику.
+            </p>
+          </div>
+          <div class="quick-search">
+            <label for="globalSearch">Быстрый поиск по порталу</label>
+            <div>
+              <input id="globalSearch" type="search" placeholder="Например: справка о стаже">
+              <button class="primary-btn" type="button" id="searchButton">Найти</button>
+            </div>
+            <p id="searchResult">Введите запрос, чтобы получить подсказку.</p>
+          </div>
+        </div>
+
+        <div class="command-board" aria-label="Панель состояния архива">
+          <article>
+            <span>Открыто</span>
+            <strong>6 сервисов</strong>
+            <p>Справки, заявки, каталог, карта, контакты и AI.</p>
+          </article>
+          <article>
+            <span>PDF</span>
+            <strong>Шаблон заявления</strong>
+            <p>Генерируется прямо на сайте без сторонних файлов.</p>
+          </article>
+          <article>
+            <span>Карта</span>
+            <strong>Казахстан</strong>
+            <p>Города и реальные архивные учреждения в Астане и Алматы.</p>
+          </article>
+          <article>
+            <span>AI</span>
+            <strong>QazAI</strong>
+            <p>Отвечает на вопросы по архивным услугам и документам.</p>
+          </article>
+        </div>
+
+        <div class="timeline">
+          <article>
+            <span>1</span>
+            <h3>Определите цель</h3>
+            <p>Выберите тип справки: трудовой стаж, учеба, награды, генеалогия, недвижимость или история организации.</p>
+          </article>
+          <article>
+            <span>2</span>
+            <h3>Подготовьте данные</h3>
+            <p>Укажите ФИО, дату рождения, период, место работы/учебы и приложите удостоверение личности.</p>
+          </article>
+          <article>
+            <span>3</span>
+            <h3>Отправьте запрос</h3>
+            <p>Скачайте PDF-шаблон или заполните форму заявки прямо на сайте.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="portal-section" id="services" data-section-panel>
+        <div class="section-title">
+          <span class="eyebrow">Функции портала</span>
+          <h2>Архивные услуги и цифровые сервисы</h2>
+        </div>
+        <div class="services-grid">
+          <article class="service-card">
+            <span class="service-icon">A1</span>
+            <h3>Архивная справка</h3>
+            <p>Запрос о трудовом стаже, заработной плате, учебе, награждении или проживании.</p>
+            <button class="small-btn" type="button" data-fill-request="Справка о трудовом стаже">Заполнить</button>
+          </article>
+          <article class="service-card">
+            <span class="service-icon">A2</span>
+            <h3>Генеалогический поиск</h3>
+            <p>Поиск сведений о родственниках, семейных линиях, местах проживания и исторических документах.</p>
+            <button class="small-btn" type="button" data-fill-request="Генеалогический поиск">Заполнить</button>
+          </article>
+          <article class="service-card">
+            <span class="service-icon">A3</span>
+            <h3>Электронный каталог</h3>
+            <p>Демонстрационный каталог фондов: организации, личные дела, фотодокументы и описи.</p>
+            <button class="small-btn" type="button" data-scroll-target="documents">Открыть</button>
+          </article>
+          <article class="service-card">
+            <span class="service-icon">A4</span>
+            <h3>Запись на прием</h3>
+            <p>Планирование визита в читальный зал или консультации со специалистом архива.</p>
+            <button class="small-btn" type="button" data-fill-request="Запись на прием">Заполнить</button>
+          </article>
+          <article class="service-card">
+            <span class="service-icon">A5</span>
+            <h3>Оцифровка документов</h3>
+            <p>Заявка на цифровую копию, сканирование, заверение и получение электронного результата.</p>
+            <button class="small-btn" type="button" data-fill-request="Оцифровка документов">Заполнить</button>
+          </article>
+          <article class="service-card">
+            <span class="service-icon">A6</span>
+            <h3>История учреждения</h3>
+            <p>Поиск архивных материалов о предприятиях, школах, вузах, госорганах и общественных организациях.</p>
+            <button class="small-btn" type="button" data-fill-request="История учреждения">Заполнить</button>
+          </article>
+        </div>
+
+        <form class="request-form" id="requestForm">
+          <div class="section-title compact">
+            <span class="eyebrow">Онлайн-заявка</span>
+            <h2>Создать архивный запрос</h2>
+          </div>
+          <div class="form-grid">
+            <label>Тип услуги
+              <select id="requestType" required>
+                <option>Справка о трудовом стаже</option>
+                <option>Генеалогический поиск</option>
+                <option>Запись на прием</option>
+                <option>Оцифровка документов</option>
+                <option>История учреждения</option>
+              </select>
+            </label>
+            <label>Город
+              <select id="requestCity" required>
+                <option>Астана</option>
+                <option>Алматы</option>
+                <option>Шымкент</option>
+                <option>Караганда</option>
+                <option>Актобе</option>
+              </select>
+            </label>
+            <label>Период поиска
+              <input id="requestPeriod" type="text" placeholder="Например: 1988-1995" required>
+            </label>
+            <label>Контактный телефон
+              <input id="requestPhone" type="tel" placeholder="+7 700 000 00 00" required>
+            </label>
+          </div>
+          <label>Описание запроса
+            <textarea id="requestText" rows="4" placeholder="Кратко опишите, какие документы нужно найти" required></textarea>
+          </label>
+          <button class="primary-btn" type="submit">Отправить демо-заявку</button>
+          <p class="form-status" id="requestStatus"></p>
+        </form>
+      </section>
+
+      <section class="portal-section" id="documents" data-section-panel>
+        <div class="section-title">
+          <span class="eyebrow">Справки и файлы</span>
+          <h2>Документы для скачивания и справочная база</h2>
+        </div>
+        <div class="documents-layout">
+          <div class="download-panel">
+            <h3>PDF-шаблон запроса</h3>
+            <p>Скачайте готовый шаблон заявления для обращения в архив. Его можно распечатать или заполнить вручную.</p>
+            <button class="primary-btn" type="button" id="downloadPdf">Скачать PDF</button>
+            <button class="glass-btn" type="button" id="printChecklist">Открыть чек-лист</button>
+          </div>
+          <div class="knowledge-base">
+            <article>
+              <h3>Какие данные нужны?</h3>
+              <p>ФИО, дата рождения, примерный период, место работы или учебы, город, контактные данные и цель запроса.</p>
+            </article>
+            <article>
+              <h3>Какие справки бывают?</h3>
+              <p>О стаже, заработной плате, учебе, награждении, составе семьи, имуществе, эвакуации, репрессиях и родословной.</p>
+            </article>
+            <article>
+              <h3>Как получить результат?</h3>
+              <p>В реальном сервисе результат можно получить через личный кабинет, e-mail, ЦОН или архивный читальный зал.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="catalog">
+          <div class="section-title compact">
+            <span class="eyebrow">Мини-каталог</span>
+            <h2>Примеры архивных фондов</h2>
+          </div>
+          <div class="catalog-table" role="table" aria-label="Каталог фондов">
+            <div role="row" class="table-head">
+              <span role="columnheader">Фонд</span>
+              <span role="columnheader">Описание</span>
+              <span role="columnheader">Период</span>
+              <span role="columnheader">Статус</span>
+            </div>
+            <div role="row">
+              <span>F-102</span>
+              <span>Документы городских учреждений</span>
+              <span>1936-1991</span>
+              <span class="status ready">Доступен</span>
+            </div>
+            <div role="row">
+              <span>F-227</span>
+              <span>Личные дела работников</span>
+              <span>1960-2005</span>
+              <span class="status process">По запросу</span>
+            </div>
+            <div role="row">
+              <span>F-410</span>
+              <span>Фотодокументы и хроника</span>
+              <span>1941-2010</span>
+              <span class="status ready">Доступен</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="portal-section" id="map" data-section-panel>
+        <div class="section-title">
+          <span class="eyebrow">География архивов</span>
+          <h2>Интерактивная карта архивов</h2>
+          <p>Карта работает как обычный онлайн-картографический сервис: можно приближать, двигать карту, нажимать на маркеры и открывать место в 2GIS.</p>
+        </div>
+        <div class="map-layout">
+          <div class="real-map-shell">
+            <div id="archiveMap" class="archive-map" aria-label="Интерактивная карта архивов Казахстана"></div>
+            <div class="map-toolbar" aria-label="Подсказка по карте">
+              <span>+ / - масштаб</span>
+              <span>маркер = архивная точка</span>
+              <span>ссылка на 2GIS в карточке</span>
+            </div>
+          </div>
+          <aside class="map-card" id="mapCard">
+            <span class="eyebrow">Выбранный город</span>
+            <h3>Астана</h3>
+            <p>Национальный архив Республики Казахстан - один из ключевых архивных центров страны.</p>
+            <ul>
+              <li><strong>Архивная точка:</strong> Национальный архив Республики Казахстан</li>
+              <li><strong>Услуги:</strong> справки, читальный зал, научно-справочный аппарат</li>
+              <li><strong>Статус:</strong> реальное архивное учреждение</li>
+            </ul>
+            <a class="map-link" id="mapExternalLink" href="https://2gis.kz/astana/search/%D0%9D%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%80%D1%85%D0%B8%D0%B2%20%D0%A0%D0%9A" target="_blank" rel="noreferrer">Открыть в 2GIS</a>
+          </aside>
+        </div>
+        <div class="city-cloud" id="cityCloud" aria-label="Список городов Казахстана"></div>
+      </section>
+
+      <section class="portal-section" id="contacts" data-section-panel>
+        <div class="section-title">
+          <span class="eyebrow">Связь</span>
+          <h2>Контакты и обратная связь</h2>
+        </div>
+        <div class="contacts-grid">
+          <article>
+            <h3>Единый контакт-центр</h3>
+            <p>Телефон: +7 7172 00 00 00</p>
+            <p>Email: support@qazarchive.kz</p>
+            <p>График: Пн-Пт, 09:00-18:00</p>
+          </article>
+          <article>
+            <h3>Адрес проекта</h3>
+            <p>Астана, цифровой архивный центр, демонстрационный офис QazArchive.</p>
+            <p>Для реального запуска подключаются официальные контакты конкретного архива.</p>
+          </article>
+          <form class="contact-form" id="contactForm">
+            <h3>Написать сообщение</h3>
+            <input type="text" id="contactName" placeholder="Ваше имя" required>
+            <input type="email" id="contactEmail" placeholder="Email" required>
+            <textarea id="contactMessage" rows="4" placeholder="Сообщение" required></textarea>
+            <button class="primary-btn" type="submit">Отправить</button>
+            <p class="form-status" id="contactStatus"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="portal-section" id="assistant" data-section-panel>
+        <div class="section-title">
+          <span class="eyebrow">AI-ассистент</span>
+          <h2>Задайте вопрос об архивных услугах</h2>
+          <p>Помощник работает локально в браузере и отвечает по заранее подготовленной базе знаний проекта.</p>
+        </div>
+        <div class="assistant-layout">
+          <div class="chat-box" id="chatBox" aria-live="polite">
+            <div class="message bot">
+              <strong>QazAI</strong>
+              <p>Здравствуйте! Я помогу выбрать архивную услугу, подготовить запрос или найти архив на карте.</p>
+            </div>
+          </div>
+          <div class="suggestions">
+            <button type="button" data-question="Как получить справку о трудовом стаже?">Справка о стаже</button>
+            <button type="button" data-question="Какие документы нужны для генеалогического поиска?">Генеалогия</button>
+            <button type="button" data-question="Где находится архив в Алматы?">Архив Алматы</button>
+            <button type="button" data-question="Как скачать PDF?">Скачать PDF</button>
+          </div>
+          <form class="chat-form" id="chatForm">
+            <input id="chatInput" type="text" placeholder="Напишите вопрос..." autocomplete="off" required>
+            <button class="primary-btn" type="submit">Отправить</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <div class="modal hidden" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="modal-card">
+      <button class="modal-close" type="button" id="closeModal" aria-label="Закрыть">×</button>
+      <span class="eyebrow" id="authModeLabel">Аккаунт</span>
+      <h2 id="authTitle">Вход</h2>
+      <p id="authDescription">Введите email и пароль, чтобы открыть архивный кабинет.</p>
+      <form id="authForm">
+        <label id="nameField">Имя
+          <input type="text" id="authName" placeholder="Например: Аружан">
+        </label>
+        <label>Email
+          <input type="email" id="authEmail" placeholder="name@mail.kz" required>
+        </label>
+        <label>Пароль
+          <input type="password" id="authPassword" placeholder="Минимум 4 символа" required minlength="4">
+        </label>
+        <button class="primary-btn full" type="submit" id="authSubmit">Войти</button>
+        <p class="form-status" id="authStatus"></p>
+      </form>
+      <button class="link-btn" type="button" id="switchAuthMode">Нет аккаунта? Зарегистрироваться</button>
+    </div>
+  </div>
+
+  <template id="checklistTemplate">
+    <section>
+      <h1>Чек-лист архивного запроса</h1>
+      <ol>
+        <li>Укажите полные ФИО человека или название организации.</li>
+        <li>Добавьте город, период и примерное место работы/учебы.</li>
+        <li>Приложите удостоверение личности или доверенность.</li>
+        <li>Выберите способ получения результата.</li>
+      </ol>
+    </section>
+  </template>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
