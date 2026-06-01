@@ -1,6 +1,8 @@
 import { getAdminClient, getUserClient, hasServiceRole } from "./supabase-admin.mjs";
 
-const STAFF_CODE = process.env.STAFF_ACCESS_CODE || "ARHIV-VKO-2026";
+function staffAccessCode() {
+  return process.env.STAFF_ACCESS_CODE || "ARHIV-VKO-2026";
+}
 
 const FN = {
   "7238c8c495c0f7211ccc86e52f8e7cbf3b5255f07bf3b0c015a0ea569b926833": verifyStaffCode,
@@ -28,7 +30,7 @@ export async function handleServerFn(id, req) {
 
 async function verifyStaffCode({ data }) {
   const code = String(data?.code || "").trim();
-  return { ok: code.length > 0 && code === STAFF_CODE };
+  return { ok: code.length > 0 && code === staffAccessCode() };
 }
 
 async function getMyRoles({ req, body }) {

@@ -7,12 +7,14 @@ import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { handleServerFn } from "./api/server-fn.mjs";
-import { createRequest } from "./api/requests-api.mjs";
 import { loadEnv } from "./api/load-env.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const envLoad = loadEnv(__dirname);
+
+// API-модули — после loadEnv, иначе SUPABASE_SERVICE_ROLE_KEY не подхватится
+const { handleServerFn } = await import("./api/server-fn.mjs");
+const { createRequest } = await import("./api/requests-api.mjs");
 
 const ROOT = __dirname;
 const PORT = Number(process.env.PORT || 8080);
