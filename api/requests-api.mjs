@@ -1,6 +1,14 @@
 import { getRequestDbClient, hasServiceRole } from "./supabase-admin.mjs";
+import {
+  createLocalRequest,
+  useLocalRequests,
+} from "./local-requests.mjs";
 
 export async function createRequest(payload) {
+  if (useLocalRequests()) {
+    return createLocalRequest(payload);
+  }
+
   const db = getRequestDbClient();
   const row = {
     applicant_name: payload.applicant_name,
@@ -29,11 +37,7 @@ export async function createRequest(payload) {
 
   if (error) {
     if (!hasServiceRole()) {
-      throw new Error(
-        `${error.message || error.code || "Ошибка БД"}. ` +
-          "Обход: в Supabase → SQL Editor выполните supabase/allow-public-requests.sql " +
-          "или задайте SUPABASE_SECRET_KEY / SUPABASE_SERVICE_ROLE_KEY в .env и перезапустите npm start."
-      );
+      return createLocalRequest(payload);
     }
     throw error;
   }

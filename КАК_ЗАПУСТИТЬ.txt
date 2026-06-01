@@ -1,0 +1,18 @@
+ЦГА ВКО — запуск без настроек
+=============================
+
+1. Дважды щёлкните:  ЗАПУСК.bat   (или START.bat)
+
+2. Откроется сайт: http://127.0.0.1:8080/
+
+3. Заявки с форм на сайте сохраняются в папку data\requests.json
+   Supabase и .env НЕ нужны.
+
+4. Смотреть заявки: http://127.0.0.1:8080/panel.html
+   Код: ARHIV-VKO-2026
+
+Обновить файлы с GitHub (если есть Git):
+   ОБНОВИТЬ.bat
+
+Скачать свежую версию без Git:
+   https://github.com/NiazYesposssyn/arhiv/archive/refs/heads/cursor/continue-our-site-10a4.zip

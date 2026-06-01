@@ -1,4 +1,5 @@
 import { getAdminClient, getUserClient, hasServiceRole } from "./supabase-admin.mjs";
+import { listLocalRequests, updateLocalRequest, useLocalRequests } from "./local-requests.mjs";
 
 function staffAccessCode() {
   return process.env.STAFF_ACCESS_CODE || "ARHIV-VKO-2026";
@@ -78,6 +79,10 @@ async function updateRequest({ data, req }) {
   const status = data?.status;
   if (!id || !status) throw new Error("id and status required");
 
+  if (useLocalRequests()) {
+    return updateLocalRequest(id, status);
+  }
+
   const db = getAdminClient();
   const { error } = await db.from("requests").update({ status }).eq("id", id);
   if (error) throw error;
@@ -124,6 +129,9 @@ async function assertStaff(req) {
 }
 
 async function fetchAllRequests() {
+  if (useLocalRequests()) {
+    return listLocalRequests();
+  }
   const db = getAdminClient();
   const { data, error } = await db
     .from("requests")

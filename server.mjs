@@ -16,6 +16,8 @@ const envLoad = loadEnv(__dirname);
 const { handleServerFn } = await import("./api/server-fn.mjs");
 const { createRequest } = await import("./api/requests-api.mjs");
 const { hasServiceRole } = await import("./api/supabase-admin.mjs");
+const { useLocalRequests } = await import("./api/local-requests.mjs");
+const { handleAdminLocal } = await import("./api/admin-local.mjs");
 
 const ROOT = __dirname;
 const PORT = Number(process.env.PORT || 8080);
@@ -63,9 +65,23 @@ async function handleApi(req, res, pathname) {
         envVars: envLoad.count,
         envFiles: envLoad.loaded || [envLoad.path],
         serviceRole: hasServiceRole(),
-        mode: hasServiceRole() ? "admin" : "anon-bypass",
+        mode: useLocalRequests() ? "local-file" : hasServiceRole() ? "supabase" : "anon-bypass",
+        panel: "http://127.0.0.1:" + PORT + "/panel.html",
       })
     );
+    return;
+  }
+
+  if (pathname === "/api/admin/local" && req.method === "POST") {
+    try {
+      const payload = await readBody(req);
+      const out = handleAdminLocal(payload);
+      res.writeHead(out.status, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(out.body));
+    } catch (err) {
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: err.message }));
+    }
     return;
   }
 
@@ -134,18 +150,17 @@ server.on("error", (err) => {
   throw err;
 });
 
-const SERVER_BUILD = "2026-06-02-bypass";
+const SERVER_BUILD = "2026-06-03-local";
 
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`ЦГА ВКО (локально, без Lovable): http://127.0.0.1:${PORT}/`);
-  console.log(`   Сборка сервера: ${SERVER_BUILD}`);
-  console.log(`   .env: ${envLoad.count} переменных (${envLoad.path})`);
-  if (hasServiceRole()) {
-    console.log("   Supabase: секретный ключ OK (режим admin)");
-  } else {
-    console.log("   Supabase: секретный ключ не найден → режим обхода (publishable + SQL)");
-    console.log("   Выполните supabase/allow-public-requests.sql в SQL Editor");
-    console.log("   Или в .env: SUPABASE_SECRET_KEY=sb_secret_... (из Dashboard)");
+  console.log(`   Сборка: ${SERVER_BUILD}`);
+  if (useLocalRequests()) {
+    console.log("   Заявки: файл data/requests.json (Supabase НЕ нужен)");
+    console.log(`   Панель заявок: http://127.0.0.1:${PORT}/panel.html`);
+    console.log("   Код панели: ARHIV-VKO-2026 (или STAFF_ACCESS_CODE в .env)");
+  } else if (hasServiceRole()) {
+    console.log("   Заявки: Supabase (SUPABASE_REQUESTS=1)");
   }
-  console.log(`   Проверка: http://127.0.0.1:${PORT}/api/health`);
+  console.log(`   .env: ${envLoad.count} переменных`);
 });
