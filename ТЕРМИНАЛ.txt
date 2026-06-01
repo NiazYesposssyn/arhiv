@@ -1,0 +1,25 @@
+ТОЛЬКО ТЕРМИНАЛ — БЕЗ .bat
+==========================
+
+В Cursor: меню Terminal → New Terminal
+Или клавиша Ctrl+` (буква ё)
+
+Скопируйте ВСЁ сразу и Enter:
+
+cd portal
+npm install
+$env:NODE_ENV="production"
+node server/index.mjs
+
+Не закрывайте терминал.
+
+Браузер: http://127.0.0.1:8080/
+Если пусто: http://127.0.0.1:8081/
+
+Остановить сервер: Ctrl+C
+
+---
+
+Через меню Cursor (без команд):
+
+Terminal → Run Task → "Запустить сайт ЦГА ВКО"
