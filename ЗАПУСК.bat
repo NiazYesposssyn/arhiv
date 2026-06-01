@@ -1,50 +1,72 @@
 @echo off
 chcp 65001 >nul
+set LOG=%~dp0ОШИБКА-ЗАПУСКА.txt
 cd /d "%~dp0"
+echo === Запуск %date% %time% === > "%LOG%"
+echo Папка: %CD%>> "%LOG%"
 
-if exist "portal\package.json" (
-  cd portal
-  goto run
-)
-
-echo.
-echo  Папка portal не найдена рядом с этим файлом.
-echo  Должно быть:  ...\arhiv-...\portal\package.json
-echo.
-pause
-exit /b 1
-
-:run
-echo.
-echo  Запуск сайта из: %CD%
-echo.
-
-where node >nul 2>&1
-if errorlevel 1 (
-  echo  Установите Node.js: https://nodejs.org/
+if not exist "portal\package.json" (
+  echo НЕТ папки portal\package.json >> "%LOG%"
+  echo.
+  echo  ОШИБКА: рядом с этим файлом должна быть папка portal
+  echo  Смотрите файл: ОШИБКА-ЗАПУСКА.txt
+  echo.
+  notepad "%LOG%"
   pause
   exit /b 1
 )
 
-if not exist node_modules (
-  echo  npm install...
-  call npm install
+cd portal
+echo portal OK >> "%LOG%"
+
+where node >> "%LOG%" 2>&1
+if errorlevel 1 (
+  echo Node.js НЕ УСТАНОВЛЕН >> "%LOG%"
+  echo.
+  echo  Установите Node.js LTS: https://nodejs.org/
+  echo  Галочка "Add to PATH", потом ПЕРЕЗАГРУЗКА ПК
+  echo.
+  notepad "%LOG%"
+  pause
+  exit /b 1
+)
+
+echo npm install... >> "%LOG%"
+call npm install >> "%LOG%" 2>&1
+if errorlevel 1 (
+  echo npm install FAILED >> "%LOG%"
+  notepad "%LOG%"
+  pause
+  exit /b 1
 )
 
 if not exist dist (
-  echo  npm run build...
-  call npm run build
+  echo npm run build... >> "%LOG%"
+  call npm run build >> "%LOG%" 2>&1
+  if errorlevel 1 (
+    echo build FAILED >> "%LOG%"
+    notepad "%LOG%"
+    pause
+    exit /b 1
+  )
 )
 
+echo START SERVER >> "%LOG%"
 echo.
-echo  Откроется окно CGA Server — НЕ ЗАКРЫВАЙТЕ его.
+echo  ========================================
+echo    Сейчас откроется окно CGA Server
+echo    ЕГО НЕ ЗАКРЫВАЙТЕ
+echo  ========================================
 echo.
 
-start "CGA Server" cmd /k "cd /d %CD% && set NODE_ENV=production && node server/index.mjs"
-timeout /t 4 /nobreak >nul
+set NODE_ENV=production
+start "CGA Server" cmd /k "title CGA Server && cd /d %CD% && set NODE_ENV=production && node server/index.mjs && echo. && echo Сервер остановлен. && pause"
+
+timeout /t 5 /nobreak >nul
 start "" "http://127.0.0.1:8080/"
+start "" "http://127.0.0.1:8081/"
 
-echo  Сайт: http://127.0.0.1:8080/
-echo  Админ: /staff  код ARHIV-VKO-2026  пароль admin2026
+echo  Если сайт пустой — подождите 10 сек и нажмите F5
+echo  Лог: %LOG%
 echo.
 pause
