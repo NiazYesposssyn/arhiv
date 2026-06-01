@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Заявки — ЦГА ВКО (локально)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 1.5rem; background: #0f172a; color: #e2e8f0; }
+    h1 { font-size: 1.35rem; }
+    input, select, button { padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: inherit; }
+    button { cursor: pointer; background: #2563eb; border-color: #2563eb; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
+    th, td { border: 1px solid #334155; padding: 0.5rem; text-align: left; vertical-align: top; }
+    th { background: #1e293b; }
+    .bar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 1rem 0; }
+    a { color: #93c5fd; }
+    .err { color: #fca5a5; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Заявки (локально, без Supabase)</h1>
+  <p><a href="/">← На сайт</a></p>
+  <div class="bar">
+    <label>Код: <input id="code" type="password" value="ARHIV-VKO-2026" /></label>
+    <button type="button" id="load">Обновить список</button>
+  </div>
+  <p id="err" class="err"></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Дата</th>
+        <th>№</th>
+        <th>ФИО</th>
+        <th>Услуга</th>
+        <th>Email</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <script>
+    const codeEl = document.getElementById("code");
+    const errEl = document.getElementById("err");
+    const rowsEl = document.getElementById("rows");
+
+    async function load() {
+      errEl.textContent = "";
+      const res = await fetch("/api/admin/local", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: codeEl.value, action: "list" }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        errEl.textContent = data.message || "Ошибка";
+        rowsEl.innerHTML = "";
+        return;
+      }
+      rowsEl.innerHTML = (data.requests || []).map((r) => `
+        <tr>
+          <td>${new Date(r.created_at).toLocaleString("ru-RU")}</td>
+          <td>${r.reference_code || "—"}</td>
+          <td>${r.applicant_name || ""}</td>
+          <td>${r.service_type || ""}</td>
+          <td>${r.email || ""}</td>
+          <td>
+            <select data-id="${r.id}">
+              ${["new","processing","done","rejected"].map((s) =>
+                `<option value="${s}" ${r.status === s ? "selected" : ""}>${s}</option>`
+              ).join("")}
+            </select>
+          </td>
+        </tr>
+      `).join("");
+      rowsEl.querySelectorAll("select").forEach((sel) => {
+        sel.addEventListener("change", async () => {
+          await fetch("/api/admin/local", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              code: codeEl.value,
+              action: "update",
+              id: sel.dataset.id,
+              status: sel.value,
+            }),
+          });
+        });
+      });
+    }
+
+    document.getElementById("load").addEventListener("click", load);
+    load();
+  </script>
+</body>
+</html>

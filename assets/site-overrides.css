@@ -1,0 +1,9 @@
+/* Hide any leftover third-party builder branding */
+#lovable-badge,
+#lovable-badge-close,
+#lovable-badge-divider,
+[id^="lovable-badge"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
