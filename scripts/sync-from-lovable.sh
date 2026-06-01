@@ -26,4 +26,5 @@ for f in "${ASSETS[@]}"; do
   curl -fsSL "$BASE/assets/$f" -o "$ROOT/assets/$f"
 done
 
+python3 "$ROOT/scripts/clean-branding.py"
 echo "Done. Run: npm start"
