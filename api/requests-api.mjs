@@ -1,12 +1,7 @@
-import { getAdminClient, hasServiceRole } from "./supabase-admin.mjs";
+import { getRequestDbClient, hasServiceRole } from "./supabase-admin.mjs";
 
 export async function createRequest(payload) {
-  if (!hasServiceRole()) {
-    throw new Error(
-      "Задайте SUPABASE_SERVICE_ROLE_KEY в .env для приёма заявок (см. .env.example)."
-    );
-  }
-  const db = getAdminClient();
+  const db = getRequestDbClient();
   const row = {
     applicant_name: payload.applicant_name,
     email: payload.email,
@@ -31,6 +26,17 @@ export async function createRequest(payload) {
     .insert({ ...row, reference_code })
     .select("id,reference_code")
     .single();
-  if (error) throw error;
+
+  if (error) {
+    if (!hasServiceRole()) {
+      throw new Error(
+        `${error.message || error.code || "Ошибка БД"}. ` +
+          "Обход: в Supabase → SQL Editor выполните supabase/allow-public-requests.sql " +
+          "или задайте SUPABASE_SECRET_KEY / SUPABASE_SERVICE_ROLE_KEY в .env и перезапустите npm start."
+      );
+    }
+    throw error;
+  }
+
   return { ok: true, id: data?.id, reference_code: data?.reference_code || reference_code };
 }

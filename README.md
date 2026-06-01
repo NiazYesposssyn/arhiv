@@ -23,7 +23,7 @@ SUPABASE_SERVICE_ROLE_KEY=ваш_ключ
 STAFF_ACCESS_CODE=ARHIV-VKO-2026
 ```
 
-Без `service_role` не работают: **заявки**, **админка**, **/staff**.
+Без секретного ключа не работают **админка** и **/staff**. **Заявки** можно принимать и без него — см. «Обход» ниже.
 
 ### 3. Запуск
 
@@ -35,6 +35,26 @@ npm start
 Откройте: **http://127.0.0.1:8080/**
 
 **Windows:** можно `START.bat` / `ЗАПУСК.bat` (папка с `package.json`).
+
+### Заявки: «Задайте SUPABASE_SERVICE_ROLE_KEY» (обход)
+
+**Способ 1 — секретный ключ в `.env`** (в папке с `package.json`):
+
+```env
+SUPABASE_SECRET_KEY=sb_secret_ваш_ключ_из_Dashboard
+```
+
+или `SUPABASE_SERVICE_ROLE_KEY=eyJ...` (вкладка «Устаревшие ключи»).
+
+Перезапуск: `npm start`. Проверка: http://127.0.0.1:8080/api/health → `"serviceRole": true`.
+
+**Способ 2 — без секрета (только заявки):**
+
+1. В [Supabase](https://supabase.com/dashboard) → проект **rycgzckzrxedsbpwvzbh** → **SQL Editor**
+2. Вставьте и выполните файл `supabase/allow-public-requests.sql` из этого репозитория
+3. `npm start` — заявки пойдут через publishable-ключ (как на сайте в браузере)
+
+`.env` может лежать **на уровень выше** вложенной папки — сервер подхватит автоматически.
 
 ### Ошибка `EADDRINUSE` (порт 8080 занят)
 

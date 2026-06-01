@@ -12,9 +12,10 @@ import { loadEnv } from "./api/load-env.mjs";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const envLoad = loadEnv(__dirname);
 
-// API-модули — после loadEnv, иначе SUPABASE_SERVICE_ROLE_KEY не подхватится
+// API-модули — после loadEnv
 const { handleServerFn } = await import("./api/server-fn.mjs");
 const { createRequest } = await import("./api/requests-api.mjs");
+const { hasServiceRole } = await import("./api/supabase-admin.mjs");
 
 const ROOT = __dirname;
 const PORT = Number(process.env.PORT || 8080);
@@ -54,6 +55,20 @@ async function readBody(req) {
 }
 
 async function handleApi(req, res, pathname) {
+  if (pathname === "/api/health" && req.method === "GET") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        ok: true,
+        envVars: envLoad.count,
+        envFiles: envLoad.loaded || [envLoad.path],
+        serviceRole: hasServiceRole(),
+        mode: hasServiceRole() ? "admin" : "anon-bypass",
+      })
+    );
+    return;
+  }
+
   if (pathname === "/api/requests" && req.method === "POST") {
     try {
       const payload = await readBody(req);
@@ -122,10 +137,12 @@ server.on("error", (err) => {
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`ЦГА ВКО (локально, без Lovable): http://127.0.0.1:${PORT}/`);
   console.log(`   .env: ${envLoad.count} переменных (${envLoad.path})`);
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    console.log("⚠  SUPABASE_SERVICE_ROLE_KEY не прочитан.");
-    console.log("   Сохраните .env как UTF-8 (в Cursor: внизу справа → UTF-8).");
+  if (hasServiceRole()) {
+    console.log("   Supabase: секретный ключ OK (режим admin)");
   } else {
-    console.log("   Supabase service_role: OK");
+    console.log("   Supabase: секретный ключ не найден → режим обхода (publishable + SQL)");
+    console.log("   Выполните supabase/allow-public-requests.sql в SQL Editor");
+    console.log("   Или в .env: SUPABASE_SECRET_KEY=sb_secret_... (из Dashboard)");
   }
+  console.log(`   Проверка: http://127.0.0.1:${PORT}/api/health`);
 });

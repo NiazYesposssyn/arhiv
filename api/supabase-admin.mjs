@@ -1,22 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
+import { anonKey, hasServiceRole, serviceRoleKey, supabaseUrl } from "./env-keys.mjs";
 
-function supabaseUrl() {
-  return process.env.SUPABASE_URL || "https://rycgzckzrxedsbpwvzbh.supabase.co";
-}
-
-function serviceRoleKey() {
-  return process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-}
-
-export function hasServiceRole() {
-  return Boolean(serviceRoleKey());
-}
+export { hasServiceRole, serviceRoleKey, supabaseUrl, anonKey };
 
 export function getAdminClient() {
   const key = serviceRoleKey();
   if (!key) {
     throw new Error(
-      "SUPABASE_SERVICE_ROLE_KEY не задан. Создайте файл .env (см. .env.example)."
+      "Секретный ключ Supabase не задан. См. .env.example или supabase/allow-public-requests.sql"
     );
   }
   return createClient(supabaseUrl(), key, {
@@ -24,10 +15,18 @@ export function getAdminClient() {
   });
 }
 
+export function getAnonClient() {
+  return createClient(supabaseUrl(), anonKey(), {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
+export function getRequestDbClient() {
+  return hasServiceRole() ? getAdminClient() : getAnonClient();
+}
+
 export function getUserClient(accessToken) {
-  const anon =
-    process.env.SUPABASE_ANON_KEY || "sb_publishable_s5tZ2F3yvTih_nvLcEP2Qw_nhXCFxBI";
-  return createClient(supabaseUrl(), anon, {
+  return createClient(supabaseUrl(), anonKey(), {
     global: { headers: { Authorization: `Bearer ${accessToken}` } },
     auth: { persistSession: false, autoRefreshToken: false },
   });
