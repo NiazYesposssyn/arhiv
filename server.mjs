@@ -134,8 +134,11 @@ server.on("error", (err) => {
   throw err;
 });
 
+const SERVER_BUILD = "2026-06-02-bypass";
+
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`ЦГА ВКО (локально, без Lovable): http://127.0.0.1:${PORT}/`);
+  console.log(`   Сборка сервера: ${SERVER_BUILD}`);
   console.log(`   .env: ${envLoad.count} переменных (${envLoad.path})`);
   if (hasServiceRole()) {
     console.log("   Supabase: секретный ключ OK (режим admin)");
