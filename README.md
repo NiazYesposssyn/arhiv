@@ -4,7 +4,35 @@
 
 ## Запуск (всё как на Lovable)
 
+### Windows (если ошибка `ENOENT package.json`)
+
+Часто после скачивания ZIP папка **вложенная**:
+
+```
+Downloads\arhiv-cursor-continue-our-site-10a4\     ← здесь npm start НЕ работает
+    arhiv-cursor-continue-our-site-10a4\           ← здесь лежит package.json
+        package.json
+        index.html
+        ...
+```
+
+**Вариант 1 — двойной щелчок:** файл **`START.bat`** или **`ЗАПУСК.bat`** (в папке с `package.json`, или во внешней — скрипт сам найдёт вложенную).
+
+**Вариант 2 — терминал:**
+
+```powershell
+cd C:\Users\Нияз\Downloads\arhiv-cursor-continue-our-site-10a4\arhiv-cursor-continue-our-site-10a4
+npm start
+```
+
+(путь подставьте свой — в проводнике откройте папку, где видите `package.json`, скопируйте путь из адресной строки)
+
+Нужен **Node.js**: https://nodejs.org/ (LTS), затем в новом терминале снова `npm start`.
+
+### Mac / Linux
+
 ```bash
+cd путь/к/папке/с/package.json
 npm start
 ```
 
