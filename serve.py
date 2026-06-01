@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local dev server with SPA fallback (like Lovable hosting)."""
+"""Legacy static server (SPA only). For full functionality use: npm start (server.mjs)."""
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
