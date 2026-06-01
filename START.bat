@@ -1,48 +1,23 @@
 @echo off
 chcp 65001 >nul
-cd /d "%~dp0"
-
-if exist package.json goto run
-
-for /d %%D in (*) do (
-  if exist "%%D\package.json" (
-    cd "%%D"
-    goto run
-  )
+cd /d "%~dp0portal"
+if not exist package.json (
+  echo Папка portal не найдена.
+  pause
+  exit /b 1
 )
-
-echo package.json не найден.
-pause
-exit /b 1
-
-:run
-echo.
-echo  ЦГА ВКО — запуск из: %CD%
-echo.
-
 where node >nul 2>&1
 if errorlevel 1 (
-  echo  Установите Node.js: https://nodejs.org/
+  echo Установите Node.js: https://nodejs.org/
   pause
   exit /b 1
 )
-
-if not exist node_modules (
-  echo  npm install...
-  call npm install
-)
-
-echo  Сайт откроется в браузере. Заявки — без Supabase.
-echo  Панель заявок: http://127.0.0.1:8080/panel.html
-echo.
-
+if not exist node_modules call npm install
+if not exist dist call npm run build
 start "" "http://127.0.0.1:8080/"
-timeout /t 2 /nobreak >nul
+echo.
+echo  Сайт ЦГА ВКО — http://127.0.0.1:8080/
+echo  Админка: /staff  код ARHIV-VKO-2026  пароль admin2026
+echo.
 call npm start
-if errorlevel 1 (
-  echo.
-  echo  ОШИБКА запуска. Скопируйте текст выше и отправьте в чат.
-  pause
-  exit /b 1
-)
 pause
