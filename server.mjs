@@ -7,12 +7,12 @@ import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import dotenv from "dotenv";
 import { handleServerFn } from "./api/server-fn.mjs";
 import { createRequest } from "./api/requests-api.mjs";
+import { loadEnv } from "./api/load-env.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: path.join(__dirname, ".env") });
+const envLoad = loadEnv(__dirname);
 
 const ROOT = __dirname;
 const PORT = Number(process.env.PORT || 8080);
@@ -108,7 +108,11 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`ЦГА ВКО (локально, без Lovable): http://127.0.0.1:${PORT}/`);
+  console.log(`   .env: ${envLoad.count} переменных (${envLoad.path})`);
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    console.log("⚠  Добавьте SUPABASE_SERVICE_ROLE_KEY в .env — иначе заявки и админка не сохранятся.");
+    console.log("⚠  SUPABASE_SERVICE_ROLE_KEY не прочитан.");
+    console.log("   Сохраните .env как UTF-8 (в Cursor: внизу справа → UTF-8).");
+  } else {
+    console.log("   Supabase service_role: OK");
   }
 });
