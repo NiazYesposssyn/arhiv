@@ -183,7 +183,7 @@ if (isProd) {
   }
 }
 
-app.listen(API_PORT, "0.0.0.0", () => {
+const server = app.listen(API_PORT, "0.0.0.0", () => {
   console.log(`API: http://127.0.0.1:${API_PORT}`);
   if (isProd) {
     console.log(`Сайт: http://127.0.0.1:${API_PORT}/`);
@@ -192,4 +192,13 @@ app.listen(API_PORT, "0.0.0.0", () => {
   } else {
     console.log(`Фронт (Vite): http://127.0.0.1:${PORT}/`);
   }
+});
+
+server.on("error", (err) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(`Порт ${API_PORT} занят. Закройте другой npm start или смените PORT=8081`);
+  } else {
+    console.error(err);
+  }
+  process.exit(1);
 });

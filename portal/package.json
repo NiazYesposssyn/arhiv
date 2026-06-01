@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently -k \"node --watch server/index.mjs\" \"vite\"",
     "build": "vite build",
-    "start": "cross-env NODE_ENV=production node server/index.mjs",
+    "start": "node server/index.mjs",
     "postinstall": "node server/init-db.mjs"
   },
   "dependencies": {
