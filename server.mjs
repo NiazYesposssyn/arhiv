@@ -106,6 +106,17 @@ const server = http.createServer((req, res) => {
   });
 });
 
+server.on("error", (err) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(`Порт ${PORT} уже занят (сервер, возможно, уже запущен).`);
+    console.error(`  Откройте в браузере: http://127.0.0.1:${PORT}/`);
+    console.error("  Или закройте другой терминал с npm start / node server.mjs");
+    console.error(`  Или в .env задайте другой PORT=8081 и снова: npm start`);
+    process.exit(1);
+  }
+  throw err;
+});
+
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`ЦГА ВКО (локально, без Lovable): http://127.0.0.1:${PORT}/`);
   console.log(`   .env: ${envLoad.count} переменных (${envLoad.path})`);
