@@ -39,3 +39,10 @@ echo.
 start "" "http://127.0.0.1:8080/"
 timeout /t 2 /nobreak >nul
 call npm start
+if errorlevel 1 (
+  echo.
+  echo  ОШИБКА запуска. Скопируйте текст выше и отправьте в чат.
+  pause
+  exit /b 1
+)
+pause
