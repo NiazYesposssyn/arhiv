@@ -1,16 +1,3 @@
 {
-  "rewrites": [
-    {
-      "source": "/_serverFn/:path*",
-      "destination": "https://continue-our-site.lovable.app/_serverFn/:path*"
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "https://continue-our-site.lovable.app/api/:path*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
